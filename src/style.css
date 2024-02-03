@@ -64,11 +64,9 @@ a {
   filter: blur(5px);
 }
 .collection-item p {
-  position: absolute;
-  top: 46%;
-  margin-left: 11%;
   font-size: 22px;
   font-weight: 300;
+  margin: 0;
 }
 /* first collection-item p */
 .collection-item:first-of-type p {
@@ -153,12 +151,12 @@ a {
 
 
   /* MENU SECTION */
-  .menu {
-    flex-direction: column;
-  }
   .collection-item {
     width: 100%;
     height: 200px;
+  }
+  .collection-item p {
+    font-size: 14px;
   }
 
   /* LIST VIEW */
@@ -183,5 +181,11 @@ a {
     padding-bottom: 1.75rem;
   }
 }
+ 
 
-
+@media only screen and (max-width: 1160px) {
+  /* MENU SECTION */
+  .menu {
+    flex-direction: column;
+  }
+}
