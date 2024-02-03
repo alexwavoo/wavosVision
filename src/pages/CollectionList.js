@@ -42,6 +42,14 @@ export default function CollectionList() {
       });
   }, []);
 
+//   set body to overflow hidden
+useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, []);
+
   if (!collections) {
     return '';
   }
@@ -60,7 +68,7 @@ export default function CollectionList() {
         </div>
         </div>
         <Link to="/">
-        <div className="logo">star</div>
+        <img className="logo" src="/stars.png" alt="" />
       </Link>
     </>
   );

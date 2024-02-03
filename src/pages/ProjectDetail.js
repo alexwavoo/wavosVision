@@ -77,7 +77,7 @@ function ProjectDetail() {
   };
 
   if (!projectData.title) {
-    return 'Loading...';
+    return '';
   }
 
   const splitImages = (images) => {
@@ -115,7 +115,7 @@ function ProjectDetail() {
       </div>
     </div>
     <Link to="/">
-        <div className="logo">star</div>
+    <img className="logo" src="/stars.png" alt="" />
     </Link>
     </>
   );

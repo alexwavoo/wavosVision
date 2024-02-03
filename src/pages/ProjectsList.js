@@ -150,7 +150,7 @@ function ProjectsList() {
       </div>
     </div>
     <Link to="/">
-        <div className="logo">star</div>
+    <img className="logo" src="/stars.png" alt="" />
     </Link>
     </>
   );

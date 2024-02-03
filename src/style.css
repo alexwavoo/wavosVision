@@ -15,15 +15,18 @@ body {
   color: #fdf8dc;
   background: #242323;
 }
+::-webkit-scrollbar {
+  width: 0px;
+}
 a {
   text-decoration: none;
   color: unset
 }
 .logo {
-    position: sticky;
-    bottom: 25px;
-    text-align: end;
-    padding-right: 1rem;
+  position: sticky;
+  bottom: 15px;
+  float: right;
+  width: 100px;
 }
 
 /* HOME SECTION */
