@@ -23,6 +23,22 @@ const CollectionList = () => {
   const [subtitlePositions, setSubtitlePositions] = useState({});
 
   useEffect(() => {
+    // Set body and id='app' to overflow hidden
+    document.body.style.overflow = 'hidden';
+    document.getElementById('app').style.overflow = 'hidden';
+  
+    // Cleanup function to reset styles when component unmounts
+    return () => {
+      document.body.style.overflow = 'unset';
+      const appElement = document.getElementById('app');
+      if (appElement) {
+        appElement.style.overflow = 'unset';
+      }
+    };
+  }, []);
+  
+
+  useEffect(() => {
     window
       .fetch(`https://graphql.contentful.com/content/v1/spaces/oen9jg6suzgv/`, {
         method: 'POST',
@@ -70,20 +86,6 @@ const CollectionList = () => {
     return '';
   }
 
-  useEffect(() => {
-    // Set body and id='app' to overflow hidden
-    document.body.style.overflow = 'hidden';
-    document.getElementById('app').style.overflow = 'hidden';
-  
-    // Cleanup function to reset styles when component unmounts
-    return () => {
-      document.body.style.overflow = 'unset';
-      const appElement = document.getElementById('app');
-      if (appElement) {
-        appElement.style.overflow = 'unset';
-      }
-    };
-  }, []);
 
   return (
     <>
