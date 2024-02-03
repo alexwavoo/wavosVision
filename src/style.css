@@ -160,6 +160,7 @@ a {
   .flex-container {
     flex-direction: column;
     gap: 0rem;
+    padding: 0rem;
   }
   .grid-item {
     width: 80%;
@@ -168,8 +169,13 @@ a {
   }
 
   /* DETAIL VIEW */
+  .header {
+    font-size: 27px;
+  }
   .description {
     width: 75%;
+    font-size: 13px;
+    padding-bottom: 1rem;
   }
 }
 
