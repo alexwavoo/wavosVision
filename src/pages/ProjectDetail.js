@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import '../style.css';
 import { Link } from 'react-router-dom';
+import Lightbox from '../components/Lightbox.js';
 
 function ProjectDetail() {
   const { projectId } = useParams();
@@ -13,6 +14,7 @@ function ProjectDetail() {
     images: [],
   });
   const [transition, setTransition] = useState(false);
+  const [lightboxImage, setLightboxImage] = useState(null);
 
   useEffect(() => {
     if (sessionStorage.getItem('transition') === 'true') {
@@ -100,6 +102,15 @@ function ProjectDetail() {
 
   const { leftImages, rightImages } = splitImages(projectData.images);
 
+  const handleImageClick = (imageUrl) => {
+    setLightboxImage(imageUrl);
+  };
+
+  // Function to close the lightbox
+  const closeLightbox = () => {
+    setLightboxImage(null);
+  };
+
   return (
     <div className={transition ? 'transition' : '' }>
     <div className="wrapper">
@@ -111,20 +122,24 @@ function ProjectDetail() {
       <div className="flex-container">
         <div className="column-left">
           {leftImages.map((imageUrl, index) => (
-            <div key={index} className="grid-item">
+            <div key={index} className="grid-item" onClick={() => handleImageClick(imageUrl)}>
               <img src={imageUrl} alt={`Image ${index + 1}`} />
             </div>
           ))}
         </div>
         <div className="column-right">
           {rightImages.map((imageUrl, index) => (
-            <div key={index} className="grid-item">
+            <div key={index} className="grid-item" onClick={() => handleImageClick(imageUrl)}>
               <img src={imageUrl} alt={`Image ${index + 1}`} />
             </div>
           ))}
         </div>
       </div>
     </div>
+
+    {lightboxImage && <Lightbox imageUrl={lightboxImage} onClose={closeLightbox} />}
+
+
     <Link to="/">
     <img className="logo" src="/stars.png" alt="" />
     </Link>
