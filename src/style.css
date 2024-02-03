@@ -141,3 +141,35 @@ a {
   font-size: 18px;
   font-weight: 300;
 }
+
+
+/* MOBILE */
+@media screen and (max-width: 768px) {
+  /* GLOBAL STYLES */
+  .logo {
+    margin-right: -0.5rem;
+  }
+
+
+  /* MENU SECTION */
+  .menu {
+    flex-direction: column;
+  }
+
+  /* LIST VIEW */
+  .flex-container {
+    flex-direction: column;
+    gap: 0rem;
+  }
+  .grid-item {
+    width: 80%;
+    margin: 0 auto;
+    margin-bottom: 1.75rem;
+  }
+
+  /* DETAIL VIEW */
+  .description {
+    width: 75%;
+  }
+}
+
