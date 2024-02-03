@@ -21,6 +21,20 @@ const query = `
 const CollectionList = () => {
   const [collections, setCollections] = useState(null);
   const [subtitlePositions, setSubtitlePositions] = useState({});
+  const [transition, setTransition] = useState(false);
+
+  // useeffect to check session storage to so if transition should be set to true
+  useEffect(() => {
+    if (sessionStorage.getItem('transition') === 'true') {
+      setTransition(true);
+      sessionStorage.setItem('transition', 'false');
+      setTimeout(() => {
+        setTransition(false);
+      }, 6000);
+    } 
+  }, []);
+
+
 
   useEffect(() => {
     // Set body and id='app' to overflow hidden
@@ -82,13 +96,14 @@ const CollectionList = () => {
     };
   }, [collections]);
 
+
   if (!collections) {
     return '';
   }
 
 
   return (
-    <>
+    <div className={transition ? 'transition' : '' }>
       <div className='menu-wrapper'>
         <div className="menu">
           {collections.map((collection) => (
@@ -118,7 +133,7 @@ const CollectionList = () => {
       <Link to="/">
         <img className="logo" src="/stars.png" alt="" style={{ bottom: '15px', right: '15px', position: 'absolute' }} />
       </Link>
-    </>
+    </div>
   );
 };
 

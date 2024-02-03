@@ -15,7 +15,10 @@ export default function App() {
       // Set timeout to 3 seconds
       const timeoutId = setTimeout(() => {
         sessionStorage.setItem('session', Date.now());
+        sessionStorage.setItem('transition', true);
         setLoading(false);
+
+
       }, 3000);
 
       // Clear the timeout if the component unmounts before 3 seconds
@@ -29,19 +32,25 @@ export default function App() {
   if (loading) {
     // Render loading message
     return (
-      <div class="home">
-        <div class="title">WAVO'S VISION</div>
+      <div className="home">
+        <div className="title">WAVO'S VISION</div>
     </div>
     );
   }
 
   // If the session is new or has already been established, render the actual content
-  return (
+return (
     <Router>
       <Routes>
-        <Route path="/" element={<CollectionList />} />
-        <Route path="/collection/:collectionId/projects" element={<ProjectsList />} />
-        <Route path="/collection/:collectionId/projects/:projectId" element={<ProjectDetail />} />
+        <Route path="/" element={<CollectionList  />} />
+        <Route
+          path="/collection/:collectionId/projects"
+          element={<ProjectsList  />}
+        />
+        <Route
+          path="/collection/:collectionId/projects/:projectId"
+          element={<ProjectDetail  />}
+        />
       </Routes>
     </Router>
   );

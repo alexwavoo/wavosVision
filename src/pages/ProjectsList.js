@@ -8,6 +8,17 @@ function ProjectsList() {
   const { collectionId } = useParams();
   const [projectIds, setProjectIds] = useState([]);
   const [projects, setProjects] = useState([]);
+  const [transition, setTransition] = useState(false);
+
+  useEffect(() => {
+    if (sessionStorage.getItem('transition') === 'true') {
+      setTransition(true);
+      sessionStorage.setItem('transition', 'false');
+      setTimeout(() => {
+        setTransition(false);
+      }, 6000);
+    } 
+  }, []);
 
   useEffect(() => {
     const fetchProjectIds = async () => {
@@ -124,7 +135,7 @@ function ProjectsList() {
   const projectsRight = projects.slice(midpoint);
 
   return (
-    <>
+    <div className={transition ? 'transition' : '' }>
     <div className="wrapper">
         <div style={{ marginTop: '2.5rem' }}></div>
       <div className="flex-container">
@@ -153,7 +164,7 @@ function ProjectsList() {
     <Link to="/">
     <img className="logo" src="/stars.png" alt="" />
     </Link>
-    </>
+    </div>
   );
 }
 

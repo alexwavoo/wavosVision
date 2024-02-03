@@ -12,6 +12,17 @@ function ProjectDetail() {
     description: '',
     images: [],
   });
+  const [transition, setTransition] = useState(false);
+
+  useEffect(() => {
+    if (sessionStorage.getItem('transition') === 'true') {
+      setTransition(true);
+      sessionStorage.setItem('transition', 'false');
+      setTimeout(() => {
+        setTransition(false);
+      }, 6000);
+    } 
+  }, []);
 
   useEffect(() => {
     const fetchProjectData = async () => {
@@ -90,7 +101,7 @@ function ProjectDetail() {
   const { leftImages, rightImages } = splitImages(projectData.images);
 
   return (
-    <>
+    <div className={transition ? 'transition' : '' }>
     <div className="wrapper">
       <div className="header">{projectData.title}</div>
       <div className="description">
@@ -117,7 +128,7 @@ function ProjectDetail() {
     <Link to="/">
     <img className="logo" src="/stars.png" alt="" />
     </Link>
-    </>
+    </div>
   );
 }
 

@@ -29,6 +29,19 @@ a {
   width: 100px;
 }
 
+.transition {
+  animation: fadeIn 0.75s ease-in;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+
 /* HOME SECTION */
 .home {
   display: grid;
