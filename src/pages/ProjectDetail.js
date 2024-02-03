@@ -104,11 +104,13 @@ function ProjectDetail() {
 
   const handleImageClick = (imageUrl) => {
     setLightboxImage(imageUrl);
+    document.body.style.overflow = 'hidden';
   };
 
   // Function to close the lightbox
   const closeLightbox = () => {
     setLightboxImage(null);
+    document.body.style.overflow = 'auto';
   };
 
   return (
