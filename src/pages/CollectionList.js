@@ -70,9 +70,20 @@ const CollectionList = () => {
     return '';
   }
 
-  // set body and id='app' to overflow hidden
-  document.body.style.overflow = 'hidden';
-  document.getElementById('app').style.overflow = 'hidden';
+  useEffect(() => {
+    // Set body and id='app' to overflow hidden
+    document.body.style.overflow = 'hidden';
+    document.getElementById('app').style.overflow = 'hidden';
+  
+    // Cleanup function to reset styles when component unmounts
+    return () => {
+      document.body.style.overflow = 'unset';
+      const appElement = document.getElementById('app');
+      if (appElement) {
+        appElement.style.overflow = 'unset';
+      }
+    };
+  }, []);
 
   return (
     <>
