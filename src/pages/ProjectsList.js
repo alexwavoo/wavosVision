@@ -126,6 +126,7 @@ function ProjectsList() {
   return (
     <>
     <div className="wrapper">
+        <div style={{ marginTop: '2.5rem' }}></div>
       <div className="flex-container">
         <div className="column-left">
           {projectsLeft.map((project) => (
