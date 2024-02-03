@@ -145,7 +145,7 @@ a {
 @media only screen and (max-width: 768px) {
   /* GLOBAL STYLES */
   .logo {
-    margin-right: -0.45rem;
+    margin-right: -0.5rem;
     width: 50px;
   }
 
