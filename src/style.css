@@ -156,6 +156,10 @@ a {
   .menu {
     flex-direction: column;
   }
+  .collection-item {
+    width: 100%;
+    height: 200px;
+  }
 
   /* LIST VIEW */
   .flex-container {
