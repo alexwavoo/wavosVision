@@ -166,17 +166,17 @@ a {
   .grid-item {
     width: 80%;
     margin: 0 auto;
-    margin-bottom: 1.75rem;
+    margin-bottom: 1.25rem;
   }
 
   /* DETAIL VIEW */
   .header {
-    font-size: 27px;
+    font-size: 24px;
   }
   .description {
     width: 75%;
     font-size: 13px;
-    padding-bottom: 1rem;
+    padding-bottom: 1.75rem;
   }
 }
 
