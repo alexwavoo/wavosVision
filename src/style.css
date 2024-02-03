@@ -1,16 +1,133 @@
-* {
-  box-sizing: border-box;
-}
+/* GLOBAL STYLES */
 
 body {
-  margin: 0;
-  padding: 1rem;
-  font-family: system-ui, sans-serif;
-  color: black;
-  background-color: white;
+  background: #fdf8dc;
+  /* overflow: hidden; */
+  font-family: "Roboto", sans-serif;
+  cursor: default;
+}
+::-moz-selection { 
+  color: #fdf8dc;
+  background: #242323;
 }
 
-h1 {
-  font-weight: 800;
-  font-size: 1.5rem;
+::selection {
+  color: #fdf8dc;
+  background: #242323;
+}
+a {
+  text-decoration: none;
+  color: unset
+}
+.logo {
+    position: sticky;
+    bottom: 25px;
+    text-align: end;
+    padding-right: 1rem;
+}
+
+/* HOME SECTION */
+.home {
+  display: grid;
+  place-items: center;
+  height: 100vh;
+}
+.title {
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  font-size: 26px;
+}
+
+/* MENU SECTION */
+.menu-wrapper {
+  display: grid;
+  justify-items: center;
+  height: calc(100vh - 35px);
+  align-content: center;
+}
+.menu {
+  display: flex;
+  gap: 3rem;
+}
+.collection-item {
+  overflow: hidden;
+  width: 550px;
+  height: 400px;
+}
+.collection-item img {
+  width: 105%;
+  height: 105%;
+  margin: -5px;
+  filter: blur(5px);
+}
+.collection-item p {
+  position: absolute;
+  top: 46%;
+  margin-left: 11%;
+  font-size: 22px;
+  font-weight: 300;
+}
+
+
+/* LIST VIEW */
+.wrapper {
+  max-width: 1400px;
+  min-height: 100vh;
+  margin: 0 auto;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 3rem;
+  row-gap: 1rem;
+  padding: 2rem;
+}
+.flex-container {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  padding: 2rem;
+}
+
+
+.grid-item {
+  position: relative;
+  width: 100%;
+  max-width: 550px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.grid-item img {
+  width: 100%;
+  object-fit: cover; /* Maintain image aspect ratio */
+}
+
+.subtitle {
+  font-size: 16px;
+  font-weight: 300;
+  font-style: italic;
+  width: 100%;
+  color: #000;
+  text-align: center;
+  box-sizing: border-box;
+  padding-top: 0.35rem;
+}
+
+/* DETAIL VIEW */
+.header {
+  text-align: center;
+  text-transform: capitalize;
+  font-size: 36px;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  font-weight: 300;
+}
+.description {
+  text-align: center;
+  width: 60%;
+  margin: 0 auto;
+  font-size: 18px;
+  font-weight: 300;
 }
