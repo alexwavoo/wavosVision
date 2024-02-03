@@ -132,7 +132,6 @@ a {
 .grid-item img {
   width: 100%;
   object-fit: cover; /* Maintain image aspect ratio */
-  cursor: crosshair;
 }
 
 .subtitle {
