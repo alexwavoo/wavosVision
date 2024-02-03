@@ -127,7 +127,11 @@ function ProjectsList() {
   }, [projectIds]);
 
   if (projects.length === 0) {
-    return '';
+    return (
+      <Link to="/">
+      <img className="logo" src="/stars.png" alt="" />
+      </Link>
+    );
   }
 
   const midpoint = Math.ceil(projects.length / 2);
