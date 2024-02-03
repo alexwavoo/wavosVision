@@ -144,7 +144,7 @@ a {
 
 
 /* MOBILE */
-@media screen and (max-width: 768px) {
+@media only screen and (max-width: 768px) {
   /* GLOBAL STYLES */
   .logo {
     margin-right: -0.5rem;
@@ -172,4 +172,5 @@ a {
     width: 75%;
   }
 }
+
 
