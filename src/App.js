@@ -71,6 +71,7 @@ import ProjectsList from './pages/ProjectsList';
 import ProjectDetail from './pages/ProjectDetail';
 
 export default function App() {
+
   return (
     <Router>
       <Routes>

@@ -59,7 +59,9 @@ export default function CollectionList() {
             ))}
         </div>
         </div>
-        <div class="logo">star</div>
+        <Link to="/">
+        <div className="logo">star</div>
+      </Link>
     </>
   );
 }

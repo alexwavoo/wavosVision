@@ -1,6 +1,8 @@
 // ProjectsList.js
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import '../style.css';
+import { Link } from 'react-router-dom';
 
 function ProjectsList() {
   const { collectionId } = useParams();
@@ -46,6 +48,7 @@ function ProjectsList() {
         const collection = data.collection;
         if (collection && collection.projectsCollection) {
           setProjectIds(collection.projectsCollection.items.map((item) => item?.sys?.id));
+          console.log(collection.projectsCollection.items.map((item) => item?.sys?.id));
         }
       } catch (error) {
         console.error('Error fetching project IDs:', error);
@@ -98,6 +101,10 @@ function ProjectsList() {
         const validProjects = resolvedProjects.filter((project) => project !== null);
 
         setProjects(validProjects);
+        // apply project id to each project
+        validProjects.forEach((project, index) => {
+          project.id = projectIds[index];
+        });
       } catch (error) {
         console.error('Error fetching projects:', error);
       }
@@ -117,26 +124,35 @@ function ProjectsList() {
   const projectsRight = projects.slice(midpoint);
 
   return (
+    <>
     <div className="wrapper">
       <div className="flex-container">
         <div className="column-left">
           {projectsLeft.map((project) => (
-            <div key={project?.sys?.id} className="grid-item">
-              <img src={project?.thumbnail?.url} alt={project?.title} />
-              <div className="subtitle">{project?.title}</div>
-            </div>
+            <Link key={project.id} to={`/collection/${collectionId}/projects/${project.id}`}>
+              <div className="grid-item">
+                <img src={project?.thumbnail?.url} alt={project?.title} />
+                <div className="subtitle">{project?.title}</div>
+              </div>
+            </Link>
           ))}
         </div>
         <div className="column-right">
           {projectsRight.map((project) => (
-            <div key={project?.sys?.id} className="grid-item">
-              <img src={project?.thumbnail?.url} alt={project?.title} />
-              <div className="subtitle">{project?.title}</div>
-            </div>
+            <Link key={project.id} to={`/collection/${collectionId}/projects/${project.id}`}>
+              <div className="grid-item">
+                <img src={project?.thumbnail?.url} alt={project?.title} />
+                <div className="subtitle">{project?.title}</div>
+              </div>
+            </Link>
           ))}
         </div>
       </div>
     </div>
+    <Link to="/">
+        <div className="logo">star</div>
+    </Link>
+    </>
   );
 }
 
