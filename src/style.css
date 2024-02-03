@@ -45,7 +45,7 @@ a {
 .menu-wrapper {
   display: grid;
   justify-items: center;
-  height: calc(100vh - 35px);
+  height: calc(100vh - 65px);
   align-content: center;
 }
 .menu {
