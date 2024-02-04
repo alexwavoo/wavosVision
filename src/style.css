@@ -228,8 +228,7 @@ a {
   }
   .grid-item {
     width: 80%;
-    margin: 0 auto;
-    margin-bottom: 1.25rem;
+    margin: 0px auto 1.5rem!important;
   }
   .subtitle {
     font-size: 14px;
