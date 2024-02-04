@@ -124,14 +124,14 @@ function ProjectDetail() {
       <div className="flex-container">
         <div className="column-left">
           {leftImages.map((imageUrl, index) => (
-            <div key={index} className="grid-item" onClick={() => handleImageClick(imageUrl)}>
+            <div key={index} className="grid-item" style={{marginBottom: '2.5rem'}} onClick={() => handleImageClick(imageUrl)}>
               <img src={imageUrl} alt={`Image ${index + 1}`} style={{cursor: "crosshair"}} />
             </div>
           ))}
         </div>
         <div className="column-right">
           {rightImages.map((imageUrl, index) => (
-            <div key={index} className="grid-item" onClick={() => handleImageClick(imageUrl)}>
+            <div key={index} className="grid-item" style={{marginBottom: '2.5rem'}} onClick={() => handleImageClick(imageUrl)}>
               <img src={imageUrl} alt={`Image ${index + 1}`} style={{cursor: "crosshair"}} />
             </div>
           ))}

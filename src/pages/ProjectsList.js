@@ -146,7 +146,7 @@ function ProjectsList() {
         <div className="column-left">
           {projectsLeft.map((project) => (
             <Link key={project.id} to={`/collection/${collectionId}/projects/${project.id}`}>
-              <div className="grid-item">
+              <div className="grid-item" style={{marginBottom: '1.5rem'}}>
                 <img src={project?.thumbnail?.url} alt={project?.title} />
                 <div className="subtitle">{project?.title}</div>
               </div>
@@ -156,7 +156,7 @@ function ProjectsList() {
         <div className="column-right">
           {projectsRight.map((project) => (
             <Link key={project.id} to={`/collection/${collectionId}/projects/${project.id}`}>
-              <div className="grid-item">
+              <div className="grid-item" style={{marginBottom: '1.5rem'}}>
                 <img src={project?.thumbnail?.url} alt={project?.title} />
                 <div className="subtitle">{project?.title}</div>
               </div>
