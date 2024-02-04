@@ -85,11 +85,11 @@ a {
   width: 105%;
   height: 105%;
   margin: -5px;
-  filter: blur(5px);
+  filter: blur(4px);
 }
 .collection-item:hover img {
   transition: filter 2s ease-in;
-  filter: saturate(1.05) brightness(1.1) blur(4px);
+  filter: saturate(1.05) brightness(1.1) blur(3px);
 }
 
 .collection-item p {
