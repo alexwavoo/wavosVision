@@ -129,7 +129,7 @@ function ProjectsList() {
   if (projects.length === 0) {
     return (
       <Link to="/">
-      <img className="logo" src="/stars.png" alt="" />
+      <img className="logo" src="/stars.png" alt="" style={{position: 'absolute', right: '0.5rem'}} />
       </Link>
     );
   }
