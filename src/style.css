@@ -203,9 +203,9 @@ a {
   /* GLOBAL STYLES */
   .logo {
     width: 72px;
-    left: 41.5%;
+    left: calc(50% - 41px);
     background: #fdf8dc61;
-    box-shadow: 0 0 3px 0px rgba(0, 0, 0, .3);
+    /* box-shadow: 0 0 3px 0px rgba(0, 0, 0, .3); */
     backdrop-filter: blur(8px);
     border-radius: 3px;
     padding: 0.1rem 0.3rem;
