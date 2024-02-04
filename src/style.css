@@ -202,8 +202,13 @@ a {
 @media only screen and (max-width: 768px) {
   /* GLOBAL STYLES */
   .logo {
-    margin-right: -0.55rem;
-    width: 50px;
+    width: 72px;
+    left: 41.5%;
+    background: #fdf8dc61;
+    box-shadow: 0 0 3px 0px rgba(0, 0, 0, .3);
+    backdrop-filter: blur(8px);
+    border-radius: 3px;
+    padding: 0.1rem 0.3rem;
   }
 
 
