@@ -131,7 +131,7 @@ const CollectionList = () => {
         </div>
       </div>
       <Link to="/">
-        <img className="logo" src="/stars.png" alt="" style={{ bottom: '15px', right: '15px', position: 'absolute' }} />
+        <img className="logo" src="/stars.png" alt="" style={{ bottom: '5px', right: '5px', position: 'absolute' }} />
       </Link>
     </div>
   );
