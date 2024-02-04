@@ -203,7 +203,7 @@ a {
   /* GLOBAL STYLES */
   .logo {
     width: 72px;
-    left: calc(50% - 41px);
+    /* left: calc(50% - 41px); */
     background: #fdf8dc61;
     /* box-shadow: 0 0 3px 0px rgba(0, 0, 0, .3); */
     backdrop-filter: blur(8px);
