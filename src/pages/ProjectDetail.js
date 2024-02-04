@@ -129,6 +129,7 @@ function ProjectDetail() {
             </div>
           ))}
         </div>
+        {rightImages.length > 0 &&
         <div className="column-right">
           {rightImages.map((imageUrl, index) => (
             <div key={index} className="grid-item" style={{marginBottom: '2.5rem'}} onClick={() => handleImageClick(imageUrl)}>
@@ -136,6 +137,7 @@ function ProjectDetail() {
             </div>
           ))}
         </div>
+        }
       </div>
     </div>
 

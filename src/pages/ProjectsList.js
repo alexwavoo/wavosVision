@@ -153,6 +153,7 @@ function ProjectsList() {
             </Link>
           ))}
         </div>
+        {projectsRight.length > 0 &&
         <div className="column-right">
           {projectsRight.map((project) => (
             <Link key={project.id} to={`/collection/${collectionId}/projects/${project.id}`}>
@@ -163,6 +164,8 @@ function ProjectsList() {
             </Link>
           ))}
         </div>
+        }
+
       </div>
     </div>
     <Link to="/">
