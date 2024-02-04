@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import CollectionList from './pages/CollectionList';
 import ProjectsList from './pages/ProjectsList';
 import ProjectDetail from './pages/ProjectDetail';
+import NotFound from './pages/NotFound';
 
 
 export default function App() {
@@ -51,6 +52,7 @@ return (
           path="/collection/:collectionId/projects/:projectId"
           element={<ProjectDetail  />}
         />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );
