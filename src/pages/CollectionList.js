@@ -18,7 +18,7 @@ const query = `
   }
 `;
 
-const CollectionList = (calculatedHeight) => {
+const CollectionList = ({ calculatedHeight }) => {
   const [collections, setCollections] = useState(null);
   const [subtitlePositions, setSubtitlePositions] = useState({});
   const [transition, setTransition] = useState(false);
