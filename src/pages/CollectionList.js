@@ -120,7 +120,7 @@ if (!collections) {
           </div>
         </div>
         <Link to="/">
-          <img className="logo" src="/stars.png" alt="" style={{ bottom: '15px', right: '8px', position: 'absolute' }} />
+          <img className="logo" src="/stars.png" alt="" style={{ bottom: '15px', right: '8px', position: 'absolute', transform: 'translateZ(0)' }} />
         </Link>
       </div>
     );
