@@ -9,6 +9,27 @@ import NotFound from './pages/NotFound';
 
 export default function App() {
   const [loading, setLoading] = useState(true);
+  const [calculatedHeight, setCalculatedHeight] = useState(0);
+
+  useEffect(() => {
+    // Function to recalculate height based on the window size
+    const calculateHeight = () => {
+      const windowHeight = window.innerHeight;
+      const heightPercentage = 100; // Adjust this as needed
+      const newHeight = (windowHeight * heightPercentage) / 100;
+      setCalculatedHeight(newHeight);
+    };
+    // Initial calculation
+    calculateHeight();
+
+    // Event listener for window resize
+    window.addEventListener('resize', calculateHeight);
+
+    // Cleanup: remove event listener on component unmount
+    return () => {
+      window.removeEventListener('resize', calculateHeight);
+    };
+  }, []);
 
   useEffect(() => {
     // Check if the session is new
@@ -33,7 +54,7 @@ export default function App() {
   if (loading) {
     // Render loading message
     return (
-      <div className="home">
+      <div className="home" style={{ height: `${calculatedHeight}px` }}>
         <div className="title">WAVO'S VISION</div>
     </div>
     );
@@ -43,7 +64,8 @@ export default function App() {
 return (
     <Router>
       <Routes>
-        <Route path="/" element={<CollectionList  />} />
+        {/* pass variable calculatedHeight */}
+        <Route path="/" element={<CollectionList calculatedHeight={calculatedHeight} />} />
         <Route
           path="/collection/:collectionId/projects"
           element={<ProjectsList  />}

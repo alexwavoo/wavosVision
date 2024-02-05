@@ -18,31 +18,11 @@ const query = `
   }
 `;
 
-const CollectionList = () => {
+const CollectionList = (calculatedHeight) => {
   const [collections, setCollections] = useState(null);
   const [subtitlePositions, setSubtitlePositions] = useState({});
   const [transition, setTransition] = useState(false);
-  const [calculatedHeight, setCalculatedHeight] = useState(0);
 
-  useEffect(() => {
-    // Function to recalculate height based on the window size
-    const calculateHeight = () => {
-      const windowHeight = window.innerHeight;
-      const heightPercentage = 100; // Adjust this as needed
-      const newHeight = (windowHeight * heightPercentage) / 100;
-      setCalculatedHeight(newHeight);
-    };
-    // Initial calculation
-    calculateHeight();
-
-    // Event listener for window resize
-    window.addEventListener('resize', calculateHeight);
-
-    // Cleanup: remove event listener on component unmount
-    return () => {
-      window.removeEventListener('resize', calculateHeight);
-    };
-  }, []);
 
   // useeffect to check session storage to so if transition should be set to true
   useEffect(() => {
