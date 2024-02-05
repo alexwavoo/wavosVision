@@ -2,26 +2,13 @@ import React, { useState, useEffect } from 'react';
 import '../style.css';
 import { Link } from 'react-router-dom';
 
-const query = `
-  query collectionQuery {
-    collectionCollection {
-      items {
-        sys {
-          id
-        }
-        title
-        thumbnail {
-          url
-        }
-      }
-    }
-  }
-`;
 
-const CollectionList = ({ calculatedHeight }) => {
-  const [collections, setCollections] = useState(null);
+const CollectionList = ({ calculatedHeight, collections, setCollections}) => {
   const [subtitlePositions, setSubtitlePositions] = useState({});
   const [transition, setTransition] = useState(false);
+
+
+  
 
 
   // useeffect to check session storage to so if transition should be set to true
@@ -53,25 +40,7 @@ const CollectionList = ({ calculatedHeight }) => {
   }, []);
   
 
-  useEffect(() => {
-    window
-      .fetch(`https://graphql.contentful.com/content/v1/spaces/oen9jg6suzgv/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer DVunWPNQGTy0uUwexdTPIoUiShuoqOrcDGi9q8x6tXo',
-        },
-        body: JSON.stringify({ query }),
-      })
-      .then((response) => response.json())
-      .then(({ data, errors }) => {
-        if (errors) {
-          console.error(errors);
-        }
 
-        setCollections(data.collectionCollection.items);
-      });
-  }, []);
 
   const updateSubtitlePositions = () => {
     if (collections) {
@@ -96,6 +65,14 @@ const CollectionList = ({ calculatedHeight }) => {
       window.removeEventListener('resize', updateSubtitlePositions);
     };
   }, [collections]);
+
+  useEffect(() => {
+    // Retrieve collections from session storage
+    const storedCollections = sessionStorage.getItem('collections');
+    if (storedCollections) {
+      setCollections(JSON.parse(storedCollections));
+    }
+  }, []);
 
 
   if (!collections) {
