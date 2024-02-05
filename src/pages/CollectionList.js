@@ -6,18 +6,7 @@ import classNames from 'classnames';
 
 const CollectionList = ({ calculatedHeight, collections, setCollections}) => {
   const [subtitlePositions, setSubtitlePositions] = useState({});
-  const [transition, setTransition] = useState(false);
   const [loading, setLoading] = useState(true);
-
-
-  // useeffect to check session storage to so if transition should be set to true
-  useEffect(() => {
-    if (sessionStorage.getItem('transition') === 'true') {
-      setTransition(true);
-      sessionStorage.setItem('transition', 'false');
-    } 
-  }, []);
-
 
 
   useEffect(() => {
@@ -95,15 +84,11 @@ useEffect(() => {
       console.error('Error downloading images:', error);
     } finally {
       setLoading(false);
-      setTimeout(() => {
-        setTransition(false);
-      }, 6000);
     }
   };
 
   downloadImages();
 }, [collections, setCollections, setLoading]);
-
 
 
 
@@ -113,7 +98,7 @@ useEffect(() => {
 
 
   return (
-    <div className={`collections-wrapper ${classNames({ 'transition': transition, 'invisible': loading })}`}>
+    <div className={`collection-wrapper ${classNames({ 'invisible': loading })}`}>
       <div className='menu-wrapper' style={{ height: `${calculatedHeight - 60}px` }}>
         <div className="menu">
           {collections.map((collection) => (
