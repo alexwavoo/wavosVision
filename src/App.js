@@ -86,10 +86,16 @@ export default function App() {
         const fetchedCollections = data.collectionCollection.items;
         setCollections(fetchedCollections);
 
+
         // Store collections data in session storage
         sessionStorage.setItem('collections', JSON.stringify(fetchedCollections));
       });
   }, []);
+
+  useEffect(() => { 
+    console.log('collections', collections);
+  }, [collections]);
+
 
   
   if (loading) {

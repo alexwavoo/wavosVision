@@ -6,9 +6,15 @@ import { Link } from 'react-router-dom';
 const CollectionList = ({ calculatedHeight, collections, setCollections}) => {
   const [subtitlePositions, setSubtitlePositions] = useState({});
   const [transition, setTransition] = useState(false);
+  const [projectIds, setProjectIds] = useState([]);
+  const [projectImages, setProjectImages] = useState([]);
 
-
-  
+  const preloadImages = (urls) => {
+    urls.forEach((url) => {
+      const img = new Image();
+      img.src = url;
+    });
+  };
 
 
   // useeffect to check session storage to so if transition should be set to true
@@ -73,6 +79,118 @@ const CollectionList = ({ calculatedHeight, collections, setCollections}) => {
       setCollections(JSON.parse(storedCollections));
     }
   }, []);
+
+  const fetchProjectIds = async (collectionId) => {
+    try {
+      const response = await fetch('https://graphql.contentful.com/content/v1/spaces/oen9jg6suzgv/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer DVunWPNQGTy0uUwexdTPIoUiShuoqOrcDGi9q8x6tXo',
+        },
+        body: JSON.stringify({
+          query: `
+            query collectionEntryQuery {
+              collection(id: "${collectionId}") {
+                sys {
+                  id
+                }
+                projectsCollection {
+                  items {
+                    sys {
+                      id
+                    }
+                  }
+                }
+              }
+            }
+          `,
+        }),
+      });
+
+      const { data, errors } = await response.json();
+
+      if (errors) {
+        console.error(errors);
+        return;
+      }
+
+      const collection = data.collection;
+      if (collection && collection.projectsCollection) {
+        setProjectIds(collection.projectsCollection.items.map((item) => item?.sys?.id));
+        console.log(collection.projectsCollection.items.map((item) => item?.sys?.id));
+      }
+    } catch (error) {
+      console.error('Error fetching project IDs:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (collections) {
+      // map over collections and fetch project ids
+      collections.forEach((collection) => {
+        fetchProjectIds(collection.sys.id);
+      });
+    }
+
+  }, [collections]);
+
+  useEffect(() => {
+    // map over project ids and fetch project image url
+    projectIds.forEach((projectId) => {
+      const fetchProjectData = async () => {
+        try {
+          const response = await fetch('https://graphql.contentful.com/content/v1/spaces/oen9jg6suzgv/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: 'Bearer DVunWPNQGTy0uUwexdTPIoUiShuoqOrcDGi9q8x6tXo',
+            },
+            body: JSON.stringify({
+              query: `
+                query projectQuery {
+                  project(id: "${projectId}") {
+                    title
+                    imagesCollection {
+                      items {
+                        url
+                      }
+                    }
+                  }
+                }
+              `,
+            }),
+          });
+
+          const { data, errors } = await response.json();
+
+          if (errors) {
+            console.error(errors);
+            return;
+          }
+
+          const project = data.project;
+          if (project) {
+            // save image urls in list 
+            setProjectImages([...projectImages, project.imagesCollection.items.map((image) => image?.url)]);
+            
+          }
+        } catch (error) {
+          console.error('Error fetching project data:', error);
+        }
+      };
+
+      fetchProjectData();
+    });
+  }, [projectIds]);
+
+  // create image objects using list of image urls
+  useEffect(() => {
+    if (projectImages.length > 0) {
+      const images = projectImages.flat();
+      preloadImages(images);
+    }
+  }, [projectImages]);
 
 
   if (!collections) {
