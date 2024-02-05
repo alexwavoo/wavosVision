@@ -111,8 +111,7 @@ function ProjectsList() {
         const validProjects = resolvedProjects.filter((project) => project !== null);
 
         setProjects(validProjects);
-        // Store projects data in session storage
-        sessionStorage.setItem('projects', JSON.stringify(validProjects));
+
 
         // apply project id to each project
         validProjects.forEach((project, index) => {
@@ -126,10 +125,7 @@ function ProjectsList() {
     if (projectIds.length > 0) {
       fetchProjects();
       // check if projects are in session storage
-    } else if (sessionStorage.getItem('projects')) {
-      setProjects(JSON.parse(sessionStorage.getItem('projects')));
-      console.log('using session storage for projects');
-    }
+    } 
   }, [projectIds]);
 
   if (projects.length === 0) {
