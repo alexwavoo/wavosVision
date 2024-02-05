@@ -8,6 +8,7 @@ const CollectionList = ({ calculatedHeight, collections, setCollections}) => {
   const [subtitlePositions, setSubtitlePositions] = useState({});
   const [loading, setLoading] = useState(true);
   const [intro, setIntro] = useState(true);
+  const [afterTransition, setAfterTransition] = useState(false);
 
 
   useEffect(() => {
@@ -66,6 +67,12 @@ const CollectionList = ({ calculatedHeight, collections, setCollections}) => {
     useEffect(() => {
       if (collections && !loading && !intro) {
         preloadImages().then(() => setLoading(false));
+        // setAfterTransition(true); after timeout
+        setTimeout(() => {
+          setAfterTransition(true);
+        }
+        , 2000);
+    
   }
 }, [collections]);
 
