@@ -30,7 +30,7 @@ a {
 }
 
 .transition {
-  animation: fadeIn 0.35s ease-in;
+  animation: fadeIn 1.2s ease-in;
 }
 @keyframes fadeIn {
   from {
@@ -40,6 +40,7 @@ a {
     opacity: 1;
   }
 }
+
 
 
 /* HOME SECTION */
@@ -52,15 +53,21 @@ a {
   font-family: "Roboto", sans-serif;
   font-weight: 300;
   font-size: 26px;
-  animation: fade 0.2s ease-in;
+  animation: fade 2.9s ease-in forwards;
 }
 
 @keyframes fade {
-  from {
+  0% {
     opacity: 0;
   }
-  to {
+  33% {
     opacity: 1;
+  }
+  66% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
   }
 }
 
@@ -206,9 +213,9 @@ a {
     /* left: calc(50% - 41px); */
     background: #fdf8dc61;
     /* box-shadow: 0 0 3px 0px rgba(0, 0, 0, .3); */
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(17px);
     border-radius: 3px;
-    padding: 0.1rem 0.3rem;
+    padding: 0.2rem 0.3rem;
   }
 
 

@@ -20,7 +20,7 @@ export default function App() {
         setLoading(false);
 
 
-      }, 3000);
+      }, 3500);
 
       // Clear the timeout if the component unmounts before 3 seconds
       return () => clearTimeout(timeoutId);
