@@ -92,6 +92,7 @@ a {
 /* COLLECTIONS LIST */
 .collection-wrapper {
   animation: fadeIn 2.2s ease-in forwards;
+  animation-delay: 0.1s;
 }
 .collection-item {
   overflow: hidden;
