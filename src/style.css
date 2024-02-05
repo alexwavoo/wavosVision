@@ -33,6 +33,10 @@ a {
   opacity: 0;
   animation: fadeIn 1.2s ease-in forwards;
 }
+.invisible {
+  opacity: 0;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;

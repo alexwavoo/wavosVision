@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../style.css';
 import { Link } from 'react-router-dom';
+import classNames from 'classnames';
 
 
 const CollectionList = ({ calculatedHeight, collections, setCollections}) => {
@@ -97,11 +98,11 @@ useEffect(() => {
   }
 
   if (loading) {
-    return <div></div>;
+    return '';
   } else {
 
   return (
-    <div className={transition ? 'transition' : '' }>
+    <div className={classNames({ 'transition': transition, 'invisible': loading })}>
       <div className='menu-wrapper' style={{ height: `${calculatedHeight - 60}px` }}>
         <div className="menu">
           {collections.map((collection) => (
