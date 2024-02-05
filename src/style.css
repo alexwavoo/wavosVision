@@ -224,7 +224,7 @@ a {
 /* MOBILE */
 @media only screen and (max-width: 768px) {
   /* GLOBAL STYLES */
-  .logo {
+  .logo .loaded{
     width: 50px;
     /* left: calc(50% - 41px); */
     background: #fdf8dc61;
