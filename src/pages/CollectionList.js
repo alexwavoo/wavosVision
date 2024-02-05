@@ -7,6 +7,7 @@ import classNames from 'classnames';
 const CollectionList = ({ calculatedHeight, collections, setCollections}) => {
   const [subtitlePositions, setSubtitlePositions] = useState({});
   const [loading, setLoading] = useState(true);
+  const [intro, setIntro] = useState(true);
 
 
   useEffect(() => {
@@ -23,9 +24,6 @@ const CollectionList = ({ calculatedHeight, collections, setCollections}) => {
       }
     };
   }, []);
-  
-
-
 
   const updateSubtitlePositions = () => {
     if (collections) {
@@ -49,87 +47,85 @@ const CollectionList = ({ calculatedHeight, collections, setCollections}) => {
     return () => {
       window.removeEventListener('resize', updateSubtitlePositions);
     };
-  }, [collections]);
+  }, [collections, loading, intro]);
 
-// download images from contentful using thumbnail urls
-
-const preloadImages = async () => {
-  await Promise.all(
-    collections.map(async (collection) => {
-      const img = new Image();
-      img.src = collection.thumbnail.url;
-      await img.decode();
-    })
-  );
-};
-
-
-useEffect(() => {
-  const downloadImages = async () => {
-    try {
-      await preloadImages();
-
-      const updatedCollections = await Promise.all(
-        collections.map(async (collection) => {
-          const response = await fetch(collection.thumbnail.url);
-          const blob = await response.blob();
-          const url = URL.createObjectURL(blob);
-          return { ...collection, thumbnail: { ...collection.thumbnail, url } };
-        })
+  
+  
+  // download images from contentful using thumbnail urls
+  
+  const preloadImages = async () => {
+    await Promise.all(
+      collections.map(async (collection) => {
+        const img = new Image();
+        img.src = collection.thumbnail.url;
+        await img.decode();
+      })
       );
-
-      setCollections(updatedCollections);
-    } catch (error) {
-      // Handle errors if any during image download
-      console.error('Error downloading images:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  downloadImages();
-}, [collections, setCollections, setLoading]);
-
-
-
-  if (!collections) {
-    return '';
+    };
+    
+    useEffect(() => {
+      if (collections && !loading && !intro) {
+        preloadImages().then(() => setLoading(false));
   }
+}, [collections]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setIntro(false);
+    }, 3500);
+  }
+  , []);
 
 
-  return (
-    <div className={`collection-wrapper ${classNames({ 'invisible': loading })}`}>
-      <div className='menu-wrapper' style={{ height: `${calculatedHeight - 60}px` }}>
-        <div className="menu">
-          {collections.map((collection) => (
-            <Link
-              key={collection.sys.id}
-              to={`/collection/${collection.sys.id}/projects`}
-              className="collection-item"
-              id={`collection-item-${collection.sys.id}`}
-            >
-              <img src={collection.thumbnail.url} alt={collection.title} />
-              {subtitlePositions[collection.sys.id] && (
-                <p
-                  style={{
-                    position: 'absolute',
-                    top: `${subtitlePositions[collection.sys.id].y}px`,
-                    left: `${subtitlePositions[collection.sys.id].x}px`,
-                    transform: 'translate(-50%, -50%)',
-                  }}
-                >
-                  {collection.title}
-                </p>
-              )}
-            </Link>
-          ))}
+
+if (!collections) {
+  return '';
+  }
+  
+  if (intro) {
+      // Render loading message
+      return (
+        <div className="home" style={{ height: `${calculatedHeight}px` }}>
+          <div className="title">WAVO'S VISION</div>
         </div>
+      );
+  } else {
+    
+    return (
+      <div className={`collection-wrapper ${classNames({ 'invisible': loading })}`}>
+        <div className='menu-wrapper' style={{ height: `${calculatedHeight - 60}px` }}>
+          <div className="menu">
+            {collections.map((collection) => (
+              <Link
+                
+                to={`/collection/${collection.sys.id}/projects`}
+                className="collection-item"
+                id={`collection-item-${collection.sys.id}`}
+              >
+                <img src={collection.thumbnail.url} alt={collection.title} />
+                {subtitlePositions[collection.sys.id] && (
+                  <p
+                    style={{
+                      position: 'absolute',
+                      top: `${subtitlePositions[collection.sys.id].y}px`,
+                      left: `${subtitlePositions[collection.sys.id].x}px`,
+                      transform: 'translate(-50%, -50%)',
+                    }}
+                  >
+                    {collection.title}
+                  </p>
+                )}
+              </Link>
+            ))}
+          </div>
+        </div>
+        <Link to="/">
+          <img className="logo" src="/stars.png" alt="" style={{ bottom: '15px', right: '8px', position: 'absolute' }} />
+        </Link>
       </div>
-      <Link to="/">
-        <img className="logo" src="/stars.png" alt="" style={{ bottom: '15px', right: '8px', position: 'absolute' }} />
-      </Link>
-    </div>
-  );
+    );
+  }
+  
   
 };
 

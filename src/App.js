@@ -22,7 +22,6 @@ const collectionQuery = `
 `;
 
 export default function App() {
-  const [loading, setLoading] = useState(true);
   const [calculatedHeight, setCalculatedHeight] = useState(0);
   const [collections, setCollections] = useState(null);
 
@@ -47,23 +46,6 @@ export default function App() {
     };
   }, []);
 
-  useEffect(() => {
-    // Check if the session is new
-    if (!sessionStorage.getItem('session')) {
-      // Set timeout to 3 seconds
-      const timeoutId = setTimeout(() => {
-        sessionStorage.setItem('session', Date.now());
-        sessionStorage.setItem('transition', true);
-        setLoading(false);
-      }, 3500);
-
-      // Clear the timeout if the component unmounts before 3 seconds
-      return () => clearTimeout(timeoutId);
-    } else {
-      // If the session already exists, set loading to false immediately
-      setLoading(false);
-    }
-  }, []); 
 
   // API REQUESTS
 
@@ -96,16 +78,6 @@ export default function App() {
     console.log('collections', collections);
   }, [collections]);
 
-
-  
-  if (loading) {
-    // Render loading message
-    return (
-      <div className="home" style={{ height: `${calculatedHeight}px` }}>
-        <div className="title">WAVO'S VISION</div>
-      </div>
-    );
-  }
 
   // If the session is new or has already been established, render the actual content
   return (
