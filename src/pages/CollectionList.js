@@ -15,9 +15,6 @@ const CollectionList = ({ calculatedHeight, collections, setCollections}) => {
     if (sessionStorage.getItem('transition') === 'true') {
       setTransition(true);
       sessionStorage.setItem('transition', 'false');
-      setTimeout(() => {
-        setTransition(false);
-      }, 6000);
     } 
   }, []);
 
@@ -66,9 +63,23 @@ const CollectionList = ({ calculatedHeight, collections, setCollections}) => {
   }, [collections]);
 
 // download images from contentful using thumbnail urls
+
+const preloadImages = async () => {
+  await Promise.all(
+    collections.map(async (collection) => {
+      const img = new Image();
+      img.src = collection.thumbnail.url;
+      await img.decode();
+    })
+  );
+};
+
+
 useEffect(() => {
   const downloadImages = async () => {
     try {
+      await preloadImages();
+
       const updatedCollections = await Promise.all(
         collections.map(async (collection) => {
           const response = await fetch(collection.thumbnail.url);
@@ -84,6 +95,9 @@ useEffect(() => {
       console.error('Error downloading images:', error);
     } finally {
       setLoading(false);
+      setTimeout(() => {
+        setTransition(false);
+      }, 6000);
     }
   };
 
@@ -99,7 +113,7 @@ useEffect(() => {
 
 
   return (
-    <div className={classNames({ 'transition': transition, 'invisible': loading })}>
+    <div className={`collections-wrapper ${classNames({ 'transition': transition, 'invisible': loading })}`}>
       <div className='menu-wrapper' style={{ height: `${calculatedHeight - 60}px` }}>
         <div className="menu">
           {collections.map((collection) => (
