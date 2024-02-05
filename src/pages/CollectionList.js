@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 const CollectionList = ({ calculatedHeight, collections, setCollections}) => {
   const [subtitlePositions, setSubtitlePositions] = useState({});
   const [transition, setTransition] = useState(false);
+  const [loading, setLoading] = useState(true);
 
 
   // useeffect to check session storage to so if transition should be set to true
@@ -63,13 +64,31 @@ const CollectionList = ({ calculatedHeight, collections, setCollections}) => {
     };
   }, [collections]);
 
-  useEffect(() => {
-    // Retrieve collections from session storage
-    const storedCollections = sessionStorage.getItem('collections');
-    if (storedCollections) {
-      setCollections(JSON.parse(storedCollections));
+// download images from contentful using thumbnail urls
+useEffect(() => {
+  const downloadImages = async () => {
+    try {
+      const updatedCollections = await Promise.all(
+        collections.map(async (collection) => {
+          const response = await fetch(collection.thumbnail.url);
+          const blob = await response.blob();
+          const url = URL.createObjectURL(blob);
+          return { ...collection, thumbnail: { ...collection.thumbnail, url } };
+        })
+      );
+
+      setCollections(updatedCollections);
+    } catch (error) {
+      // Handle errors if any during image download
+      console.error('Error downloading images:', error);
+    } finally {
+      setLoading(false);
     }
-  }, []);
+  };
+
+  downloadImages();
+}, [collections, setCollections, setLoading]);
+
 
 
 
@@ -77,6 +96,9 @@ const CollectionList = ({ calculatedHeight, collections, setCollections}) => {
     return '';
   }
 
+  if (loading) {
+    return <div></div>;
+  } else {
 
   return (
     <div className={transition ? 'transition' : '' }>
@@ -111,6 +133,7 @@ const CollectionList = ({ calculatedHeight, collections, setCollections}) => {
       </Link>
     </div>
   );
+  }
 };
 
 export default CollectionList;
