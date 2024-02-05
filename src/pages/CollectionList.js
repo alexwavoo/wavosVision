@@ -97,9 +97,6 @@ useEffect(() => {
     return '';
   }
 
-  if (loading) {
-    return '';
-  } else {
 
   return (
     <div className={classNames({ 'transition': transition, 'invisible': loading })}>
@@ -134,7 +131,7 @@ useEffect(() => {
       </Link>
     </div>
   );
-  }
+  
 };
 
 export default CollectionList;
