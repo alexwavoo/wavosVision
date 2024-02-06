@@ -5,6 +5,8 @@ import ReactMarkdown from 'react-markdown';
 import '../style.css';
 import { Link } from 'react-router-dom';
 import Lightbox from '../components/Lightbox.js';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 function ProjectDetail() {
   const { projectId } = useParams();
@@ -16,6 +18,10 @@ function ProjectDetail() {
   const [lightboxImage, setLightboxImage] = useState(null);
   const [transition, setTransition] = useState(false);
   const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    AOS.init();
+  }, [projectId, projectData]);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -141,7 +147,7 @@ function ProjectDetail() {
       <div className="flex-container">
         <div className="column-left">
           {leftImages.map((imageUrl, index) => (
-            <div key={index} className="grid-item" style={{marginBottom: '2.5rem'}} onClick={() => handleImageClick(imageUrl)}>
+            <div key={index} className="grid-item" data-aos="fade-up" style={{marginBottom: '2.5rem'}} onClick={() => handleImageClick(imageUrl)}>
               <img src={imageUrl} alt={`Image ${index + 1}`} style={{cursor: "crosshair"}}  />
             </div>
           ))}
@@ -149,7 +155,7 @@ function ProjectDetail() {
         {rightImages.length > 0 &&
         <div className="column-right">
           {rightImages.map((imageUrl, index) => (
-            <div key={index} className="grid-item" style={{marginBottom: '2.5rem'}} onClick={() => handleImageClick(imageUrl)}>
+            <div key={index} className="grid-item" data-aos="fade-up" style={{marginBottom: '2.5rem'}} onClick={() => handleImageClick(imageUrl)}>
               <img src={imageUrl} alt={`Image ${index + 1}`} style={{cursor: "crosshair"}} />
             </div>
           ))}

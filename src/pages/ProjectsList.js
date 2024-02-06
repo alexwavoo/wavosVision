@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import '../style.css';
 import { Link } from 'react-router-dom';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 function ProjectsList({ collections }) {
   const { collectionId } = useParams();
@@ -19,6 +21,9 @@ function ProjectsList({ collections }) {
     }
   }, [collections]);
 
+  useEffect(() => {
+    AOS.init();
+  }, [collectionId, projects])
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -110,7 +115,7 @@ function ProjectsList({ collections }) {
         <div className="wrapper">
           <div className="flex-container">
             <div className="column-left">
-              <div className="grid-item" style={{ marginBottom: '1.5rem' }}>
+              <div className="grid-item"  style={{ marginBottom: '1.5rem' }}>
                 <div className="subtitle">No projects found</div>
               </div>
             </div>
@@ -143,7 +148,7 @@ function ProjectsList({ collections }) {
           <div className="column-left">
             {projectsLeft.map((project) => (
               <Link key={project.id} to={`/collection/${collectionId}/projects/${project.id}`}>
-                <div className="grid-item" style={{ marginBottom: '1.5rem' }}>
+                <div className="grid-item" data-aos="fade-up" style={{ marginBottom: '1.5rem' }}>
                   <img src={project.thumbnail} alt={project.title} />
                   <div className="subtitle">{project.title}</div>
                 </div>
@@ -154,7 +159,7 @@ function ProjectsList({ collections }) {
             <div className="column-right">
               {projectsRight.map((project) => (
                 <Link key={project.id} to={`/collection/${collectionId}/projects/${project.id}`}>
-                  <div className="grid-item" style={{ marginBottom: '1.5rem' }}>
+                  <div className="grid-item" data-aos="fade-up" style={{ marginBottom: '1.5rem' }}>
                     <img src={project.thumbnail} alt={project.title} />
                     <div className="subtitle">{project.title}</div>
                   </div>

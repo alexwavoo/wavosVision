@@ -4,6 +4,8 @@ import CollectionList from './pages/CollectionList';
 import ProjectsList from './pages/ProjectsList';
 import ProjectDetail from './pages/ProjectDetail';
 import NotFound from './pages/NotFound';
+import AOS from 'aos';
+
 
 const collectionQuery = `
   query collectionQuery {
@@ -24,6 +26,8 @@ const collectionQuery = `
 export default function App() {
   const [calculatedHeight, setCalculatedHeight] = useState(0);
   const [collections, setCollections] = useState(null);
+
+  AOS.init();
 
 
   useEffect(() => {
