@@ -121,8 +121,8 @@ function ProjectDetail() {
           opacity: transition ? 0 : 1,
           zIndex: ready ? 0 : undefined,
         }}>
-        <div className='cover-title'>{projectData.title}</div>
-        <div className='cover-description'>{projectData.description}</div>
+        <div className='header'>{projectData.title}</div>
+        <div className='description'>{projectData.description}</div>
       </div>
 
 
