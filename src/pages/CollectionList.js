@@ -83,6 +83,17 @@ const CollectionList = ({ calculatedHeight, collections, setCollections}) => {
   }
   , []);
 
+  useEffect(() => {
+  if (collections) {
+    // Sort collections alphabetically by title
+    const sortedCollections = collections.slice().sort((a, b) => {
+      return a.title.localeCompare(b.title);
+    });
+    setCollections(sortedCollections);
+  }
+}, [collections]);
+
+
 
 if (!collections) {
   return '';
