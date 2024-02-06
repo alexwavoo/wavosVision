@@ -71,7 +71,7 @@ function ProjectsList() {
   }, [collectionId]);
 
   if (loading) {
-    return <p>Loading...</p>; // You can replace this with a loading spinner or any loading component.
+    return ''; // You can replace this with a loading spinner or any loading component.
   }
 
   if (projects.length === 0) {
