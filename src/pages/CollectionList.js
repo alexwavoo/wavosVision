@@ -86,7 +86,7 @@ const CollectionList = ({ calculatedHeight, collections, setCollections}) => {
   useEffect(() => {
   if (collections) {
     // Sort collections alphabetically by title
-    const sortedCollections = collections.slice().sort((a, b) => {
+    const sortedCollections = collections.slice().sort((b, a) => {
       return a.title.localeCompare(b.title);
     });
     setCollections(sortedCollections);
