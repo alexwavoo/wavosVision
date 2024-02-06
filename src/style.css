@@ -29,7 +29,7 @@ a {
   width: 70px;
   background: #fdf8dc80;
   backdrop-filter: blur(8px);
-  filter: blur(1px);
+  filter: blur(0px);
   padding: 5px;
 }
 
