@@ -41,9 +41,6 @@ a {
   0% {
     opacity: 0;
   }
-  50% {
-    opacity: 0;
-  }
   100% {
     opacity: 1;
   }
@@ -94,7 +91,7 @@ a {
 
 /* COLLECTIONS LIST */
 .collection-wrapper {
-  animation: fadeIn 2.2s ease-in forwards;
+  animation: fadeIn 1.2s ease-in forwards;
   animation-delay: 0.1s;
 }
 .collection-item {
