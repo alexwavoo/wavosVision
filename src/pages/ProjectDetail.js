@@ -106,12 +106,18 @@ function ProjectDetail() {
   const handleImageClick = (imageUrl) => {
     setLightboxImage(imageUrl);
     document.body.style.overflow = 'hidden';
+    //background: rgba(0, 0, 0, 0.8);
+    //backdrop-filter: blur(15px);
+    document.body.background = 'rgba(0, 0, 0, 0.8)';
+    document.body.backdropFilter = 'blur(15px)';
   };
 
   // Function to close the lightbox
   const closeLightbox = () => {
     setLightboxImage(null);
     document.body.style.overflow = 'auto';
+    document.body.background = 'unset';
+    document.body.backdropFilter = 'blur(0px)';
   };
 
   return (
