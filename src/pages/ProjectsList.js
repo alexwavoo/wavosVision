@@ -8,6 +8,7 @@ function ProjectsList({ collections }) {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [collection, setCollection] = useState(null);
+  const [transition, setTransition] = useState(false);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
@@ -21,7 +22,10 @@ function ProjectsList({ collections }) {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      setReady(true);
+      setTransition(true);
+      const readyTimeout = setTimeout(() => {
+        setReady(true);
+      }, 600);
     }, 2000);
     return () => clearTimeout(timeout);
   }, []);
@@ -107,11 +111,13 @@ function ProjectsList({ collections }) {
 
   return (
     <>
-      {!ready && collection && (
-        <div className='page-cover'>
+        <div className='page-cover' style={{
+          opacity: transition ? 0 : 1,
+          zIndex: ready ? 0 : undefined,
+        }}>
           <div className='cover-title'>{collection.title}</div>
         </div>
-      )}
+
       <div className="wrapper">
         <div style={{ marginTop: '2.5rem' }}></div>
         <div className="flex-container">
