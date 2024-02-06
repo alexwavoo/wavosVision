@@ -3,16 +3,29 @@ import { useParams } from 'react-router-dom';
 import '../style.css';
 import { Link } from 'react-router-dom';
 
-function ProjectsList() {
+function ProjectsList({ collections }) {
   const { collectionId } = useParams();
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [collection, setCollection] = useState(null);   
+  const [collection, setCollection] = useState(null);
+  const [ready, setReady] = useState(false);
 
-  // get collection and filter by collectionId to find the collection
   useEffect(() => {
-    sessionStorage.getItem('collections') && setCollection(JSON.parse(sessionStorage.getItem('collections')).find((collection) => collection.sys.id === collectionId));
-  }, [collectionId]);
+    console.log('collections', collections);
+    if (collections) {
+      const collection = collections.find((collection) => collection.sys.id === collectionId);
+      setCollection(collection);
+    }
+  }, [collections]);
+
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setReady(true);
+    }, 2000);
+    return () => clearTimeout(timeout);
+  }, []);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -94,9 +107,11 @@ function ProjectsList() {
 
   return (
     <>
-      <div className='page-cover'>
-        <div className='cover-title'>{collection.title}</div>
-      </div>
+      {!ready && collection && (
+        <div className='page-cover'>
+          <div className='cover-title'>{collection.title}</div>
+        </div>
+      )}
       <div className="wrapper">
         <div style={{ marginTop: '2.5rem' }}></div>
         <div className="flex-container">

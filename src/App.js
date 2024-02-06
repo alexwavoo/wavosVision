@@ -87,7 +87,7 @@ export default function App() {
         <Route path="/" element={<CollectionList calculatedHeight={calculatedHeight} collections={collections} setCollections={setCollections} />} />
         <Route
           path="/collection/:collectionId/projects"
-          element={<ProjectsList />}
+          element={<ProjectsList collections={collections} />}
         />
         <Route
           path="/collection/:collectionId/projects/:projectId"

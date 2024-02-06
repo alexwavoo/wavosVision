@@ -130,6 +130,24 @@ a {
 
 
 /* LIST VIEW */
+
+.page-cover {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #fdf8dc;
+  backdrop-filter: blur(15px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  cursor: pointer;
+}
+
 .wrapper {
   max-width: 1400px;
   min-height: 100vh;

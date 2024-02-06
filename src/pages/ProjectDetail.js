@@ -14,6 +14,14 @@ function ProjectDetail() {
     images: [],
   });
   const [lightboxImage, setLightboxImage] = useState(null);
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setReady(true);
+    }, 2000);
+    return () => clearTimeout(timeout);
+  }, []);
 
   useEffect(() => {
     const fetchProjectData = async () => {
@@ -104,6 +112,13 @@ function ProjectDetail() {
 
   return (
     <>
+    {!ready && projectData &&
+      <div className='page-cover'>
+        <div className='cover-title'>{projectData.title}</div>
+        <div className='cover-description'>{projectData.description}</div>
+      </div>
+    }
+
     <div className="wrapper">
       <div className="header">{projectData.title}</div>
       <div className="description">

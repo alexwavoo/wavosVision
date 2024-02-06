@@ -83,15 +83,6 @@ const CollectionList = ({ calculatedHeight, collections, setCollections}) => {
   }
   , []);
 
-  // save collections to session storage
-  useEffect(() => {
-    if (collections) {
-      sessionStorage.setItem('collections', JSON.stringify(collections));
-    }
-  }
-  , [collections]);
-
-
 
 if (!collections) {
   return '';
