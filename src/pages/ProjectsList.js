@@ -104,7 +104,7 @@ function ProjectsList({ collections }) {
           opacity: transition ? 0 : 1,
           zIndex: ready ? 0 : undefined,
         }} >
-          <div className='cover-title'>{collection.title}</div>
+          <div className='subtitle'>{collection.title}</div>
         </div>
 
         <div className="wrapper">
@@ -134,7 +134,7 @@ function ProjectsList({ collections }) {
           opacity: transition ? 0 : 1,
           zIndex: ready ? 0 : undefined,
         }}>
-          <p className='cover-title'>{collection.title}</p>
+          <div className='subtitle'>{collection.title}</div>
         </div>
 
       <div className="wrapper">
