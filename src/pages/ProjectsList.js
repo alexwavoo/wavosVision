@@ -134,7 +134,7 @@ function ProjectsList({ collections }) {
           opacity: transition ? 0 : 1,
           zIndex: ready ? 0 : undefined,
         }}>
-          <div className='cover-title'>{collection.title}</div>
+          <p className='cover-title'>{collection.title}</p>
         </div>
 
       <div className="wrapper">
