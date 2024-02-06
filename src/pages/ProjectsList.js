@@ -7,6 +7,12 @@ function ProjectsList() {
   const { collectionId } = useParams();
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [collection, setCollection] = useState(null);   
+
+  // get collection and filter by collectionId to find the collection
+  useEffect(() => {
+    sessionStorage.getItem('collections') && setCollection(JSON.parse(sessionStorage.getItem('collections')).find((collection) => collection.sys.id === collectionId));
+  }, [collectionId]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -71,7 +77,7 @@ function ProjectsList() {
   }, [collectionId]);
 
   if (loading) {
-    return ''; // You can replace this with a loading spinner or any loading component.
+    return '';
   }
 
   if (projects.length === 0) {
@@ -88,6 +94,9 @@ function ProjectsList() {
 
   return (
     <>
+      <div className='page-cover'>
+        <div className='cover-title'>{collection.title}</div>
+      </div>
       <div className="wrapper">
         <div style={{ marginTop: '2.5rem' }}></div>
         <div className="flex-container">
