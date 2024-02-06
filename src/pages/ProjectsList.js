@@ -99,9 +99,28 @@ function ProjectsList({ collections }) {
 
   if (projects.length === 0) {
     return (
-      <Link to="/">
-        <img className="logo" src="/stars.png" alt="" style={{ position: 'absolute', right: '0.5rem' }} />
-      </Link>
+      <>
+        <div className='page-cover'style={{
+          opacity: transition ? 0 : 1,
+          zIndex: ready ? 0 : undefined,
+        }} >
+          <div className='cover-title'>{collection.title}</div>
+        </div>
+
+        <div className="wrapper">
+          <div className="flex-container">
+            <div className="column-left">
+              <div className="grid-item" style={{ marginBottom: '1.5rem' }}>
+                <div className="subtitle">No projects found</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <Link to="/">
+          <img className="logo" src="/stars.png" alt="" style={{ position: 'absolute', right: '0.5rem' }} />
+        </Link>
+      </>
     );
   }
 
