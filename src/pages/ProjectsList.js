@@ -14,6 +14,7 @@ function ProjectsList({ collections }) {
   const [ready, setReady] = useState(false);
   const [modal, setModal] = useState(false);
   const [modalImage, setModalImage] = useState(null);
+  const [modalText, setModalText] = useState(null);
 
   useEffect(() => {
     console.log('collections', collections);
@@ -25,15 +26,17 @@ function ProjectsList({ collections }) {
 
   useEffect(() => {
     AOS.init();
-  }, [collectionId, projects])
+  }, [collectionId])
 
   useEffect(() => {
     const timeout = setTimeout(() => {
       setTransition(true);
+      console.log('transition');
       const readyTimeout = setTimeout(() => {
         setReady(true);
-      }, 600);
-    }, 2000);
+        console.log('ready');
+      }, 1000);
+    }, 4000);
     return () => clearTimeout(timeout);
   }, []);
 
@@ -61,6 +64,9 @@ function ProjectsList({ collections }) {
                       }
                       ... on Project {
                       title
+                      description {
+                        json
+                      }
                       thumbnail {
                         url
                       }
@@ -91,6 +97,7 @@ function ProjectsList({ collections }) {
           const projectsData = collection.projectsCollection.items.map((project) => ({
             id: project?.sys?.id,
             title: project?.title,
+            description: project?.description,
             thumbnail: project?.thumbnail?.url,
             imagesCollection: project?.imagesCollection,
           }));
@@ -111,11 +118,14 @@ function ProjectsList({ collections }) {
     if (modal === false) {
       setModalImage(project.thumbnail);
       setModal(true);
+      setModalText([project.title, project.description.json.content[0].content[0].value]);
+      document.body.style.overflow = 'hidden';
     }
   }
   function closeModal() {
     if (modal === true) {
       setModal(false);
+      document.body.style.overflow = 'auto';
     }
   }
   
@@ -212,9 +222,9 @@ function ProjectsList({ collections }) {
       {modal ? (
       <div onClick={closeModal} className='modal-wrapper'>
         <img  src={modalImage} width="80%" alt="" />
-        <div>
-          <div className='modal-title'>Title</div>
-          <div className='modal-subtitle'>Subtitle</div>
+        <div className='modal-text'>
+          <div className='modal-title'>{modalText[0]}</div>
+          <div className='modal-subtitle'>{modalText[1]}</div>
         </div>
       </div>
       ) : null

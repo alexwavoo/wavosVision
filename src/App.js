@@ -48,7 +48,7 @@ export default function App() {
     return () => {
       window.removeEventListener('resize', calculateHeight);
     };
-  }, []);
+  }, [setCalculatedHeight, calculatedHeight, setCollections, collections]);
 
 
   // API REQUESTS

@@ -144,7 +144,7 @@ a {
   justify-content: center;
   z-index: 1000;
   cursor: pointer;
-  transition: opacity 0.5s ease-in;
+  transition: opacity 0.35s ease-in;
 }
 
 .wrapper {
@@ -209,12 +209,31 @@ a {
   backdrop-filter: blur(15px);
   color: #fdf8dc;
   cursor: pointer;
+  animation: fadeIn 0.2s ease-in;
+  align-content: center;
+  gap: 2.5rem;
 }
 .modal-wrapper img {
   width: 80%;
   max-width: 1000px; 
   object-fit: contain;
   cursor: pointer;
+}
+.modal-text {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.modal-title {
+  font-size: 32px;
+  font-weight: 300;
+}
+.modal-subtitle {
+  font-size: 16px;
+  font-weight: 300;
+  max-width: 80%;
+  margin: 0 auto;
 }
 
 /* DETAIL VIEW */
