@@ -195,6 +195,22 @@ a {
   padding-top: 0.35rem;
 }
 
+.modal-wrapper {
+  position: fixed;
+  z-index: 100;
+  top: 0px;
+  left: 0px;
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  background: rgb(0 0 0 / 90%);
+  backdrop-filter: blur(15px);
+  color: #fdf8dc;
+  cursor: pointer;
+}
+
 /* DETAIL VIEW */
 .header {
   text-align: center;

@@ -12,6 +12,7 @@ function ProjectsList({ collections }) {
   const [collection, setCollection] = useState(null);
   const [transition, setTransition] = useState(false);
   const [ready, setReady] = useState(false);
+  const [modal, setModal] = useState(false);
 
   useEffect(() => {
     console.log('collections', collections);
@@ -62,6 +63,12 @@ function ProjectsList({ collections }) {
                       thumbnail {
                         url
                       }
+                      imagesCollection {
+                        items {
+                          url
+                        }
+                        total
+                      }
                     }
                   }
                 }
@@ -84,6 +91,7 @@ function ProjectsList({ collections }) {
             id: project?.sys?.id,
             title: project?.title,
             thumbnail: project?.thumbnail?.url,
+            imagesCollection: project?.imagesCollection,
           }));
 
           setProjects(projectsData);
@@ -97,6 +105,18 @@ function ProjectsList({ collections }) {
 
     fetchData();
   }, [collectionId]);
+
+  function openModal() {
+    if (modal === false) {
+      setModal(true);
+    }
+  }
+  function closeModal() {
+    if (modal === true) {
+      setModal(false);
+    }
+  }
+  
 
   if (loading) {
     return '';
@@ -139,36 +159,64 @@ function ProjectsList({ collections }) {
           opacity: transition ? 0 : 1,
           zIndex: ready ? 0 : undefined,
         }}>
-          <div className='subtitle'>{collection.title}</div>
+          <div className='subtitle'>
+            {/* conditional collection.title */}
+            {collection && collection.title}
+
+            </div>
         </div>
 
       <div className="wrapper">
         <div style={{ marginTop: '2.5rem' }}></div>
         <div className="flex-container">
           <div className="column-left">
-            {projectsLeft.map((project) => (
-              <Link key={project.id} to={`/collection/${collectionId}/projects/${project.id}`}>
-                <div className="grid-item" data-aos="fade-up" style={{ marginBottom: '1.5rem' }}>
-                  <img src={project.thumbnail} alt={project.title} />
-                  <div className="subtitle">{project.title}</div>
-                </div>
-              </Link>
-            ))}
-          </div>
-          {projectsRight.length > 0 && (
-            <div className="column-right">
-              {projectsRight.map((project) => (
+          {projectsLeft.map((project) => (
+              project.imagesCollection.total > 1 ? (
                 <Link key={project.id} to={`/collection/${collectionId}/projects/${project.id}`}>
                   <div className="grid-item" data-aos="fade-up" style={{ marginBottom: '1.5rem' }}>
                     <img src={project.thumbnail} alt={project.title} />
                     <div className="subtitle">{project.title}</div>
                   </div>
                 </Link>
+              ) : (
+                  <div onClick={openModal} className="grid-item" data-aos="fade-up" style={{ marginBottom: '1.5rem', cursor: 'crosshair' }}>
+                    <img src={project.thumbnail} alt={project.title} />
+                    <div className="subtitle">{project.title}</div>
+                  </div>
+              )
+            ))}
+          </div>
+          {projectsRight.length > 0 && (
+            <div className="column-right">
+              {projectsRight.map((project) => (
+                project.imagesCollection.total > 1 ? (
+                <Link key={project.id} to={`/collection/${collectionId}/projects/${project.id}`}>
+                  <div className="grid-item" data-aos="fade-up" style={{ marginBottom: '1.5rem' }}>
+                    <img src={project.thumbnail} alt={project.title} />
+                    <div className="subtitle">{project.title}</div>
+                  </div>
+                </Link>
+                ) : (
+                  <div onClick={openModal} className="grid-item" data-aos="fade-up" style={{ marginBottom: '1.5rem', cursor: 'crosshair' }}>
+                    <img src={project.thumbnail} alt={project.title} />
+                    <div className="subtitle">{project.title}</div>
+                  </div>
+                )
               ))}
             </div>
           )}
         </div>
       </div>
+      {modal ? (
+      <div onClick={closeModal} className='modal-wrapper'>
+        <img  src="https://images.ctfassets.net/oen9jg6suzgv/3HBuhn9u8jpFRm1O0gyxwS/f02e42bb4ddad8649e367f00decee044/Main_Post.jpg" width="80%" alt="" />
+        <div>
+          <div className='modal-title'>Title</div>
+          <div className='modal-subtitle'>Subtitle</div>
+        </div>
+      </div>
+      ) : null
+        }
       <Link to="/">
         <img className="logo" src="/stars.png" alt="" />
       </Link>
