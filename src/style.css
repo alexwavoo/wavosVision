@@ -210,6 +210,12 @@ a {
   color: #fdf8dc;
   cursor: pointer;
 }
+.modal-wrapper img {
+  width: 80%;
+  max-width: 1000px; 
+  object-fit: contain;
+  cursor: pointer;
+}
 
 /* DETAIL VIEW */
 .header {
@@ -299,6 +305,9 @@ a {
   }
   .subtitle {
     font-size: 14px;
+  } 
+  .modal-wrapper img {
+    width: 90%;
   }
 
   /* DETAIL VIEW */

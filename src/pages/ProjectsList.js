@@ -13,6 +13,7 @@ function ProjectsList({ collections }) {
   const [transition, setTransition] = useState(false);
   const [ready, setReady] = useState(false);
   const [modal, setModal] = useState(false);
+  const [modalImage, setModalImage] = useState(null);
 
   useEffect(() => {
     console.log('collections', collections);
@@ -106,8 +107,9 @@ function ProjectsList({ collections }) {
     fetchData();
   }, [collectionId]);
 
-  function openModal() {
+  function openModal(project) {
     if (modal === false) {
+      setModalImage(project.thumbnail);
       setModal(true);
     }
   }
@@ -179,7 +181,7 @@ function ProjectsList({ collections }) {
                   </div>
                 </Link>
               ) : (
-                  <div onClick={openModal} className="grid-item" data-aos="fade-up" style={{ marginBottom: '1.5rem', cursor: 'crosshair' }}>
+                  <div onClick={() => openModal(project)} className="grid-item" data-aos="fade-up" style={{ marginBottom: '1.5rem', cursor: 'crosshair' }}>
                     <img src={project.thumbnail} alt={project.title} />
                     <div className="subtitle">{project.title}</div>
                   </div>
@@ -197,7 +199,7 @@ function ProjectsList({ collections }) {
                   </div>
                 </Link>
                 ) : (
-                  <div onClick={openModal} className="grid-item" data-aos="fade-up" style={{ marginBottom: '1.5rem', cursor: 'crosshair' }}>
+                  <div onClick={() => openModal(project)} className="grid-item" data-aos="fade-up" style={{ marginBottom: '1.5rem', cursor: 'crosshair' }}>
                     <img src={project.thumbnail} alt={project.title} />
                     <div className="subtitle">{project.title}</div>
                   </div>
@@ -209,7 +211,7 @@ function ProjectsList({ collections }) {
       </div>
       {modal ? (
       <div onClick={closeModal} className='modal-wrapper'>
-        <img  src="https://images.ctfassets.net/oen9jg6suzgv/3HBuhn9u8jpFRm1O0gyxwS/f02e42bb4ddad8649e367f00decee044/Main_Post.jpg" width="80%" alt="" />
+        <img  src={modalImage} width="80%" alt="" />
         <div>
           <div className='modal-title'>Title</div>
           <div className='modal-subtitle'>Subtitle</div>
