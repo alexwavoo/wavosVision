@@ -71,7 +71,7 @@ const CollectionList = ({ calculatedHeight, collections, setCollections}) => {
         setTimeout(() => {
           setAfterTransition(true);
         }
-        , 2000);
+        , 2350);
     
   }
 }, [collections]);

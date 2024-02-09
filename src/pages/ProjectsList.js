@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import '../style.css';
 import { Link } from 'react-router-dom';
-// import AOS from 'aos';
-// import 'aos/dist/aos.css';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 
 function ProjectsList({ collections }) {
   const { collectionId } = useParams();
@@ -24,9 +24,15 @@ function ProjectsList({ collections }) {
     }
   }, [collections]);
 
-  // useEffect(() => {
-  //   AOS.init();
-  // }, [])
+  useEffect(() => {
+    AOS.init({
+      duration: 400
+    });
+    AOS.refresh();
+    return () => {
+      AOS.refresh();
+    }
+  }, [])  
 
   useEffect(() => {
     const timeout = setTimeout(() => {
