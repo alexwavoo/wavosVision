@@ -48,7 +48,7 @@ const CollectionList = ({ calculatedHeight, collections, setCollections}) => {
     return () => {
       window.removeEventListener('resize', updateSubtitlePositions);
     };
-  }, [collections, loading, intro]);
+  }, [collections, loading, intro, afterTransition, subtitlePositions]);
 
   
   
@@ -114,7 +114,7 @@ if (!collections) {
           <div className="menu">
             {collections.map((collection) => (
               <Link
-                
+                key={collection.sys.id}
                 to={`/collection/${collection.sys.id}/projects`}
                 className="collection-item"
                 id={`collection-item-${collection.sys.id}`}

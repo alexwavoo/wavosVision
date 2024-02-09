@@ -78,12 +78,10 @@ export default function App() {
       });
   }, []);
 
-  useEffect(() => { 
-    console.log('collections', collections);
-  }, [collections]);
+  // useEffect(() => { 
+  //   console.log('collections', collections);
+  // }, [collections, setCollections]);
 
-
-  // If the session is new or has already been established, render the actual content
   return (
     <Router>
       <Routes>
