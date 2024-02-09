@@ -26,15 +26,13 @@ function ProjectsList({ collections }) {
 
   useEffect(() => {
     AOS.init();
-  }, [collectionId])
+  }, [])
 
   useEffect(() => {
     const timeout = setTimeout(() => {
       setTransition(true);
-      console.log('transition');
       const readyTimeout = setTimeout(() => {
         setReady(true);
-        console.log('ready');
       }, 500);
     }, 4000);
     return () => clearTimeout(timeout);
@@ -195,7 +193,7 @@ function ProjectsList({ collections }) {
                   </div>
                 </Link>
               ) : (
-                  <div onClick={() => openModal(project)} className="grid-item" data-aos="fade-up" style={{ marginBottom: '1.5rem', cursor: 'crosshair' }}>
+                  <div key={project.id} onClick={() => openModal(project)} className="grid-item" data-aos="fade-up" style={{ marginBottom: '1.5rem', cursor: 'crosshair' }}>
                     <img src={project.thumbnail} alt={project.title} />
                     <div className="subtitle">{project.title}</div>
                   </div>
@@ -213,7 +211,7 @@ function ProjectsList({ collections }) {
                   </div>
                 </Link>
                 ) : (
-                  <div onClick={() => openModal(project)} className="grid-item" data-aos="fade-up" style={{ marginBottom: '1.5rem', cursor: 'crosshair' }}>
+                  <div key={project.id} onClick={() => openModal(project)} className="grid-item" data-aos="fade-up" style={{ marginBottom: '1.5rem', cursor: 'crosshair' }}>
                     <img src={project.thumbnail} alt={project.title} />
                     <div className="subtitle">{project.title}</div>
                   </div>
