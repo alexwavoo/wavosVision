@@ -101,6 +101,7 @@ function ProjectDetail() {
       setModalImage(imageUrl);
       setModal(true);
       document.body.style.overflow = 'hidden';
+      document.body.style.setProperty('--modal-text-height', '0px');
     }
   }
   function closeModal() {
