@@ -4,7 +4,6 @@ import { useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import '../style.css';
 import { Link } from 'react-router-dom';
-import Lightbox from '../components/Lightbox.js';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
@@ -15,9 +14,10 @@ function ProjectDetail() {
     description: '',
     images: [],
   });
-  const [lightboxImage, setLightboxImage] = useState(null);
   const [transition, setTransition] = useState(false);
   const [ready, setReady] = useState(false);
+  const [modal, setModal] = useState(false);
+  const [modalImage, setModalImage] = useState(null); 
 
   useEffect(() => {
     AOS.init();
@@ -96,6 +96,20 @@ function ProjectDetail() {
     }
   };
 
+  function openModal(imageUrl) {
+    if (modal === false) {
+      setModalImage(imageUrl);
+      setModal(true);
+      document.body.style.overflow = 'hidden';
+    }
+  }
+  function closeModal() {
+    if (modal === true) {
+      setModal(false);
+      document.body.style.overflow = 'auto';
+    }
+  }
+
   if (!projectData.title) {
     return '';
   }
@@ -109,22 +123,7 @@ function ProjectDetail() {
 
   const { leftImages, rightImages } = splitImages(projectData.images);
 
-  const handleImageClick = (imageUrl) => {
-    setLightboxImage(imageUrl);
-    document.body.style.overflow = 'hidden';
-    //background: rgba(0, 0, 0, 0.8);
-    //backdrop-filter: blur(15px);
-    document.body.background = 'rgba(0, 0, 0, 0.8)';
-    document.body.backdropFilter = 'blur(15px)';
-  };
-
-  // Function to close the lightbox
-  const closeLightbox = () => {
-    setLightboxImage(null);
-    document.body.style.overflow = 'auto';
-    document.body.background = 'unset';
-    document.body.backdropFilter = 'blur(0px)';
-  };
+  
 
   return (
     <>
@@ -147,7 +146,7 @@ function ProjectDetail() {
       <div className="flex-container">
         <div className="column-left">
           {leftImages.map((imageUrl, index) => (
-            <div key={index} className="grid-item" data-aos="fade-up" style={{marginBottom: '2.5rem'}} onClick={() => handleImageClick(imageUrl)}>
+            <div key={index} className="grid-item" data-aos="fade-up" style={{marginBottom: '2.5rem'}} onClick={() => openModal(imageUrl)}>
               <img src={imageUrl} alt={`Image ${index + 1}`} style={{cursor: "crosshair"}}  />
             </div>
           ))}
@@ -155,7 +154,7 @@ function ProjectDetail() {
         {rightImages.length > 0 &&
         <div className="column-right">
           {rightImages.map((imageUrl, index) => (
-            <div key={index} className="grid-item" data-aos="fade-up" style={{marginBottom: '2.5rem'}} onClick={() => handleImageClick(imageUrl)}>
+            <div key={index} className="grid-item" data-aos="fade-up" style={{marginBottom: '2.5rem'}} onClick={() => openModal(imageUrl)}>
               <img src={imageUrl} alt={`Image ${index + 1}`} style={{cursor: "crosshair"}} />
             </div>
           ))}
@@ -164,7 +163,12 @@ function ProjectDetail() {
       </div>
     </div>
 
-    {lightboxImage && <Lightbox imageUrl={lightboxImage} onClose={closeLightbox} />}
+    {modal ? (
+      <div onClick={closeModal} className='modal-wrapper'>
+        <img  src={modalImage} width="80%" alt="" />
+      </div>
+      ) : null
+        }
 
 
     <Link to="/">

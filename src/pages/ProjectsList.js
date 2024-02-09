@@ -35,7 +35,7 @@ function ProjectsList({ collections }) {
       const readyTimeout = setTimeout(() => {
         setReady(true);
         console.log('ready');
-      }, 1000);
+      }, 500);
     }, 4000);
     return () => clearTimeout(timeout);
   }, []);
@@ -120,6 +120,10 @@ function ProjectsList({ collections }) {
       setModal(true);
       setModalText([project.title, project.description.json.content[0].content[0].value]);
       document.body.style.overflow = 'hidden';
+      // set --modal-title-height to 92px body variable
+      document.body.style.setProperty('--modal-text-height', '92px');
+      
+
     }
   }
   function closeModal() {
