@@ -1,0 +1,29 @@
+import React, { useRef, useEffect, useState } from 'react';
+import './fade.css'; // CSS file for animation styles
+
+export default function FadeUpOnScroll({ children }) {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef(null);
+
+  const handleScroll = () => {
+    if (ref.current) {
+      const top = ref.current.getBoundingClientRect().top;
+      const isVisible = top < window.innerHeight;
+      setIsVisible(isVisible);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
+  return (
+    <div ref={ref} className={`fade-up ${isVisible ? 'is-visible' : ''}`}>
+      {children}
+    </div>
+  );
+}
