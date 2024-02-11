@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import '../style.css';
 import { Link } from 'react-router-dom';
-import FadeUp from './components/fadeUp';
+import FadeUp from '../components/FadeUp';
 
 
 function ProjectDetail() {
@@ -160,7 +160,7 @@ function ProjectDetail() {
             <div key={index} className="grid-item" style={{marginBottom: '2.5rem'}} onClick={() => openModal(imageUrl)}>
              <FadeUp>
                <img src={imageUrl} alt={`Image ${index + 1}`} style={{cursor: "crosshair"}} />
-            </FadeUp
+            </FadeUp>
             </div>
           ))}
         </div>

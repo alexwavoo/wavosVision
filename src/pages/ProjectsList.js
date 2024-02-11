@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import '../style.css';
 import { Link } from 'react-router-dom';
-import FadeUp from './components/fadeUp';
+import FadeUp from '../components/FadeUp';
 
 function ProjectsList({ collections }) {
   const { collectionId } = useParams();
