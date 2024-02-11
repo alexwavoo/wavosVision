@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import '../style.css';
 import { Link } from 'react-router-dom';
+import FadeUp from './components/fadeUp';
 
 
 function ProjectDetail() {
@@ -147,7 +148,9 @@ function ProjectDetail() {
         <div className="column-left">
           {leftImages.map((imageUrl, index) => (
             <div key={index} className="grid-item" style={{marginBottom: '2.5rem'}} onClick={() => openModal(imageUrl)}>
+              <FadeUp>
               <img src={imageUrl} alt={`Image ${index + 1}`} style={{cursor: "crosshair"}}  />
+              </FadeUp>
             </div>
           ))}
         </div>
@@ -155,7 +158,9 @@ function ProjectDetail() {
         <div className="column-right">
           {rightImages.map((imageUrl, index) => (
             <div key={index} className="grid-item" style={{marginBottom: '2.5rem'}} onClick={() => openModal(imageUrl)}>
-              <img src={imageUrl} alt={`Image ${index + 1}`} style={{cursor: "crosshair"}} />
+             <FadeUp>
+               <img src={imageUrl} alt={`Image ${index + 1}`} style={{cursor: "crosshair"}} />
+            </FadeUp
             </div>
           ))}
         </div>
