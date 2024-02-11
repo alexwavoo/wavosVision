@@ -29,7 +29,7 @@ function ProjectDetail({calculatedHeight}) {
         setReady(true);
         document.body.style.overflow = "auto";
       }, 600);
-    }, 2400);
+    }, 3000);
     return () => clearTimeout(timeout);
   }, []);
 

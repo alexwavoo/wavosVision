@@ -30,7 +30,7 @@ function ProjectsList({ collections, calculatedHeight }) {
       const readyTimeout = setTimeout(() => {
         setReady(true);
       }, 500);
-    }, 4000);
+    }, 2500);
     return () => clearTimeout(timeout);
   }, []);
 
