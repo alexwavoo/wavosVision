@@ -55,15 +55,7 @@ const CollectionList = ({ calculatedHeight, collections, setCollections}) => {
   
   // download images from contentful using thumbnail urls
   
-  const preloadImages = async () => {
-    await Promise.all(
-      collections.map(async (collection) => {
-        const img = new Image();
-        img.src = collection.thumbnail.url;
-        await img.decode();
-      })
-      );
-    };
+
     
     useEffect(() => {
       if (collections && !loading && !intro) {
