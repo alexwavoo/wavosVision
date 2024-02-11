@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import '../style.css';
 import { Link } from 'react-router-dom';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
 
 function ProjectsList({ collections }) {
   const { collectionId } = useParams();
@@ -23,16 +21,7 @@ function ProjectsList({ collections }) {
       setCollection(collection);
     }
   }, [collections]);
-
-  useEffect(() => {
-    AOS.init({
-      duration: 400
-    });
-    AOS.refresh();
-    return () => {
-      AOS.refresh();
-    }
-  }, [])  
+ 
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -193,7 +182,7 @@ function ProjectsList({ collections }) {
           {projectsLeft.map((project) => (
               project.imagesCollection.total > 1 ? (
                 <Link key={project.id} to={`/collection/${collectionId}/projects/${project.id}`}>
-                  <div className="grid-item" data-aos="fade-up" style={{ marginBottom: '1.5rem' }}>
+                  <div className="grid-item" style={{ marginBottom: '1.5rem' }}>
                     <img src={project.thumbnail} alt={project.title} />
                     <div className="subtitle">{project.title}</div>
                   </div>
@@ -211,7 +200,7 @@ function ProjectsList({ collections }) {
               {projectsRight.map((project) => (
                 project.imagesCollection.total > 1 ? (
                 <Link key={project.id} to={`/collection/${collectionId}/projects/${project.id}`}>
-                  <div className="grid-item" data-aos="fade-up" style={{ marginBottom: '1.5rem' }}>
+                  <div className="grid-item" style={{ marginBottom: '1.5rem' }}>
                     <img src={project.thumbnail} alt={project.title} />
                     <div className="subtitle">{project.title}</div>
                   </div>
