@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import './fade.css'; // CSS file for animation styles
 
-export default function FadeUpOnScroll({ children }) {
+export default function FadeUp({ children }) {
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef(null);
 
