@@ -15,9 +15,11 @@ export default function FadeUp({ children }) {
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleScroll);
     handleScroll();
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
     };
   }, []);
 

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 
 
+
 const CollectionList = ({ calculatedHeight, collections, setCollections}) => {
   const [subtitlePositions, setSubtitlePositions] = useState({});
   const [loading, setLoading] = useState(true);
@@ -119,7 +120,9 @@ if (!collections) {
                 className="collection-item"
                 id={`collection-item-${collection.sys.id}`}
               >
+                
                 <img src={collection.thumbnail.url} alt={collection.title} />
+                
                 {subtitlePositions[collection.sys.id] && (
                   <p
                     style={{
