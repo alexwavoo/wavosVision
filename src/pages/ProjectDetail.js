@@ -21,10 +21,12 @@ function ProjectDetail() {
   
 
   useEffect(() => {
+    document.body.style.overflow = "hidden";
     const timeout = setTimeout(() => {
       setTransition(true);
       const readyTimeout = setTimeout(() => {
         setReady(true);
+        document.body.style.overflow = "auto";
       }, 600);
     }, 2400);
     return () => clearTimeout(timeout);
