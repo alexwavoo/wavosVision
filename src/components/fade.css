@@ -1,7 +1,7 @@
 .fade-up {
   opacity: 0;
   transform: translate3d(0, 100px, 0);
-  transition: all 0.5s ease;
+  transition: all 0.4s ease;
 }
 
 .fade-up.is-visible {
