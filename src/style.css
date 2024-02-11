@@ -116,7 +116,7 @@ a {
   height: 101.5%;
 }
 
-.collection-item p {
+.collection-item p, .collection-title {
   font-size: 22px;
   font-weight: 300;
   margin: 0;
@@ -308,7 +308,7 @@ a {
     width: 100%;
     height: 225px;
   }
-  .collection-item p {
+  .collection-item p, .collection-title {
     font-size: 14px;
   }
 

@@ -171,11 +171,11 @@ function ProjectsList({ collections, calculatedHeight }) {
           opacity: transition ? 0 : 1,
           zIndex: ready ? 0 : undefined,
         }}>
-          <div className='subtitle'>
+          <p className='collection-title'>
             {/* conditional collection.title */}
             {collection && collection.title}
 
-            </div>
+            </p>
         </div>
 
       <div className="wrapper">
