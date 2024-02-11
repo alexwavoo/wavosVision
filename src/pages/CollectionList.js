@@ -113,7 +113,7 @@ if (!collections) {
                 id={`collection-item-${collection.sys.id}`}
               >
                 
-                <img src={collection.thumbnail.url} alt={collection.title} />
+                <img src={`${collection.thumbnail.url}?h=500`} alt={collection.title} />
                 
                 {subtitlePositions[collection.sys.id] && (
                   <p
