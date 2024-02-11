@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import FadeUp from '../components/FadeUp';
 
 
-function ProjectDetail() {
+function ProjectDetail({calculatedHeight}) {
   const { projectId } = useParams();
   const [projectData, setProjectData] = useState({
     title: '',
@@ -169,8 +169,8 @@ function ProjectDetail() {
     </div>
 
     {modal ? (
-      <div onClick={closeModal} className='modal-wrapper'>
-        <img  src={modalImage} width="80%" alt="" />
+      <div onClick={closeModal} className='modal-wrapper' /*style={{ height: `${calculatedHeight}px` }}*/>
+        <img  src={modalImage} width="80%" alt="" style={{marginTop: `calc((100vh - ${calculatedHeight}px) / 2)`}}/>
       </div>
       ) : null
         }

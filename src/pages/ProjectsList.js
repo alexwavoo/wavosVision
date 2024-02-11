@@ -4,7 +4,7 @@ import '../style.css';
 import { Link } from 'react-router-dom';
 import FadeUp from '../components/FadeUp';
 
-function ProjectsList({ collections }) {
+function ProjectsList({ collections, calculatedHeight }) {
   const { collectionId } = useParams();
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -227,8 +227,8 @@ function ProjectsList({ collections }) {
         </div>
       </div>
       {modal ? (
-      <div onClick={closeModal} className='modal-wrapper'>
-        <img  src={modalImage} width="80%" alt="" />
+      <div onClick={closeModal} className='modal-wrapper' /*style={{ height: `${calculatedHeight}px` }}*/>
+        <img  src={modalImage} width="80%" alt="" style={{marginTop: `calc((100vh - ${calculatedHeight}px) / 2)`}}/>
         <div className='modal-text'>
           <div className='modal-title'>{modalText[0]}</div>
           <div className='modal-subtitle'>{modalText[1]}</div>

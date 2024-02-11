@@ -89,11 +89,11 @@ export default function App() {
         <Route path="/" element={<CollectionList calculatedHeight={calculatedHeight} collections={collections} setCollections={setCollections} />} />
         <Route
           path="/collection/:collectionId/projects"
-          element={<ProjectsList collections={collections} />}
+          element={<ProjectsList collections={collections} calculatedHeight={calculatedHeight} />}
         />
         <Route
           path="/collection/:collectionId/projects/:projectId"
-          element={<ProjectDetail />}
+          element={<ProjectDetail  calculatedHeight={calculatedHeight}/>}
         />
         <Route path="*" element={<NotFound />} />
       </Routes>
