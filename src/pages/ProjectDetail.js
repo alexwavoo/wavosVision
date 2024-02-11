@@ -4,8 +4,7 @@ import { useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import '../style.css';
 import { Link } from 'react-router-dom';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+
 
 function ProjectDetail() {
   const { projectId } = useParams();
@@ -19,15 +18,7 @@ function ProjectDetail() {
   const [modal, setModal] = useState(false);
   const [modalImage, setModalImage] = useState(null); 
 
-  useEffect(() => {
-    AOS.init({
-      duration: 400
-    });
-    AOS.refresh();
-    return () => {
-      AOS.refresh();
-    }
-  }, [])
+  
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -153,7 +144,7 @@ function ProjectDetail() {
       <div className="flex-container">
         <div className="column-left">
           {leftImages.map((imageUrl, index) => (
-            <div key={index} className="grid-item" data-aos="fade-up" style={{marginBottom: '2.5rem'}} onClick={() => openModal(imageUrl)}>
+            <div key={index} className="grid-item" style={{marginBottom: '2.5rem'}} onClick={() => openModal(imageUrl)}>
               <img src={imageUrl} alt={`Image ${index + 1}`} style={{cursor: "crosshair"}}  />
             </div>
           ))}
@@ -161,7 +152,7 @@ function ProjectDetail() {
         {rightImages.length > 0 &&
         <div className="column-right">
           {rightImages.map((imageUrl, index) => (
-            <div key={index} className="grid-item" data-aos="fade-up" style={{marginBottom: '2.5rem'}} onClick={() => openModal(imageUrl)}>
+            <div key={index} className="grid-item" style={{marginBottom: '2.5rem'}} onClick={() => openModal(imageUrl)}>
               <img src={imageUrl} alt={`Image ${index + 1}`} style={{cursor: "crosshair"}} />
             </div>
           ))}
