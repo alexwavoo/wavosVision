@@ -195,10 +195,12 @@ function ProjectsList({ collections, calculatedHeight }) {
                 </Link>
                 
               ) : (
-                  <div key={project.id} onClick={() => openModal(project)} className="grid-item" data-aos="fade-up" style={{ marginBottom: '1.5rem', cursor: 'crosshair' }}>
+                  <FadeUp>
+                  <div key={project.id} onClick={() => openModal(project)} className="grid-item" style={{ marginBottom: '1.5rem', cursor: 'crosshair' }}>
                     <img src={project.thumbnail} alt={project.title} />
                     <div className="subtitle">{project.title}</div>
                   </div>
+                </FadeUp>
               )
             ))}
           </div>
@@ -216,10 +218,12 @@ function ProjectsList({ collections, calculatedHeight }) {
                 </Link>
                 
                 ) : (
-                  <div key={project.id} onClick={() => openModal(project)} className="grid-item" data-aos="fade-up" style={{ marginBottom: '1.5rem', cursor: 'crosshair' }}>
+                  <FadeUp>
+                  <div key={project.id} onClick={() => openModal(project)} className="grid-item" style={{ marginBottom: '1.5rem', cursor: 'crosshair' }}>
                     <img src={project.thumbnail} alt={project.title} />
                     <div className="subtitle">{project.title}</div>
                   </div>
+                  </FadeUp>
                 )
               ))}
             </div>
