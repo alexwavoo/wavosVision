@@ -231,8 +231,8 @@ function ProjectsList({ collections, calculatedHeight }) {
         </div>
       </div>
       {modal ? (
-      <div onClick={closeModal} className='modal-wrapper' /*style={{ height: `${calculatedHeight}px` }}*/>
-        <img  src={modalImage} width="80%" alt="" style={{marginTop: `calc((100vh - ${calculatedHeight}px) / 2)`}}/>
+      <div onClick={closeModal} className='modal-wrapper' style={{ height: `${calculatedHeight}px` }}>
+        <img  src={modalImage} width="80%" alt="" /*style={{marginTop: `calc((100vh - ${calculatedHeight}px) / 2)`}}*//>
         <div className='modal-text'>
           <div className='modal-title'>{modalText[0]}</div>
           <div className='modal-subtitle'>{modalText[1]}</div>

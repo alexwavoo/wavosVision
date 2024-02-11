@@ -169,8 +169,8 @@ function ProjectDetail({calculatedHeight}) {
     </div>
 
     {modal ? (
-      <div onClick={closeModal} className='modal-wrapper' /*style={{ height: `${calculatedHeight}px` }}*/>
-        <img  src={modalImage} width="80%" alt="" style={{marginTop: `calc((100vh - ${calculatedHeight}px) / 2)`}}/>
+      <div onClick={closeModal} className='modal-wrapper' style={{ height: `${calculatedHeight}px` }}>
+        <img  src={modalImage} width="80%" alt="" /*style={{marginTop: `calc((100vh - ${calculatedHeight}px) / 2)`}}*//>
       </div>
       ) : null
         }
