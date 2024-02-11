@@ -186,7 +186,7 @@ function ProjectsList({ collections }) {
               project.imagesCollection.total > 1 ? (
                 
                 <Link key={project.id} to={`/collection/${collectionId}/projects/${project.id}`}>
-                  <FadeUp key={project.id}>
+                  <FadeUp>
                   <div className="grid-item" style={{ marginBottom: '1.5rem' }}>
                     <img src={project.thumbnail} alt={project.title} />
                     <div className="subtitle">{project.title}</div>
@@ -207,7 +207,7 @@ function ProjectsList({ collections }) {
               {projectsRight.map((project) => (
                 project.imagesCollection.total > 1 ? (
                 <Link key={project.id} to={`/collection/${collectionId}/projects/${project.id}`}>
-                  <FadeUp key={project.id}>
+                  <FadeUp>
                   <div className="grid-item" style={{ marginBottom: '1.5rem' }}>
                     <img src={project.thumbnail} alt={project.title} />
                     <div className="subtitle">{project.title}</div>
