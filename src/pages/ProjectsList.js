@@ -145,9 +145,11 @@ function ProjectsList({ collections }) {
         <div className="wrapper">
           <div className="flex-container">
             <div className="column-left">
+              
               <div className="grid-item"  style={{ marginBottom: '1.5rem' }}>
                 <div className="subtitle">No projects found</div>
               </div>
+              
             </div>
           </div>
         </div>
@@ -182,12 +184,14 @@ function ProjectsList({ collections }) {
           <div className="column-left">
           {projectsLeft.map((project) => (
               project.imagesCollection.total > 1 ? (
+                <FadeUp key={project.id}>
                 <Link key={project.id} to={`/collection/${collectionId}/projects/${project.id}`}>
                   <div className="grid-item" style={{ marginBottom: '1.5rem' }}>
                     <img src={project.thumbnail} alt={project.title} />
                     <div className="subtitle">{project.title}</div>
                   </div>
                 </Link>
+                </FadeUp>
               ) : (
                   <div key={project.id} onClick={() => openModal(project)} className="grid-item" data-aos="fade-up" style={{ marginBottom: '1.5rem', cursor: 'crosshair' }}>
                     <img src={project.thumbnail} alt={project.title} />
@@ -200,12 +204,14 @@ function ProjectsList({ collections }) {
             <div className="column-right">
               {projectsRight.map((project) => (
                 project.imagesCollection.total > 1 ? (
+                  <FadeUp key={project.id}>
                 <Link key={project.id} to={`/collection/${collectionId}/projects/${project.id}`}>
                   <div className="grid-item" style={{ marginBottom: '1.5rem' }}>
                     <img src={project.thumbnail} alt={project.title} />
                     <div className="subtitle">{project.title}</div>
                   </div>
                 </Link>
+                </FadeUp>
                 ) : (
                   <div key={project.id} onClick={() => openModal(project)} className="grid-item" data-aos="fade-up" style={{ marginBottom: '1.5rem', cursor: 'crosshair' }}>
                     <img src={project.thumbnail} alt={project.title} />
