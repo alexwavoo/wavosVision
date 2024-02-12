@@ -14,6 +14,7 @@ function ProjectsList({ collections, calculatedHeight }) {
   const [modal, setModal] = useState(false);
   const [modalImage, setModalImage] = useState(null);
   const [modalText, setModalText] = useState(null);
+  const [modalLoaded, setModalLoaded] = useState(false);
 
   useEffect(() => {
     console.log('collections', collections);
@@ -124,7 +125,16 @@ function ProjectsList({ collections, calculatedHeight }) {
     if (modal === true) {
       setModal(false);
       document.body.style.overflow = 'auto';
+      setModalLoaded(false);
     }
+  }
+
+  function handleImageLoaded() {
+    // timeout to allow for image to load
+    const timeout = setTimeout(() => {
+      setModalLoaded(true);
+    }, 500);
+    return () => clearTimeout(timeout);
   }
   
 
@@ -232,7 +242,14 @@ function ProjectsList({ collections, calculatedHeight }) {
       </div>
       {modal ? (
       <div onClick={closeModal} className='modal-wrapper' style={{ height: `${calculatedHeight}px` }}>
-        <img  src={modalImage} width="80%" alt="" /*style={{marginTop: `calc((100vh - ${calculatedHeight}px) / 2)`}}*//>
+      {modalLoaded ? (
+        <img  src={`${modalImage}?w=2560`} width="80%" alt="" />
+      ) : (
+        <>
+        <span class="loader"></span>
+        <img onLoad={handleImageLoaded}  src={`${modalImage}?w=2560`} style={{ display: 'none' }}  alt="" />
+        </>
+      )}
         <div className='modal-text'>
           <div className='modal-title'>{modalText[0]}</div>
           <div className='modal-subtitle'>{modalText[1]}</div>

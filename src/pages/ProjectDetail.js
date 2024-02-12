@@ -18,6 +18,8 @@ function ProjectDetail({calculatedHeight}) {
   const [ready, setReady] = useState(false);
   const [modal, setModal] = useState(false);
   const [modalImage, setModalImage] = useState(null); 
+  const [modalLoaded, setModalLoaded] = useState(false);
+  const [loadingProgress, setLoadingProgress] = useState(0);
 
   
 
@@ -108,6 +110,7 @@ function ProjectDetail({calculatedHeight}) {
     if (modal === true) {
       setModal(false);
       document.body.style.overflow = 'auto';
+      setModalLoaded(false);
     }
   }
 
@@ -124,7 +127,15 @@ function ProjectDetail({calculatedHeight}) {
 
   const { leftImages, rightImages } = splitImages(projectData.images);
 
-  
+  function handleImageLoaded() {
+    const timeout = setTimeout(() => {
+      setModalLoaded(true);
+    }
+    , 250);
+    return () => clearTimeout(timeout); 
+  }
+
+
 
   return (
     <>
@@ -170,7 +181,16 @@ function ProjectDetail({calculatedHeight}) {
 
     {modal ? (
       <div onClick={closeModal} className='modal-wrapper' style={{ height: `${calculatedHeight}px` }}>
-        <img  src={modalImage} width="80%" alt="" /*style={{marginTop: `calc((100vh - ${calculatedHeight}px) / 2)`}}*//>
+        {modalLoaded ? (
+          <img  src={`${modalImage}?w=2560`} width="80%" alt="" />
+        ) : (
+          <>
+          <span class="loader"></span>
+          
+          <img onLoad={handleImageLoaded}   src={`${modalImage}?w=2560`} style={{ display: 'none' }}  alt="" />
+          </>
+        )
+        }
       </div>
       ) : null
         }
