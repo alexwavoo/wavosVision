@@ -196,7 +196,7 @@ function ProjectsList({ collections, calculatedHeight }) {
               project.imagesCollection.total > 1 ? (
                 
                 <Link key={project.id} to={`/collection/${collectionId}/projects/${project.id}`}>
-                  <FadeUp>
+                  <FadeUp key={project.id}>
                   <div className="grid-item" style={{ marginBottom: '1.5rem' }}>
                     <img src={`${project.thumbnail}?w=650`} alt={project.title} />
                     <div className="subtitle">{project.title}</div>
@@ -205,7 +205,7 @@ function ProjectsList({ collections, calculatedHeight }) {
                 </Link>
                 
               ) : (
-                  <FadeUp>
+                  <FadeUp key={project.id}>
                   <div key={project.id} onClick={() => openModal(project)} className="grid-item" style={{ marginBottom: '1.5rem', cursor: 'crosshair' }}>
                     <img src={`${project.thumbnail}?w=650`} alt={project.title} />
                     <div className="subtitle">{project.title}</div>
@@ -219,7 +219,7 @@ function ProjectsList({ collections, calculatedHeight }) {
               {projectsRight.map((project) => (
                 project.imagesCollection.total > 1 ? (
                 <Link key={project.id} to={`/collection/${collectionId}/projects/${project.id}`}>
-                  <FadeUp>
+                  <FadeUp key={project.id}>
                   <div className="grid-item" style={{ marginBottom: '1.5rem' }}>
                     <img src={`${project.thumbnail}?w=650`} alt={project.title} />
                     <div className="subtitle">{project.title}</div>
@@ -228,7 +228,7 @@ function ProjectsList({ collections, calculatedHeight }) {
                 </Link>
                 
                 ) : (
-                  <FadeUp>
+                  <FadeUp key={project.id}>
                   <div key={project.id} onClick={() => openModal(project)} className="grid-item" style={{ marginBottom: '1.5rem', cursor: 'crosshair' }}>
                     <img src={`${project.thumbnail}?w=650`} alt={project.title} />
                     <div className="subtitle">{project.title}</div>

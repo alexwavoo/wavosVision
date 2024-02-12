@@ -159,7 +159,7 @@ function ProjectDetail({calculatedHeight}) {
         <div className="column-left">
           {leftImages.map((imageUrl, index) => (
             <div key={index} className="grid-item" style={{marginBottom: '2.5rem'}} onClick={() => openModal(imageUrl)}>
-              <FadeUp>
+              <FadeUp key={index}>
               <img src={`${imageUrl}?w=650`} alt={`Image ${index + 1}`} style={{cursor: "crosshair"}}  />
               </FadeUp>
             </div>
@@ -169,7 +169,7 @@ function ProjectDetail({calculatedHeight}) {
         <div className="column-right">
           {rightImages.map((imageUrl, index) => (
             <div key={index} className="grid-item" style={{marginBottom: '2.5rem'}} onClick={() => openModal(imageUrl)}>
-             <FadeUp>
+             <FadeUp key={index}>
                <img src={`${imageUrl}?w=650`} alt={`Image ${index + 1}`} style={{cursor: "crosshair"}} />
             </FadeUp>
             </div>
