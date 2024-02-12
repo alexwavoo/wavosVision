@@ -26,12 +26,15 @@ a {
 .logo {
   position: sticky;
   bottom: 15px;
-  float: right;
+  left: calc(50% - 40px);
   width: 70px;
   background: #fdf8dc80;
-  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(20px);
   filter: blur(0px);
-  padding: 5px;
+  padding: 4.5px;
+  box-shadow: 0 5px 8px rgb(0 0 0 / 20%);
+  border-radius: 4px;
 }
 
 .invisible {
@@ -50,47 +53,56 @@ a {
 
 .loader {
   position: relative;
-  color: #7a1b17;
-  width: 0;
-  height: 0;
-  border-right: 50px solid transparent;
-  border-bottom: 35px solid #7a1b17;
-  border-left: 50px solid transparent;
-  animation: 3s starRotate linear infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 5rem;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
+.loader:before,
+.loader:after {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  animation: pulsOut 1.8s ease-in-out infinite;
+  filter: drop-shadow(0 0 1rem rgba(255, 255, 255, 0.75));
 }
 .loader:before {
-  border-bottom: 40px solid #7a1b17;
-  border-left: 15px solid transparent;
-  border-right: 15px solid transparent;
-  position: absolute;
-  height: 0;
-  width: 0;
-  top: -22px;
-  left: -31px;
-  display: block;
-  content: '';
-  transform: rotate(-35deg);
+  width: 100%;
+  padding-bottom: 100%;
+  box-shadow: inset 0 0 0 1rem #fff;
+  animation-name: pulsIn;
 }
 .loader:after {
-  content: '';
-  position: absolute;
-  display: block;
-  color: #7a1b17;
-  top: 1.5px;
-  transform: rotate(-70deg);
-  left: -52px;
-  width: 0px;
-  height: 0px;
-  border-right: 50px solid transparent;
-  border-bottom: 35px solid #7a1b17;
-  border-left: 50px solid transparent;
+  width: calc(100% - 2rem);
+  padding-bottom: calc(100% - 2rem);
+  box-shadow: 0 0 0 0 #fff;
 }
 
-@keyframes starRotate {
-0%{    transform: rotate(0deg) scale(0.15)}
-50%{    transform: rotate(360deg) scale(1)}
-100%{    transform: rotate(720deg) scale(0.15)}
+@keyframes pulsIn {
+  0% {
+    box-shadow: inset 0 0 0 1rem #fff;
+    opacity: 1;
+  }
+  50%, 100% {
+    box-shadow: inset 0 0 0 0 #fff;
+    opacity: 0;
+  }
 }
+
+@keyframes pulsOut {
+  0%, 50% {
+    box-shadow: 0 0 0 0 #fff;
+    opacity: 0;
+  }
+  100% {
+    box-shadow: 0 0 0 1rem #fff;
+    opacity: 1;
+  }
+}
+    
   
 
 
@@ -110,9 +122,11 @@ a {
 @keyframes fade {
   0% {
     opacity: 0;
+    transform: translate3d(0, 25px, 0);
   }
   33% {
     opacity: 1;
+    transform: translateZ(0);
   }
   66% {
     opacity: 1;

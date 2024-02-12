@@ -132,7 +132,7 @@ if (!collections) {
           </div>
         </div>
         <Link to="/">
-        <img className={`logo ${classNames({ 'loaded': afterTransition })}`} src="/stars.png" alt="" style={{ bottom: '15px', right: '8px', position: 'absolute', transform: 'translateZ(0)' }} />
+        <img className={`logo ${classNames({ 'loaded': afterTransition })}`} src="/stars.png" alt="" style={{ display: 'none' }} />
         </Link>
       </div>
     );
