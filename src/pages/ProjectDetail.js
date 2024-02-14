@@ -144,8 +144,8 @@ function ProjectDetail({calculatedHeight}) {
           opacity: transition ? 0 : 1,
           zIndex: ready ? 0 : undefined,
         }}>
-        <div className='header'>{projectData.title}</div>
-        <div className='description'>{projectData.description}</div>
+        <div className='header' style={{transform: transition ? 'translateY(-500px)' : 'translateY(0)',}}>{projectData.title}</div>
+        <div className='description' style={{transform: transition ? 'translateY(-500px)' : 'translateY(0)',}}>{projectData.description}</div>
       </div>
 
 
