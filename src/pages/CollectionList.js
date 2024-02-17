@@ -10,6 +10,7 @@ const CollectionList = ({ calculatedHeight, collections, setCollections}) => {
   const [loading, setLoading] = useState(true);
   const [intro, setIntro] = useState(true);
   const [afterTransition, setAfterTransition] = useState(false);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
 
 
   useEffect(() => {
@@ -51,15 +52,10 @@ const CollectionList = ({ calculatedHeight, collections, setCollections}) => {
     };
   }, [collections, loading, intro, afterTransition, subtitlePositions]);
 
-  
-  
   // download images from contentful using thumbnail urls
-  
-
     
     useEffect(() => {
       if (collections && !loading && !intro) {
-        preloadImages().then(() => setLoading(false));
         // setAfterTransition(true); after timeout
         setTimeout(() => {
           setAfterTransition(true);
@@ -70,11 +66,35 @@ const CollectionList = ({ calculatedHeight, collections, setCollections}) => {
 }, [collections]);
 
   useEffect(() => {
-    setTimeout(() => {
-      setIntro(false);
-    }, 3500);
+
+
+    function preloadImages() {
+      return new Promise((resolve) => {
+        const images = [];
+        collections.forEach((collection) => {
+          const image = new Image();
+          image.src = `${collection.thumbnail.url}?h=500`;
+          image.onload = () => {
+            images.push(image);
+            if (images.length === collections.length) {
+              resolve();
+            }
+          };
+        });
+      });
+    }
+
+    if (collections) {
+      preloadImages().then(() => setImagesLoaded(true));
+    }
+
+    if (imagesLoaded) {
+      setTimeout(() => {
+        setIntro(false);
+      }, 3500);
+    }
   }
-  , []);
+  , [collections, imagesLoaded, loading, intro, afterTransition]);
 
   useEffect(() => {
   if (collections) {
