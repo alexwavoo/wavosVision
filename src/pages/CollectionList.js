@@ -10,20 +10,20 @@ const CollectionList = ({ calculatedHeight, collections, setCollections }) => {
     const [imagesLoaded, setImagesLoaded] = useState(false);
     const [counter , setCounter] = useState(0);
 
-    // useEffect(() => {
-    //     // Set body and id='app' to overflow hidden
-    //     document.body.style.overflow = 'hidden';
-    //     document.getElementById('app').style.overflow = 'hidden';
+    useEffect(() => {
+        // Set body and id='app' to overflow hidden
+        document.body.style.overflow = 'hidden';
+        document.getElementById('app').style.overflow = 'hidden';
 
-    //     // Cleanup function to reset styles when component unmounts
-    //     return () => {
-    //         document.body.style.overflow = 'unset';
-    //         const appElement = document.getElementById('app');
-    //         if (appElement) {
-    //             appElement.style.overflow = 'unset';
-    //         }
-    //     };
-    // }, []);
+        // Cleanup function to reset styles when component unmounts
+        return () => {
+            document.body.style.overflow = 'unset';
+            const appElement = document.getElementById('app');
+            if (appElement) {
+                appElement.style.overflow = 'unset';
+            }
+        };
+    }, []);
 
     const updateSubtitlePositions = () => {
         if (collections) {
