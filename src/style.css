@@ -340,7 +340,7 @@ a {
     gap: 1rem;
   }
   .collection-item, canvas {
-    width: 310px!important;
+    width: 309.375px!important;
     height: 225px!important;
   }
   .collection-item p, .collection-title {

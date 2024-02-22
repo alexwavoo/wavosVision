@@ -140,7 +140,7 @@ const CollectionList = ({ calculatedHeight, collections, setCollections }) => {
                                 className="collection-item"
                                 id={`collection-item-${collection.sys.id}`}
                             >
-                                {/* <img src={`${collection.thumbnail.url}?h=500`} alt={collection.title} /> */}
+                                <img src={`${collection.thumbnail.url}?h=500`} style={{display: 'none', zIndex: '-10'}} alt={collection.title} />
                                 {subtitlePositions[collection.sys.id] && (
                                     <p
                                         style={{
