@@ -339,9 +339,9 @@ a {
   .menu {
     gap: 1rem;
   }
-  .collection-item {
-    width: 100%;
-    height: 225px;
+  .collection-item, canvas {
+    width: 310px!important;
+    height: 225px!important;
   }
   .collection-item p, .collection-title {
     font-size: 14px;

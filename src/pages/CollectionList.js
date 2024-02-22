@@ -116,7 +116,7 @@ const CollectionList = ({ calculatedHeight, collections, setCollections }) => {
                 }
             });
         }
-    }, [collections, loading, intro, afterTransition, imagesLoaded]);
+    }, [collections, loading, intro, afterTransition, imagesLoaded, subtitlePositions, setSubtitlePositions]);
 
     if (!collections) {
         return '';
