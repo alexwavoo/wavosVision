@@ -107,8 +107,8 @@ const CollectionList = ({ calculatedHeight, collections, setCollections }) => {
                         strength: 1,
                         area: 1,
                         waveSpeed: 0.008,
-                        speedIn: 2,
-                        speedOut: 2,
+                        speedIn: 0.75,
+                        speedOut: 1,
                         easing: 'Expo.easeInOut',
                         hover: true,
                     });
