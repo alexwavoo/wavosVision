@@ -169,11 +169,11 @@ a {
 }
 .collection-item:hover{
 }
-.collection-item:hover img {
+/* .collection-item:hover img {
   filter: saturate(1.05) brightness(1.1) blur(3px);
   width: 101.5%;
   height: 101.5%;
-}
+} */
 
 .collection-item p, .collection-title {
   font-size: 22px;
