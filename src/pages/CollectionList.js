@@ -104,10 +104,10 @@ const CollectionList = ({ calculatedHeight, collections, setCollections }) => {
                         parent: element,
                         texture: `${collection.thumbnail.url}?h=500`,
                         intensity: 1,
-                        strength: 2,
-                        area: 4,
+                        strength: 1,
+                        area: 1,
                         waveSpeed: 0.008,
-                        speedIn: 1.5,
+                        speedIn: 2,
                         speedOut: 2,
                         easing: 'Expo.easeInOut',
                         hover: true,
@@ -116,7 +116,7 @@ const CollectionList = ({ calculatedHeight, collections, setCollections }) => {
                 }
             });
         }
-    }, [, collections, loading, intro, afterTransition, imagesLoaded]);
+    }, [collections, loading, intro, afterTransition, imagesLoaded]);
 
     if (!collections) {
         return '';
