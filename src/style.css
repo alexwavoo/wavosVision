@@ -160,6 +160,13 @@ a {
   height: 400px;
   transition: all 0.2s ease-in;
 }
+canvas {
+  width: 100%!important;
+  height: 100%!important;
+  object-fit: cover;
+  object-position: center;
+}
+
 .collection-item img {
   width: 105%;
   height: 105%;
@@ -339,7 +346,7 @@ a {
   .menu {
     gap: 1rem;
   }
-  .collection-item, canvas {
+  .collection-item {
     width: 309.375px!important;
     height: 225px!important;
   }
