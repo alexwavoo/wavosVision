@@ -353,6 +353,9 @@ canvas {
   .collection-item p, .collection-title {
     font-size: 14px;
   }
+  canvas {
+    width: 309.375px!important;
+  }
 
   /* LIST VIEW */
   .flex-container {
