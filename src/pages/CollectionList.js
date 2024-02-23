@@ -142,7 +142,7 @@ const CollectionList = ({ calculatedHeight, collections, setCollections }) => {
                             onClick={(e) => {
                                 e.preventDefault(); // Prevent default link behavior
                                 setTimeout(() => {
-                                    window.location.href = e.target.href; // Redirect after 1 second delay
+                                    window.location.href = e.currentTarget.href; // Redirect after 1 second delay
                                 }, 1000);
                             }}
                         >
