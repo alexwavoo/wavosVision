@@ -135,24 +135,30 @@ const CollectionList = ({ calculatedHeight, collections, setCollections }) => {
                     <div className="menu">
                         {collections.map((collection) => (
                             <Link
-                                key={collection.sys.id}
-                                to={`/collection/${collection.sys.id}/projects`}
-                                className="collection-item"
-                                id={`collection-item-${collection.sys.id}`}
-                            >
-                                {subtitlePositions[collection.sys.id] && (
-                                    <p
-                                        style={{
-                                            position: 'absolute',
-                                            top: `${subtitlePositions[collection.sys.id].y}px`,
-                                            left: `${subtitlePositions[collection.sys.id].x}px`,
-                                            transform: 'translate(-50%, -50%)',
-                                        }}
-                                    >
-                                        {collection.title}
-                                    </p>
-                                )}
-                            </Link>
+                            key={collection.sys.id}
+                            to={`/collection/${collection.sys.id}/projects`}
+                            className="collection-item"
+                            id={`collection-item-${collection.sys.id}`}
+                            onClick={(e) => {
+                                e.preventDefault(); // Prevent default link behavior
+                                setTimeout(() => {
+                                    window.location.href = e.target.href; // Redirect after 1 second delay
+                                }, 1000);
+                            }}
+                        >
+                            {subtitlePositions[collection.sys.id] && (
+                                <p
+                                    style={{
+                                        position: 'absolute',
+                                        top: `${subtitlePositions[collection.sys.id].y}px`,
+                                        left: `${subtitlePositions[collection.sys.id].x}px`,
+                                        transform: 'translate(-50%, -50%)',
+                                    }}
+                                >
+                                    {collection.title}
+                                </p>
+                            )}
+                        </Link>
                         ))}
                     </div>
                 </div>
