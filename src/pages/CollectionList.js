@@ -139,11 +139,11 @@ const CollectionList = ({ calculatedHeight, collections, setCollections }) => {
                         {collections.map((collection) => (
                             <Link
                             key={collection.sys.id}
-                            to={`/collection/${collection.sys.id}/projects`}
+                            to="#"
                             className="collection-item"
                             id={`collection-item-${collection.sys.id}`}
                             onClick={(e) => {
-                                e.preventDefault(); // Prevent default link behavior
+                                 // Prevent default link behavior
                                 setTimeout(() => {
                                     nav(`/collection/${collection.sys.id}/projects`);// Redirect after 1 second delay
                                 }, 1000);
