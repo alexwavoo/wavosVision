@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../style.css';
 import { Link } from 'react-router-dom';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const CollectionList = ({ calculatedHeight, collections, setCollections }) => {
     const [subtitlePositions, setSubtitlePositions] = useState({});
@@ -11,7 +11,7 @@ const CollectionList = ({ calculatedHeight, collections, setCollections }) => {
     const [imagesLoaded, setImagesLoaded] = useState(false);
     const [counter , setCounter] = useState(0);
     
-    const history = useHistory();
+    const nav = useNavigate();
     
     useEffect(() => {
         // Set body and id='app' to overflow hidden
@@ -145,7 +145,7 @@ const CollectionList = ({ calculatedHeight, collections, setCollections }) => {
                             onClick={(e) => {
                                 e.preventDefault(); // Prevent default link behavior
                                 setTimeout(() => {
-                                    history.push(`/collection/${collection.sys.id}/projects`);// Redirect after 1 second delay
+                                    nav(`/collection/${collection.sys.id}/projects`);// Redirect after 1 second delay
                                 }, 1000);
                             }}
                         >
