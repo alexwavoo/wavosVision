@@ -1,3 +1,2 @@
-# contentful
-
-[Edit in StackBlitz next generation editor ⚡️](https://stackblitz.com/~/github.com/charliemcx5/contentful)
+## Portfolio for Alex Wavo's Photography and Digital Art
+Made with React
