@@ -78,9 +78,6 @@ export default function App() {
       });
   }, []);
 
-  // useEffect(() => { 
-  //   console.log('collections', collections);
-  // }, [collections, setCollections]);
 
   return (
     <Router>
