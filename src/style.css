@@ -363,6 +363,10 @@ canvas {
     width: 309.375px!important;
   }
 
+  .collection-wrapper {
+    font-size: 14px;
+  }
+
   .featured-images-grid {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 1rem;
