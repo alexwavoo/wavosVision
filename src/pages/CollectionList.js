@@ -8,6 +8,15 @@ const CollectionList = ({ calculatedHeight, collections, featuredImages }) => {
     const [modalImage, setModalImage] = useState(null);
     const [modalText, setModalText] = useState(null);
     const [modalLoaded, setModalLoaded] = useState(false);
+    const [showContent, setShowContent] = useState(false);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setShowContent(true);
+        }, 1000);
+
+        return () => clearTimeout(timer);
+    }, []);
 
     const openModal = (image) => () => {
         setModal(true);
@@ -29,27 +38,18 @@ const CollectionList = ({ calculatedHeight, collections, featuredImages }) => {
 
     if (!collections) return null;
 
+    if (!showContent) {
+        return (
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+                <img src="/stars.png" alt="Stars" width='100px' />
+            </div>
+        );
+    }
+
     return (
         <>
         <div className="collection-wrapper">
-                {/* list of featured images */}
-
-                <div className="featured-images-grid">
-                    {featuredImages.map((image, index) => (
-                        <div key={index} className="featured-image-item" onClick={openModal(image)}>
-                            <img 
-                                src={`${image.fields.file.url}?w=650`} 
-                                alt={image.fields.title} 
-                                className="featured-image"
-                            />
-                            <h3 className="featured-image-title">{image.fields.title}</h3>
-                            <p className="featured-image-description">{image.fields.description}</p>
-                        </div>
-                    ))}
-                </div>
-
             <div className='menu-wrapper' >
-
                 <div className="collections">
                     {collections.map(({ sys, title }) => (
                         <Link
@@ -63,6 +63,20 @@ const CollectionList = ({ calculatedHeight, collections, featuredImages }) => {
                     ))}
                 </div>
             </div>
+            <div className='featured-title'>Featured Work</div>
+            <div className="featured-images-grid">
+                {featuredImages.map((image, index) => (
+                    <div key={index} className="featured-image-item" onClick={openModal(image)}>
+                        <img 
+                            src={`${image.fields.file.url}?w=650`} 
+                            alt={image.fields.title} 
+                            className="featured-image"
+                        />
+                        <h3 className="featured-image-title">{image.fields.title}</h3>
+                        <p className="featured-image-description">{image.fields.description}</p>
+                    </div>
+                ))}
+            </div>
         </div>
         {modal ? (
         <div onClick={closeModal} className='modal-wrapper' style={{ height: `${calculatedHeight}px` }}>
@@ -70,7 +84,7 @@ const CollectionList = ({ calculatedHeight, collections, featuredImages }) => {
             <img  src={`${modalImage}?w=2560`} width="80%" alt="" />
         ) : (
             <>
-            <span class="loader"></span>
+            <span className="loader"></span>
             <img onLoad={handleImageLoaded}  src={`${modalImage}?w=2560`} style={{ display: 'none' }}  alt="" />
             </>
         )}

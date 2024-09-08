@@ -2,7 +2,7 @@
 
 body {
   background: #fdf8dc;
-  /* overflow: hidden; */
+  margin: 0;
   font-family: "Roboto", sans-serif;
   cursor: default;
   --modal-text-height: 0px;
@@ -142,6 +142,7 @@ a {
   justify-items: center;
   align-content: center;
   user-select: none;
+  padding-top: 1.5rem;
 }
 
 /* COLLECTIONS LIST */
@@ -161,6 +162,11 @@ canvas {
   gap: 2rem;
 }
 
+.featured-title {
+    max-width: 1500px;
+    margin: 0 auto;
+    text-transform: uppercase;
+}
 .featured-images-title {
   max-width: 1500px;
   margin: 0 auto;
