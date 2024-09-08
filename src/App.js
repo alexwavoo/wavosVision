@@ -78,12 +78,23 @@ export default function App() {
       });
   }, []);
 
+  useEffect(() => {
+    fetch('https://cdn.contentful.com/spaces/oen9jg6suzgv/environments/master/assets?access_token=DVunWPNQGTy0uUwexdTPIoUiShuoqOrcDGi9q8x6tXo&metadata.tags.sys.id[all]=featured')
+      .then(response => response.json())
+      .then(data => {
+        setFeaturedImages(data.items);
+        console.log(featuredImages);
+      })
+      .catch(error => console.error('Error fetching featured images:', error));
+  }, []);
+  
+
 
   return (
     <Router>
       <Routes>
         {/* pass variable calculatedHeight and collections */}
-        <Route path="/" element={<CollectionList calculatedHeight={calculatedHeight} collections={collections} setCollections={setCollections} />} />
+        <Route path="/" element={<CollectionList calculatedHeight={calculatedHeight} collections={collections} featuredImages={featuredImages} />} />
         <Route
           path="/collection/:collectionId/projects"
           element={<ProjectsList collections={collections} calculatedHeight={calculatedHeight} />}
@@ -97,3 +108,4 @@ export default function App() {
     </Router>
   );
 }
+
