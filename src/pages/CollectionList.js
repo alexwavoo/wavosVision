@@ -51,7 +51,7 @@ const CollectionList = ({ calculatedHeight, collections, featuredImages }) => {
         <div className="collection-wrapper">
             <div className='menu-wrapper' >
                 <div className="collections">
-                    <p>WAVO'S VISION:</p> 
+                    <p>COLLECTIONS:</p> 
                     {collections.map(({ sys, title }) => (
                         <Link
                             key={sys.id}
