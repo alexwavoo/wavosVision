@@ -25,8 +25,8 @@ const collectionQuery = `
 
 export default function App() {
   const [calculatedHeight, setCalculatedHeight] = useState(0);
-  const [collections, setCollections] = useState(null);
-
+  const [collections, setCollections] = useState([]);
+  const [featuredImages, setFeaturedImages] = useState([]);
   
 
 
