@@ -157,7 +157,10 @@ canvas {
   object-position: center;
 }
 
-
+.collections {
+  display: flex;
+  gap: 2rem;
+}
 
 
 /* LIST VIEW */
