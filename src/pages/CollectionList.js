@@ -72,8 +72,6 @@ const CollectionList = ({ calculatedHeight, collections, featuredImages }) => {
                             alt={image.fields.title} 
                             className="featured-image"
                         />
-                        <h3 className="featured-image-title">{image.fields.title}</h3>
-                        <p className="featured-image-description">{image.fields.description}</p>
                     </div>
                 ))}
             </div>
