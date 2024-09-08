@@ -162,6 +162,9 @@ canvas {
   display: flex;
   gap: 2rem;
 }
+.collection:hover {
+  text-decoration: underline;
+}
 
 .featured-title {
     max-width: 1500px;
