@@ -40,7 +40,7 @@ const CollectionList = ({ calculatedHeight, collections, featuredImages }) => {
 
     if (!showContent) {
         return (
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: `${calculatedHeight}px` }}>
                 <img src="/stars.png" alt="Stars" width='100px' />
             </div>
         );
