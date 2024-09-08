@@ -165,6 +165,7 @@ canvas {
 .featured-title {
     max-width: 1500px;
     margin: 0 auto;
+    padding: 0 1.5rem;
     text-transform: uppercase;
 }
 .featured-images-title {
