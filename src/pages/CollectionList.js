@@ -13,7 +13,7 @@ const CollectionList = ({ calculatedHeight, collections, featuredImages }) => {
     useEffect(() => {
         const timer = setTimeout(() => {
             setShowContent(true);
-        }, 1000);
+        }, 2000);
 
         return () => clearTimeout(timer);
     }, []);
