@@ -30,9 +30,7 @@ const CollectionList = ({ calculatedHeight, collections, featuredImages }) => {
         const screenWidth = window.innerWidth;
         let groupCount;
 
-        if (screenWidth > 1500) {
-            groupCount = 4;
-        } else if (screenWidth > 1350) {
+        if (screenWidth > 1350) {
             groupCount = 4;
         } else if (screenWidth > 1000) {
             groupCount = 3;
@@ -40,9 +38,8 @@ const CollectionList = ({ calculatedHeight, collections, featuredImages }) => {
             groupCount = 2;
         }
 
-        const groupSize = Math.ceil(images.length / groupCount);
         return Array.from({ length: groupCount }, (_, i) =>
-            images.slice(i * groupSize, (i + 1) * groupSize)
+            images.filter((_, index) => index % groupCount === i)
         );
     };
 
