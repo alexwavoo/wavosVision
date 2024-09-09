@@ -392,11 +392,19 @@ canvas {
   }
 
   .featured-images-container {
-    gap: 0.5rem;
+    gap: 1rem;
+    padding: 0.6rem 1rem;
+  }
+  .featured-title {
+    padding: 0 1rem;
   }
 
   .featured-images-column {
     gap: 1rem;
+  }
+
+  .featured-image-subtitle{
+    font-size: 14px;
   }
 
   /* LIST VIEW */

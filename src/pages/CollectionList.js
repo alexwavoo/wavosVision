@@ -8,10 +8,21 @@ const CollectionList = ({ calculatedHeight, collections, featuredImages }) => {
   const [imageGroups, setImageGroups] = useState([]);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowContent(true);
-    }, 2000);
-    return () => clearTimeout(timer);
+    const handleLoad = () => {
+      if (document.readyState === 'complete') {
+        setTimeout(() => setShowContent(true), 1000);
+      }
+    };
+
+    if (document.readyState === 'complete') {
+      setTimeout(() => setShowContent(true), 1000);
+    } else {
+      window.addEventListener('load', handleLoad);
+    }
+
+    return () => {
+      window.removeEventListener('load', handleLoad);
+    };
   }, []);
 
   const splitImagesIntoGroups = useMemo(() => {
@@ -50,17 +61,12 @@ const CollectionList = ({ calculatedHeight, collections, featuredImages }) => {
 
   if (!collections) return null;
 
-  if (!showContent) {
-    return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: calculatedHeight ? `${calculatedHeight}px` : `${window.innerHeight}px` }}>
-        <div className="title">WAVO'S VISION</div>
-      </div>
-    );
-  }
-
   return (
     <>
-      <div className="collection-wrapper">
+      <div style={{ display: !showContent ? 'flex' : 'none', justifyContent: 'center', alignItems: 'center', height: calculatedHeight ? `${calculatedHeight}px` : `${window.innerHeight}px` }}>
+        <div className="title">WAVO'S VISION</div>
+      </div>
+      <div className="collection-wrapper" style={{ display: showContent ? 'block' : 'none' }}>
         <div className='menu-wrapper'>
           <div className="collections">
             <p>COLLECTIONS:</p>
@@ -82,7 +88,7 @@ const CollectionList = ({ calculatedHeight, collections, featuredImages }) => {
                       src={`${image.fields.file.url}?w=650`} 
                       alt={image.fields.title || 'Featured image'} 
                       className="featured-image" 
-                      loading="lazy"
+                     
                     />
                     <div className="featured-image-subtitle">
                       {image.linkedProject.title}
