@@ -119,7 +119,7 @@ a:focus {
   font-family: "Roboto", sans-serif;
   font-weight: 300;
   font-size: 26px;
-  animation: fade 2.9s ease-in forwards;
+  /* animation: fade 2.9s ease-in forwards; */
 }
 
 @keyframes fade {
