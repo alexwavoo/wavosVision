@@ -31,7 +31,7 @@ const CollectionList = ({ calculatedHeight, collections, featuredImages }) => {
         let groupCount;
 
         if (screenWidth > 1500) {
-            groupCount = 5;
+            groupCount = 4;
         } else if (screenWidth > 1350) {
             groupCount = 4;
         } else if (screenWidth > 1000) {
