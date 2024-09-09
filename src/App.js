@@ -30,9 +30,7 @@ export default function App() {
 
   const calculateHeight = useMemo(() => debounce(() => {
     const windowHeight = window.innerHeight;
-    const heightPercentage = 100; // Adjust this as needed
-    const newHeight = (windowHeight * heightPercentage) / 100;
-    setCalculatedHeight(newHeight);
+    setCalculatedHeight(windowHeight);
   }, 200), []);
 
   useEffect(() => {
@@ -119,10 +117,7 @@ export default function App() {
 
   return (
     <Router>
-      <Suspense fallback={      
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: `${calculatedHeight}px` }}>
-          <div className="title" style={{animation: 'none'}}>WAVO'S VISION</div>
-        </div>}>
+      <Suspense fallback={<></>}>
         <Routes>
           <Route path="/" element={<CollectionList calculatedHeight={calculatedHeight} collections={collections} featuredImages={featuredImages} />} />
           <Route path="/collection/:collectionId/projects" element={<ProjectsList collections={collections} calculatedHeight={calculatedHeight} />} />

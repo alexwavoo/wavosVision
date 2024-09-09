@@ -52,7 +52,7 @@ const CollectionList = ({ calculatedHeight, collections, featuredImages }) => {
 
   if (!showContent) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: `${calculatedHeight}px` }}>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: calculatedHeight ? `${calculatedHeight}px` : `${window.innerHeight}px` }}>
         <div className="title">WAVO'S VISION</div>
       </div>
     );
