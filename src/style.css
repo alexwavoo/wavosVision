@@ -379,6 +379,9 @@ canvas {
     font-size: 14px;
   }
 
+  .featured-images-container {
+    gap: 0.5rem;
+  }
 
   /* LIST VIEW */
   .flex-container {
