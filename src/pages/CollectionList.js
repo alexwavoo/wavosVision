@@ -85,7 +85,7 @@ const CollectionList = ({ calculatedHeight, collections, featuredImages }) => {
                 <div key={index} className="featured-image-item">
                   <Link to={`/collection/${image.linkedProject.collectionId}/projects/${image.linkedProject.id}`}>
                     <img 
-                      src={`${image.fields.file.url}?w=350`} 
+                      src={`${image.fields.file.url}?w=550`} 
                       alt={image.fields.title || 'Featured image'} 
                       className="featured-image" 
                      

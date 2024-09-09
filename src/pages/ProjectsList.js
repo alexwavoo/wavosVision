@@ -180,7 +180,7 @@ function ProjectsList({ collections, calculatedHeight }) {
                 <Link key={project.id} to={`/collection/${collectionId}/projects/${project.id}`}>
                   <FadeUp>
                     <div className="grid-item" style={{ marginBottom: '1.5rem' }}>
-                      <img src={`${project.thumbnail}?w=650`} alt={project.title} loading="lazy" />
+                      <img src={`${project.thumbnail}?w=565`} alt={project.title} loading="lazy" />
                       <div className="subtitle">{project.title}</div>
                     </div>
                   </FadeUp>
@@ -188,7 +188,7 @@ function ProjectsList({ collections, calculatedHeight }) {
               ) : (
                 <FadeUp key={project.id}>
                   <div onClick={() => openModal(project)} className="grid-item" style={{ marginBottom: '1.5rem', cursor: 'crosshair' }}>
-                    <img src={`${project.thumbnail}?w=650`} alt={project.title} loading="lazy" />
+                    <img src={`${project.thumbnail}?w=565`} alt={project.title} loading="lazy" />
                     <div className="subtitle">{project.title}</div>
                   </div>
                 </FadeUp>
@@ -202,7 +202,7 @@ function ProjectsList({ collections, calculatedHeight }) {
                   <Link key={project.id} to={`/collection/${collectionId}/projects/${project.id}`}>
                     <FadeUp>
                       <div className="grid-item" style={{ marginBottom: '1.5rem' }}>
-                        <img src={`${project.thumbnail}?w=650`} alt={project.title} loading="lazy" />
+                        <img src={`${project.thumbnail}?w=565`} alt={project.title} loading="lazy" />
                         <div className="subtitle">{project.title}</div>
                       </div>
                     </FadeUp>
@@ -210,7 +210,7 @@ function ProjectsList({ collections, calculatedHeight }) {
                 ) : (
                   <FadeUp key={project.id}>
                     <div onClick={() => openModal(project)} className="grid-item" style={{ marginBottom: '1.5rem', cursor: 'crosshair' }}>
-                      <img src={`${project.thumbnail}?w=650`} alt={project.title} loading="lazy" />
+                      <img src={`${project.thumbnail}?w=565`} alt={project.title} loading="lazy" />
                       <div className="subtitle">{project.title}</div>
                     </div>
                   </FadeUp>
