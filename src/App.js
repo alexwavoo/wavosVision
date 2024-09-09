@@ -79,13 +79,53 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    fetch('https://cdn.contentful.com/spaces/oen9jg6suzgv/environments/master/assets?access_token=DVunWPNQGTy0uUwexdTPIoUiShuoqOrcDGi9q8x6tXo&metadata.tags.sys.id[all]=featured')
-      .then(response => response.json())
-      .then(data => {
-        setFeaturedImages(data.items);
-        console.log(featuredImages);
-      })
-      .catch(error => console.error('Error fetching featured images:', error));
+    const fetchProjectsWithFeaturedImages = async () => {
+      try {
+        // Fetch all projects with their images and collections
+        const response = await fetch('https://cdn.contentful.com/spaces/oen9jg6suzgv/environments/master/entries?access_token=DVunWPNQGTy0uUwexdTPIoUiShuoqOrcDGi9q8x6tXo&content_type=project&include=2');
+        const data = await response.json();
+
+        // Extract projects and assets
+        const projects = data.items;
+        const assets = data.includes.Asset;
+
+        // Create a map of asset IDs to assets for quick lookup
+        const assetMap = new Map(assets.map(asset => [asset.sys.id, asset]));
+
+        // Filter for featured images and associate them with projects
+        const featuredProjectImages = projects.flatMap(project => {
+          const projectImages = [
+            project.fields.thumbnail,
+            ...(project.fields.images || [])
+          ].filter(Boolean);
+
+          return projectImages.map(imageLink => {
+            const asset = assetMap.get(imageLink.sys.id);
+            if (asset && asset.metadata && asset.metadata.tags) {
+              const isFeatured = asset.metadata.tags.some(tag => tag.sys.id === 'featured');
+              if (isFeatured) {
+                return {
+                  ...asset,
+                  linkedProject: {
+                    id: project.sys.id,
+                    title: project.fields.title,
+                    collectionId: project.fields.collection ? project.fields.collection.sys.id : null
+                  }
+                };
+              }
+            }
+            return null;
+          }).filter(Boolean);
+        });
+
+        setFeaturedImages(featuredProjectImages);
+        console.log('Featured Images:', featuredProjectImages);
+      } catch (error) {
+        console.error('Error fetching projects and featured images:', error);
+      }
+    };
+
+    fetchProjectsWithFeaturedImages();
   }, []);
   
 

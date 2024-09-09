@@ -79,17 +79,25 @@ const CollectionList = ({ calculatedHeight, collections, featuredImages }) => {
                     {imageGroups.map((group, groupIndex) => (
                         <div key={groupIndex} className="featured-images-column">
                             {group.map((image, index) => (
-                                <div key={index} className="featured-image-item" >
-                                    <img 
-                                        src={`${image.fields.file.url}?w=650`} 
-                                        alt={image.fields.title} 
-                                        className="featured-image"
-                                    />
+                                <div key={index} className="featured-image-item">
+                                    <Link to={image.linkedProject ? `/collection/${image.linkedProject.collectionId}/projects/${image.linkedProject.id}` : '#'}>
+                                        <img 
+                                            src={`${image.fields.file.url}?w=650`} 
+                                            alt={image.fields.title} 
+                                            className="featured-image"
+                                            
+                                        />
+                                        {image.linkedProject && (
+                                            <div className="featured-image-subtitle">
+                                                {image.linkedProject.title}
+                                            </div>
+                                        )}
+                                    </Link>
                                 </div>
                             ))}
                         </div>
                     ))}
-                </div>
+            </div>
         </div>
         </>
     );
