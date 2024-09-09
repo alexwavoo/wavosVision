@@ -43,7 +43,7 @@ const CollectionList = ({ calculatedHeight, collections, featuredImages }) => {
     if (!showContent) {
         return (
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: `${calculatedHeight}px` }}>
-                <img src="/stars.png" alt="Stars" width='100px' />
+                <div className="title">WAVO'S VISION</div>
             </div>
         );
     }
