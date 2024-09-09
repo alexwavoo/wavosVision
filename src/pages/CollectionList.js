@@ -4,11 +4,8 @@ import { Link } from 'react-router-dom';
 
 
 const CollectionList = ({ calculatedHeight, collections, featuredImages }) => {
-    const [modal, setModal] = useState(false);
-    const [modalImage, setModalImage] = useState(null);
-    const [modalText, setModalText] = useState(null);
-    const [modalLoaded, setModalLoaded] = useState(false);
     const [showContent, setShowContent] = useState(false);
+    const [imageGroups, setImageGroups] = useState([]);
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -18,24 +15,35 @@ const CollectionList = ({ calculatedHeight, collections, featuredImages }) => {
         return () => clearTimeout(timer);
     }, []);
 
-    const openModal = (image) => () => {
-        setModal(true);
-        document.body.style.overflow = 'hidden';
-        setModalImage(image.fields.file.url);
-        setModalText([image.fields.title, image.fields.description]);
-        setModalLoaded(false);
-    };
+    useEffect(() => {
+        const handleResize = () => {
+            setImageGroups(splitImagesIntoGroups(featuredImages));
+        };
 
-    const closeModal = () => {
-        setModal(false);
-        document.body.style.overflow = 'auto';
-        setModalImage(null);
-        setModalText(null);
-        setModalLoaded(false);
-    };
+        handleResize();
+        window.addEventListener('resize', handleResize);
 
-    const handleImageLoaded = () => {
-        setModalLoaded(true);
+        return () => window.removeEventListener('resize', handleResize);
+    }, [featuredImages]);
+
+    const splitImagesIntoGroups = (images) => {
+        const screenWidth = window.innerWidth;
+        let groupCount;
+
+        if (screenWidth > 1500) {
+            groupCount = 5;
+        } else if (screenWidth > 1350) {
+            groupCount = 4;
+        } else if (screenWidth > 1000) {
+            groupCount = 3;
+        } else {
+            groupCount = 2;
+        }
+
+        const groupSize = Math.ceil(images.length / groupCount);
+        return Array.from({ length: groupCount }, (_, i) =>
+            images.slice(i * groupSize, (i + 1) * groupSize)
+        );
     };
 
     if (!collections) return null;
@@ -67,35 +75,22 @@ const CollectionList = ({ calculatedHeight, collections, featuredImages }) => {
                 </div>
             </div>
             <div className='featured-title'>Featured Work</div>
-            <div className="featured-images-grid">
-                {featuredImages.map((image, index) => (
-                    <div key={index} className="featured-image-item" onClick={openModal(image)}>
-                        <img 
-                            src={`${image.fields.file.url}?w=650`} 
-                            alt={image.fields.title} 
-                            className="featured-image"
-                        />
-                    </div>
-                ))}
-            </div>
+            <div className="featured-images-container">
+                    {imageGroups.map((group, groupIndex) => (
+                        <div key={groupIndex} className="featured-images-column">
+                            {group.map((image, index) => (
+                                <div key={index} className="featured-image-item" >
+                                    <img 
+                                        src={`${image.fields.file.url}?w=650`} 
+                                        alt={image.fields.title} 
+                                        className="featured-image"
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    ))}
+                </div>
         </div>
-        {modal ? (
-        <div onClick={closeModal} className='modal-wrapper' style={{ height: `${calculatedHeight}px` }}>
-        {modalLoaded ? (
-            <img  src={`${modalImage}?w=2560`} width="80%" alt="" />
-        ) : (
-            <>
-            <span className="loader"></span>
-            <img onLoad={handleImageLoaded}  src={`${modalImage}?w=2560`} style={{ display: 'none' }}  alt="" />
-            </>
-        )}
-            <div className='modal-text'>
-            <div className='modal-title'>{modalText[0]}</div>
-            <div className='modal-subtitle'>{modalText[1]}</div>
-            </div>
-        </div>
-        ) : null
-            }
         </>
     );
 };
