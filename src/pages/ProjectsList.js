@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useParams, Link } from 'react-router-dom';
 import '../style.css';
-import { Link } from 'react-router-dom';
 import FadeUp from '../components/FadeUp';
+import { debounce } from 'lodash';
 
 function ProjectsList({ collections, calculatedHeight }) {
   const { collectionId } = useParams();
@@ -17,13 +17,11 @@ function ProjectsList({ collections, calculatedHeight }) {
   const [modalLoaded, setModalLoaded] = useState(false);
 
   useEffect(() => {
-    console.log('collections', collections);
     if (collections) {
-      const collection = collections.find((collection) => collection.sys.id === collectionId);
-      setCollection(collection);
+      const foundCollection = collections.find((col) => col.sys.id === collectionId);
+      setCollection(foundCollection);
     }
-  }, [collections]);
- 
+  }, [collections, collectionId]);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -31,14 +29,21 @@ function ProjectsList({ collections, calculatedHeight }) {
       const readyTimeout = setTimeout(() => {
         setReady(true);
       }, 500);
+      return () => clearTimeout(readyTimeout);
     }, 2500);
     return () => clearTimeout(timeout);
   }, []);
 
-
-  useEffect(() => {
-    const fetchData = async () => {
+  const fetchProjects = useMemo(() => {
+    return async () => {
       try {
+        const cachedProjects = sessionStorage.getItem(`projects_${collectionId}`);
+        if (cachedProjects) {
+          setProjects(JSON.parse(cachedProjects));
+          setLoading(false);
+          return;
+        }
+
         const response = await fetch('https://graphql.contentful.com/content/v1/spaces/oen9jg6suzgv/', {
           method: 'POST',
           headers: {
@@ -49,33 +54,23 @@ function ProjectsList({ collections, calculatedHeight }) {
             query: `
               query collectionProjectsQuery {
                 collection(id: "${collectionId}") {
-                  sys {
-                    id
-                  }
+                  sys { id }
                   projectsCollection {
                     items {
-                      sys {
-                        id
-                      }
+                      sys { id }
                       ... on Project {
-                      title
-                      description {
-                        json
-                      }
-                      thumbnail {
-                        url
-                      }
-                      imagesCollection {
-                        items {
-                          url
+                        title
+                        description { json }
+                        thumbnail { url }
+                        imagesCollection {
+                          items { url }
+                          total
                         }
-                        total
                       }
                     }
                   }
                 }
               }
-            }
             `,
           }),
         });
@@ -98,6 +93,7 @@ function ProjectsList({ collections, calculatedHeight }) {
           }));
 
           setProjects(projectsData);
+          sessionStorage.setItem(`projects_${collectionId}`, JSON.stringify(projectsData));
         }
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -105,38 +101,33 @@ function ProjectsList({ collections, calculatedHeight }) {
         setLoading(false);
       }
     };
-
-    fetchData();
   }, [collectionId]);
 
-  function openModal(project) {
-    if (modal === false) {
+  useEffect(() => {
+    fetchProjects();
+  }, [fetchProjects]);
+
+  const openModal = (project) => {
+    if (!modal) {
       setModalImage(project.thumbnail);
       setModal(true);
       setModalText([project.title, project.description.json.content[0].content[0].value]);
       document.body.style.overflow = 'hidden';
-      // set --modal-title-height to 92px body variable
       document.body.style.setProperty('--modal-text-height', '92px');
-      
-
     }
-  }
-  function closeModal() {
-    if (modal === true) {
+  };
+
+  const closeModal = () => {
+    if (modal) {
       setModal(false);
       document.body.style.overflow = 'auto';
       setModalLoaded(false);
     }
-  }
+  };
 
-  function handleImageLoaded() {
-    // timeout to allow for image to load
-    const timeout = setTimeout(() => {
-      setModalLoaded(true);
-    }, 500);
-    return () => clearTimeout(timeout);
-  }
-  
+  const handleImageLoaded = useMemo(() => debounce(() => {
+    setModalLoaded(true);
+  }, 500), []);
 
   if (loading) {
     return '';
@@ -145,25 +136,21 @@ function ProjectsList({ collections, calculatedHeight }) {
   if (projects.length === 0) {
     return (
       <>
-        <div className='page-cover'style={{
+        <div className='page-cover' style={{
           opacity: transition ? 0 : 1,
           zIndex: ready ? 0 : undefined,
-        }} >
-          <div className='subtitle'>{collection.title}</div>
+        }}>
+          <div className='subtitle'>{collection?.title}</div>
         </div>
-
         <div className="wrapper">
           <div className="flex-container">
             <div className="column-left">
-              
-              <div className="grid-item"  style={{ marginBottom: '1.5rem' }}>
+              <div className="grid-item" style={{ marginBottom: '1.5rem' }}>
                 <div className="subtitle">No projects found</div>
               </div>
-              
             </div>
           </div>
         </div>
-
         <Link to="/">
           <img className="logo" src="/stars.png" alt="" style={{ position: 'absolute', right: '0.5rem' }} />
         </Link>
@@ -177,37 +164,31 @@ function ProjectsList({ collections, calculatedHeight }) {
 
   return (
     <>
-        <div className='page-cover' style={{
-          opacity: transition ? 0 : 1,
-          zIndex: ready ? 0 : undefined,
-        }}>
-          <p className='collection-title'>
-            {/* conditional collection.title */}
-            {collection && collection.title}
-
-            </p>
-        </div>
+      <div className='page-cover' style={{
+        opacity: transition ? 0 : 1,
+        zIndex: ready ? 0 : undefined,
+      }}>
+        <p className='collection-title'>{collection?.title}</p>
+      </div>
 
       <div className="wrapper">
         <div style={{ marginTop: '2.5rem' }}></div>
         <div className="flex-container">
           <div className="column-left">
-          {projectsLeft.map((project) => (
+            {projectsLeft.map((project) => (
               project.imagesCollection.total > 1 ? (
-                
                 <Link key={project.id} to={`/collection/${collectionId}/projects/${project.id}`}>
-                  <FadeUp key={project.id}>
-                  <div className="grid-item" style={{ marginBottom: '1.5rem' }}>
-                    <img src={`${project.thumbnail}?w=650`} alt={project.title} />
-                    <div className="subtitle">{project.title}</div>
-                  </div>
+                  <FadeUp>
+                    <div className="grid-item" style={{ marginBottom: '1.5rem' }}>
+                      <img src={`${project.thumbnail}?w=650`} alt={project.title} loading="lazy" />
+                      <div className="subtitle">{project.title}</div>
+                    </div>
                   </FadeUp>
                 </Link>
-                
               ) : (
-                  <FadeUp key={project.id}>
-                  <div key={project.id} onClick={() => openModal(project)} className="grid-item" style={{ marginBottom: '1.5rem', cursor: 'crosshair' }}>
-                    <img src={`${project.thumbnail}?w=650`} alt={project.title} />
+                <FadeUp key={project.id}>
+                  <div onClick={() => openModal(project)} className="grid-item" style={{ marginBottom: '1.5rem', cursor: 'crosshair' }}>
+                    <img src={`${project.thumbnail}?w=650`} alt={project.title} loading="lazy" />
                     <div className="subtitle">{project.title}</div>
                   </div>
                 </FadeUp>
@@ -218,21 +199,20 @@ function ProjectsList({ collections, calculatedHeight }) {
             <div className="column-right">
               {projectsRight.map((project) => (
                 project.imagesCollection.total > 1 ? (
-                <Link key={project.id} to={`/collection/${collectionId}/projects/${project.id}`}>
-                  <FadeUp key={project.id}>
-                  <div className="grid-item" style={{ marginBottom: '1.5rem' }}>
-                    <img src={`${project.thumbnail}?w=650`} alt={project.title} />
-                    <div className="subtitle">{project.title}</div>
-                  </div>
-                  </FadeUp>
-                </Link>
-                
+                  <Link key={project.id} to={`/collection/${collectionId}/projects/${project.id}`}>
+                    <FadeUp>
+                      <div className="grid-item" style={{ marginBottom: '1.5rem' }}>
+                        <img src={`${project.thumbnail}?w=650`} alt={project.title} loading="lazy" />
+                        <div className="subtitle">{project.title}</div>
+                      </div>
+                    </FadeUp>
+                  </Link>
                 ) : (
                   <FadeUp key={project.id}>
-                  <div key={project.id} onClick={() => openModal(project)} className="grid-item" style={{ marginBottom: '1.5rem', cursor: 'crosshair' }}>
-                    <img src={`${project.thumbnail}?w=650`} alt={project.title} />
-                    <div className="subtitle">{project.title}</div>
-                  </div>
+                    <div onClick={() => openModal(project)} className="grid-item" style={{ marginBottom: '1.5rem', cursor: 'crosshair' }}>
+                      <img src={`${project.thumbnail}?w=650`} alt={project.title} loading="lazy" />
+                      <div className="subtitle">{project.title}</div>
+                    </div>
                   </FadeUp>
                 )
               ))}
@@ -240,23 +220,22 @@ function ProjectsList({ collections, calculatedHeight }) {
           )}
         </div>
       </div>
-      {modal ? (
-      <div onClick={closeModal} className='modal-wrapper' style={{ height: `${calculatedHeight}px` }}>
-      {modalLoaded ? (
-        <img  src={`${modalImage}?w=2560`} width="80%" alt="" />
-      ) : (
-        <>
-        <span class="loader"></span>
-        <img onLoad={handleImageLoaded}  src={`${modalImage}?w=2560`} style={{ display: 'none' }}  alt="" />
-        </>
-      )}
-        <div className='modal-text'>
-          <div className='modal-title'>{modalText[0]}</div>
-          <div className='modal-subtitle'>{modalText[1]}</div>
+      {modal && (
+        <div onClick={closeModal} className='modal-wrapper' style={{ height: `${calculatedHeight}px` }}>
+          {modalLoaded ? (
+            <img src={`${modalImage}?w=2560`} width="80%" alt="" />
+          ) : (
+            <>
+              <span className="loader"></span>
+              <img onLoad={handleImageLoaded} src={`${modalImage}?w=2560`} style={{ display: 'none' }} alt="" />
+            </>
+          )}
+          <div className='modal-text'>
+            <div className='modal-title'>{modalText[0]}</div>
+            <div className='modal-subtitle'>{modalText[1]}</div>
+          </div>
         </div>
-      </div>
-      ) : null
-        }
+      )}
       <Link to="/">
         <img className="logo" src="/stars.png" alt="" />
       </Link>
