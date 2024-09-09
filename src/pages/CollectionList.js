@@ -28,6 +28,7 @@ const CollectionList = ({ calculatedHeight, collections, featuredImages }) => {
 
     const closeModal = () => {
         setModal(false);
+        document.body.style.overflow = 'auto';
         setModalImage(null);
         setModalText(null);
         setModalLoaded(false);
