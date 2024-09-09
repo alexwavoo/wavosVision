@@ -20,6 +20,7 @@ const CollectionList = ({ calculatedHeight, collections, featuredImages }) => {
 
     const openModal = (image) => () => {
         setModal(true);
+        document.body.style.overflow = 'hidden';
         setModalImage(image.fields.file.url);
         setModalText([image.fields.title, image.fields.description]);
         setModalLoaded(false);
