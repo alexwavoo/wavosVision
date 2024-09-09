@@ -119,7 +119,10 @@ export default function App() {
 
   return (
     <Router>
-      <Suspense fallback={<div>WAVO'S VISION</div>}>
+      <Suspense fallback={      
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: `${calculatedHeight}px` }}>
+          <div className="title" style={{animation: 'none'}}>WAVO'S VISION</div>
+        </div>}>
         <Routes>
           <Route path="/" element={<CollectionList calculatedHeight={calculatedHeight} collections={collections} featuredImages={featuredImages} />} />
           <Route path="/collection/:collectionId/projects" element={<ProjectsList collections={collections} calculatedHeight={calculatedHeight} />} />
