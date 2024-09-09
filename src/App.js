@@ -92,6 +92,9 @@ export default function App() {
         // Create a map of asset IDs to assets for quick lookup
         const assetMap = new Map(assets.map(asset => [asset.sys.id, asset]));
 
+        // Use a Set to keep track of unique asset IDs
+        const uniqueAssetIds = new Set();
+
         // Filter for featured images and associate them with projects
         const featuredProjectImages = projects.flatMap(project => {
           const projectImages = [
@@ -100,10 +103,12 @@ export default function App() {
           ].filter(Boolean);
 
           return projectImages.map(imageLink => {
-            const asset = assetMap.get(imageLink.sys.id);
+            const assetId = imageLink.sys.id;
+            const asset = assetMap.get(assetId);
             if (asset && asset.metadata && asset.metadata.tags) {
               const isFeatured = asset.metadata.tags.some(tag => tag.sys.id === 'featured');
-              if (isFeatured) {
+              if (isFeatured && !uniqueAssetIds.has(assetId)) {
+                uniqueAssetIds.add(assetId);
                 return {
                   ...asset,
                   linkedProject: {
