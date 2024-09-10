@@ -168,6 +168,7 @@ a:focus {
 
 /* COLLECTIONS LIST */
 .collection-wrapper {
+  font-size: 14px;
   animation: fadeIn 1.2s ease-in forwards;
 }
 
