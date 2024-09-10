@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { debounce } from 'lodash'; // Make sure to install lodash
+import { Analytics } from "@vercel/analytics/react"
 
 const CollectionList = lazy(() => import('./pages/CollectionList'));
 const ProjectsList = lazy(() => import('./pages/ProjectsList'));
