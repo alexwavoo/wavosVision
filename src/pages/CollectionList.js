@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import '../style.css';
 import { Link } from 'react-router-dom';
 import { debounce } from 'lodash';
+import FadeUp from '../components/FadeUp';
 
 const CollectionList = ({ calculatedHeight, collections, featuredImages }) => {
   const [showContent, setShowContent] = useState(false);
@@ -72,6 +73,8 @@ const CollectionList = ({ calculatedHeight, collections, featuredImages }) => {
           {imageGroups.map((group, groupIndex) => (
             <div key={groupIndex} className="featured-images-column">
               {group.map((image, index) => (
+                
+                <FadeUp key={index} >
                 <div key={index} className="featured-image-item">
                   <Link to={`/collection/${image.linkedProject.collectionId}/projects/${image.linkedProject.id}`}>
                     <img 
@@ -85,6 +88,7 @@ const CollectionList = ({ calculatedHeight, collections, featuredImages }) => {
                     </div>
                   </Link>
                 </div>
+                </FadeUp>
               ))}
             </div>
           ))}
