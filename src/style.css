@@ -174,11 +174,12 @@ canvas {
 }
 
 .featured-title {
-    max-width: 1500px;
-    margin: 0 auto;
-    padding: 0 1.5rem;
-    text-transform: uppercase;
-    text-decoration: underline;
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  text-transform: uppercase;
+  /* text-decoration: underline; */
+  font-size: larger;
 }
 .featured-images-title {
   max-width: 1500px;
@@ -205,6 +206,10 @@ canvas {
   overflow: hidden;
 }
 
+.featured-image-item img {
+  transition: all 0.15s ease;
+}
+
 .featured-image-subtitle{
   font-size: 16px;
   font-style: italic;
@@ -214,10 +219,14 @@ canvas {
   text-align: center;
   box-sizing: border-box;
   padding-top: 0.35rem;
+  transition: all 0.15s ease;
 }
 
 .featured-image-item:hover .featured-image-subtitle {
   text-decoration: underline;
+}
+.featured-image-item:hover img {
+  opacity: 0.9;
 }
 
 .featured-image {
