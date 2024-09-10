@@ -168,9 +168,17 @@ function ProjectsList({ collections, calculatedHeight }) {
 
   const handleCollectionClick = (e, targetCollectionId) => {
     e.preventDefault();
-    setTransition(false);
+
     setReady(false);
     useNavigate(`/collection/${targetCollectionId}/projects`);
+    const timeout = setTimeout(() => {
+      setTransition(true);
+      const readyTimeout = setTimeout(() => {
+        setReady(true);
+      }, 500);
+      return () => clearTimeout(readyTimeout);
+    }, 2500);
+    return () => clearTimeout(timeout);
     };
 
 
