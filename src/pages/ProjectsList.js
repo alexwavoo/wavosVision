@@ -166,19 +166,10 @@ function ProjectsList({ collections, calculatedHeight }) {
 
   
 
-  const handleCollectionClick = (e, targetCollectionId) => {
-    e.preventDefault();
-
+  const handleCollectionClick = (targetCollectionId) => {
+    setTransition(false);
     setReady(false);
     useNavigate(`/collection/${targetCollectionId}/projects`);
-    const timeout = setTimeout(() => {
-      setTransition(true);
-      const readyTimeout = setTimeout(() => {
-        setReady(true);
-      }, 500);
-      return () => clearTimeout(readyTimeout);
-    }, 2500);
-    return () => clearTimeout(timeout);
     };
 
 
@@ -206,7 +197,7 @@ function ProjectsList({ collections, calculatedHeight }) {
                   to={`/collection/${sys.id}/projects`} 
                   className="collection" 
                   id={`collection-item-${sys.id}`}
-                  onClick={(e) => handleCollectionClick(e, sys.id)}
+                  onClick={() => handleCollectionClick(sys.id)}
                 >
                   <p>{title}</p>
                 </Link>
