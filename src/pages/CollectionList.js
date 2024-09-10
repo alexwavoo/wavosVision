@@ -74,7 +74,7 @@ const CollectionList = ({ calculatedHeight, collections, featuredImages }) => {
             <div key={groupIndex} className="featured-images-column">
               {group.map((image, index) => (
                 
-                <FadeUp key={index} >
+                <FadeUp>
                 <div key={index} className="featured-image-item">
                   <Link to={`/collection/${image.linkedProject.collectionId}/projects/${image.linkedProject.id}`}>
                     <img 
