@@ -326,7 +326,7 @@ canvas {
 
 .modal-wrapper {
   position: fixed;
-  z-index: 100;
+  z-index: 202;
   top: 0px;
   left: 0px;
   width: 100vw;
