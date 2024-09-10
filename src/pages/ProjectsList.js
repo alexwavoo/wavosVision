@@ -166,7 +166,8 @@ function ProjectsList({ collections, calculatedHeight }) {
 
   
 
-  const handleCollectionClick = (targetCollectionId) => {
+  const handleCollectionClick = (e, targetCollectionId) => {
+    e.preventDefault();
     setTransition(false);
     setReady(false);
     useNavigate(`/collection/${targetCollectionId}/projects`);
@@ -197,7 +198,7 @@ function ProjectsList({ collections, calculatedHeight }) {
                   to={`/collection/${sys.id}/projects`} 
                   className="collection" 
                   id={`collection-item-${sys.id}`}
-                  onClick={() => handleCollectionClick(sys.id)}
+                  onClick={(e) => handleCollectionClick(e, sys.id)}
                 >
                   <p>{title}</p>
                 </Link>
