@@ -54,6 +54,7 @@ a:focus {
   padding: 4.5px;
   /* box-shadow: 0 5px 8px rgb(0 0 0 / 20%); */
   border-radius: 15px;
+  z-index: 200;
 }
 
 .invisible {
@@ -76,7 +77,7 @@ a:focus {
   align-items: center;
   justify-content: center;
   width: 100%;
-  max-width: 5rem;
+  max-width: 4rem;
   margin-top: 3rem;
   margin-bottom: 3rem;
 }
@@ -167,6 +168,7 @@ a:focus {
 
 /* COLLECTIONS LIST */
 .collection-wrapper {
+  font-size: 14px;
   animation: fadeIn 1.2s ease-in forwards;
 }
 
@@ -196,6 +198,7 @@ canvas {
   text-transform: uppercase;
   /* text-decoration: underline; */
   font-size: larger;
+  font-weight: 500;
 }
 .featured-images-title {
   max-width: 1500px;
@@ -276,7 +279,8 @@ canvas {
   max-width: 1400px;
   min-height: 100vh;
   margin: 0 auto;
-  
+  z-index: 100;
+  position: relative;
 }
 
 .grid-container {
@@ -290,7 +294,7 @@ canvas {
   display: flex;
   justify-content: center;
   gap: 3rem;
-  padding: 2rem;
+  padding: 1rem;
   /* margin-top: 2.5rem; */
 }
 
@@ -322,7 +326,7 @@ canvas {
 
 .modal-wrapper {
   position: fixed;
-  z-index: 100;
+  z-index: 202;
   top: 0px;
   left: 0px;
   width: 100vw;
@@ -368,7 +372,7 @@ canvas {
   text-align: center;
   text-transform: capitalize;
   font-size: 36px;
-  padding-top: 1rem;
+  padding-top: 2rem;
   padding-bottom: 1rem;
   font-weight: 300;
   transition: all 0.3s ease-in;
@@ -401,8 +405,8 @@ canvas {
   /* MENU SECTION */
   .menu-wrapper {
     margin: 0 auto;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+    padding: 1rem;
+    font-size: 14px;
   }
   .collection-item {
     width: 309.375px!important;
@@ -432,7 +436,8 @@ canvas {
   }
 
   .featured-image-subtitle{
-    font-size: 14px;
+    padding-top: 0.15rem;
+    font-size: 12px;
   }
 
   /* LIST VIEW */
