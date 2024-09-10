@@ -403,8 +403,8 @@ canvas {
   /* MENU SECTION */
   .menu-wrapper {
     margin: 0 auto;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+    padding: 1rem;
+    font-size: 14px;
   }
   .collection-item {
     width: 309.375px!important;
