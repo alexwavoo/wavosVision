@@ -1,11 +1,13 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import '../style.css';
 import FadeUp from '../components/FadeUp';
 import { debounce } from 'lodash';
 
 function ProjectsList({ collections, calculatedHeight }) {
   const { collectionId } = useParams();
+
+
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [collection, setCollection] = useState(null);
@@ -162,6 +164,15 @@ function ProjectsList({ collections, calculatedHeight }) {
   const projectsLeft = projects.slice(0, midpoint);
   const projectsRight = projects.slice(midpoint);
 
+  
+
+  const handleCollectionClick = (targetCollectionId) => {
+    setTransition(false);
+    setReady(false);
+    useNavigate(`/collection/${targetCollectionId}/projects`);
+    };
+
+
   return (
     <>
       <div className='page-cover' style={{
@@ -172,7 +183,28 @@ function ProjectsList({ collections, calculatedHeight }) {
       </div>
 
       <div className="wrapper">
-        <div style={{ marginTop: '2.5rem' }}></div>
+        <div className="menu-wrapper">
+          <div className="collections">
+            <p>COLLECTIONS:</p>
+            {collections.map(({ sys, title }) => (
+              sys.id === collectionId ? (
+                <p key={sys.id} className="collection" id={`collection-item-${sys.id}`} style={{ textDecoration: 'underline' }}>
+                  {title}
+                </p>
+              ) : (
+                <Link 
+                  key={sys.id} 
+                  to={`/collection/${sys.id}/projects`} 
+                  className="collection" 
+                  id={`collection-item-${sys.id}`}
+                  onClick={() => handleCollectionClick(sys.id)}
+                >
+                  <p>{title}</p>
+                </Link>
+              )
+            ))}
+          </div>
+        </div>
         <div className="flex-container">
           <div className="column-left">
             {projectsLeft.map((project) => (

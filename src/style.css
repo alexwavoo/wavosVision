@@ -54,6 +54,7 @@ a:focus {
   padding: 4.5px;
   /* box-shadow: 0 5px 8px rgb(0 0 0 / 20%); */
   border-radius: 15px;
+  z-index: 200;
 }
 
 .invisible {
@@ -276,7 +277,8 @@ canvas {
   max-width: 1400px;
   min-height: 100vh;
   margin: 0 auto;
-  
+  z-index: 100;
+  position: relative;
 }
 
 .grid-container {
