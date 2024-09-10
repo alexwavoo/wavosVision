@@ -432,7 +432,8 @@ canvas {
   }
 
   .featured-image-subtitle{
-    font-size: 14px;
+    padding-top: 0.15rem;
+    font-size: 12px;
   }
 
   /* LIST VIEW */
