@@ -88,7 +88,6 @@ const CollectionList = ({ calculatedHeight, collections, featuredImages }) => {
                       src={`${image.fields.file.url}?w=550`} 
                       alt={image.fields.title || 'Featured image'} 
                       className="featured-image" 
-                     
                     />
                     <div className="featured-image-subtitle">
                       {image.linkedProject.title}
