@@ -8,21 +8,11 @@ const CollectionList = ({ calculatedHeight, collections, featuredImages }) => {
   const [imageGroups, setImageGroups] = useState([]);
 
   useEffect(() => {
-    const handleLoad = () => {
-      if (document.readyState === 'complete') {
-        setTimeout(() => setShowContent(true), 1000);
-      }
-    };
+    const timer = setTimeout(() => {
+      setShowContent(true);
+    }, 2000);
 
-    if (document.readyState === 'complete') {
-      setTimeout(() => setShowContent(true), 1000);
-    } else {
-      window.addEventListener('load', handleLoad);
-    }
-
-    return () => {
-      window.removeEventListener('load', handleLoad);
-    };
+    return () => clearTimeout(timer);
   }, []);
 
   const splitImagesIntoGroups = useMemo(() => {
@@ -88,6 +78,7 @@ const CollectionList = ({ calculatedHeight, collections, featuredImages }) => {
                       src={`${image.fields.file.url}?w=550`} 
                       alt={image.fields.title || 'Featured image'} 
                       className="featured-image" 
+                      
                     />
                     <div className="featured-image-subtitle">
                       {image.linkedProject.title}
