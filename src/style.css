@@ -1,5 +1,19 @@
 /* GLOBAL STYLES */
+:root {
+  --group-count: 4;
+}
 
+@media (max-width: 1350px) {
+  :root {
+    --group-count: 3;
+  }
+}
+
+@media (max-width: 1000px) {
+  :root {
+    --group-count: 2;
+  }
+}
 body {
   background: #fdf8dc;
   margin: 0;
@@ -7,6 +21,8 @@ body {
   cursor: default;
   --modal-text-height: 0px;
 }
+
+
 ::-moz-selection { 
   color: #fdf8dc;
   background: #242323;
