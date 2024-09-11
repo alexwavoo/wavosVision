@@ -117,6 +117,8 @@ export default function App() {
   }, []);
 
   return (
+    <>
+    <Analytics />
     <Router>
       <Suspense fallback={<></>}>
         <Routes>
@@ -127,5 +129,6 @@ export default function App() {
         </Routes>
       </Suspense>
     </Router>
+    </>
   );
 }
