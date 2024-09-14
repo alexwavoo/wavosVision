@@ -100,11 +100,6 @@ function ProjectsList({ collections, calculatedHeight, projectsData, fetchProjec
   const projectsLeft = projects.slice(0, midpoint);
   const projectsRight = projects.slice(midpoint);
 
-  const handleCollectionClick = (targetCollectionId) => {
-    setTransition(false);
-    setReady(false);
-    navigate(`/collection/${targetCollectionId}/projects`);
-  };
 
   return (
     <>
@@ -125,15 +120,14 @@ function ProjectsList({ collections, calculatedHeight, projectsData, fetchProjec
                   {title}
                 </p>
               ) : (
-                <Link 
+                <a 
                   key={sys.id} 
-                  to={`/collection/${sys.id}/projects`} 
+                  href={`/collection/${sys.id}/projects`} 
                   className="collection" 
                   id={`collection-item-${sys.id}`}
-                  onClick={() => handleCollectionClick(sys.id)}
                 >
                   <p>{title}</p>
-                </Link>
+                </a>
               )
             ))}
           </div>
