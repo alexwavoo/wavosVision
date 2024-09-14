@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { debounce } from 'lodash'; // Make sure to install lodash
+import { debounce, set } from 'lodash';
 import { Analytics } from "@vercel/analytics/react"
 
 const CollectionList = lazy(() => import('./pages/CollectionList'));
@@ -8,26 +8,15 @@ const ProjectsList = lazy(() => import('./pages/ProjectsList'));
 const ProjectDetail = lazy(() => import('./pages/ProjectDetail'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
-const collectionQuery = `
-  query collectionQuery {
-    collectionCollection {
-      items {
-        sys {
-          id
-        }
-        title
-        thumbnail {
-          url
-        }
-      }
-    }
-  }
-`;
-
 export default function App() {
   const [calculatedHeight, setCalculatedHeight] = useState(0);
   const [collections, setCollections] = useState([]);
   const [featuredImages, setFeaturedImages] = useState([]);
+  const [projectsData, setProjectsData] = useState({});
+  const [dataFetched, setDataFetched] = useState(false);
+  const [collectionsFetched, setCollectionsFetched] = useState(false);
+  const [finalImages, setFinalImages] = useState([]);
+
 
   const calculateHeight = useMemo(() => debounce(() => {
     const windowHeight = window.innerHeight;
@@ -47,82 +36,225 @@ export default function App() {
     const cachedCollections = sessionStorage.getItem('collections');
     if (cachedCollections) {
       setCollections(JSON.parse(cachedCollections));
+ 
     } else {
-      fetch('https://graphql.contentful.com/content/v1/spaces/oen9jg6suzgv/', {
+      fetch('https://cdn.contentful.com/spaces/oen9jg6suzgv/environments/master/entries?access_token=DVunWPNQGTy0uUwexdTPIoUiShuoqOrcDGi9q8x6tXo&content_type=collection&include=2')
+        .then((response) => response.json())
+        .then((data) => {
+          const fetchedCollections = data.items.map(item => ({
+            sys: { id: item.sys.id },
+            title: item.fields.title,
+            thumbnail: {
+              url: data.includes.Asset.find(asset => asset.sys.id === item.fields.thumbnail.sys.id)?.fields.file.url
+            }
+          }));
+          setCollections(fetchedCollections);
+          setCollectionsFetched(true);
+          sessionStorage.setItem('collections', JSON.stringify(fetchedCollections));
+          
+        })
+        .catch((error) => console.error('Error fetching collections:', error));
+    }
+  }, []);
+
+  const matchFeaturedImages = () => {
+    if (!projectsData) return;
+    console.log('projectsData:', Object.entries(projectsData));
+    console.log('featuredImages:', featuredImages);
+    const matched = [];
+    featuredImages.forEach(featuredImage => {
+      for (const [collectionId, projects] of Object.entries(projectsData)) {
+
+        for (const project of projects) {
+          const matchingImage = project?.imagesCollection?.items?.find(
+            img => img.id === featuredImage.sys.id
+          );
+          if (matchingImage) {
+            matched.push({
+              imageId: featuredImage.sys.id,
+              imageUrl: featuredImage.fields.file.url,
+              projectId: project.id,
+              projectTitle: project.title,
+              collectionId: collectionId
+            });
+            break;
+          }
+        }
+      }
+    });
+    setFeaturedImages(matched);
+    setFinalImages(matched);
+    console.log('matched:', matched);
+    console.log('featuredImages:', featuredImages);
+    sessionStorage.setItem('featuredImages', JSON.stringify(matched));
+    setDataFetched(true);
+  };
+
+  useEffect(() => {
+    const allCollectionsLoaded = collections.length > 0 && 
+      Object.keys(projectsData).length === collections.length;
+    
+    if (allCollectionsLoaded && featuredImages.length > 0 && !dataFetched) {
+      matchFeaturedImages();
+    }
+  }, [collections, projectsData, featuredImages, dataFetched]);
+
+  useEffect(() => {
+    const cachedFeaturedImages = sessionStorage.getItem('featuredImages');
+    const cachedProjectsData = sessionStorage.getItem('projectsData');
+
+    if (cachedFeaturedImages && cachedProjectsData) {
+      setFeaturedImages(JSON.parse(cachedFeaturedImages));
+      setProjectsData(JSON.parse(cachedProjectsData));
+      
+    } else {
+      const fetchData = async () => {
+        try {
+          // Fetch featured images
+          const featuredImagesResponse = await fetch('https://graphql.contentful.com/content/v1/spaces/oen9jg6suzgv/environments/master', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer DVunWPNQGTy0uUwexdTPIoUiShuoqOrcDGi9q8x6tXo',
+            },
+            body: JSON.stringify({
+              query: `
+                query {
+                  featuredImagesCollection(limit: 1) {
+                    items {
+                      imagesCollection(limit: 100) {
+                        items {
+                          sys { id }
+                          title
+                          url
+                        }
+                      }
+                    }
+                  }
+                }
+              `
+            }),
+          });
+
+          const featuredImagesData = await featuredImagesResponse.json();
+          
+          const featuredImages = featuredImagesData.data.featuredImagesCollection.items[0].imagesCollection.items.map(item => ({
+            sys: { id: item.sys.id },
+            fields: {
+              title: item.title,
+              file: { url: item.url }
+            }
+          }));
+
+          setFeaturedImages(featuredImages);
+          sessionStorage.setItem('featuredImages', JSON.stringify(featuredImages));
+
+          // Fetch projects data for all collections
+          const projectsData = {};
+          for (const collection of collections) {
+            await fetchProjects(collection.sys.id);
+          }
+
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
+
+      fetchData();
+    }
+  }, [collections]);
+
+
+  const fetchProjects = async (collectionId) => {
+    try {
+      const cachedProjects = sessionStorage.getItem(`projects_${collectionId}`);
+      if (cachedProjects) {
+        setProjectsData(prevData => ({...prevData, [collectionId]: JSON.parse(cachedProjects)}));
+        return;
+      }
+
+      const response = await fetch('https://graphql.contentful.com/content/v1/spaces/oen9jg6suzgv/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: 'Bearer DVunWPNQGTy0uUwexdTPIoUiShuoqOrcDGi9q8x6tXo',
         },
-        body: JSON.stringify({ query: collectionQuery }),
-      })
-        .then((response) => response.json())
-        .then(({ data, errors }) => {
-          if (errors) {
-            console.error(errors);
-          }
-          const fetchedCollections = data.collectionCollection.items;
-          setCollections(fetchedCollections);
-          sessionStorage.setItem('collections', JSON.stringify(fetchedCollections));
-        });
-    }
-  }, []);
-
-  useEffect(() => {
-    const cachedFeaturedImages = sessionStorage.getItem('featuredImages');
-    if (cachedFeaturedImages) {
-      setFeaturedImages(JSON.parse(cachedFeaturedImages));
-    } else {
-      const fetchProjectsWithFeaturedImages = async () => {
-        try {
-          const response = await fetch('https://cdn.contentful.com/spaces/oen9jg6suzgv/environments/master/entries?access_token=DVunWPNQGTy0uUwexdTPIoUiShuoqOrcDGi9q8x6tXo&content_type=project&include=2');
-          const data = await response.json();
-          const projects = data.items;
-          const assets = data.includes.Asset;
-          const assetMap = new Map(assets.map(asset => [asset.sys.id, asset]));
-          const uniqueAssetIds = new Set();
-          const featuredProjectImages = projects.flatMap(project => {
-            const projectImages = [
-              project.fields.thumbnail,
-              ...(project.fields.images || [])
-            ].filter(Boolean);
-            return projectImages.map(imageLink => {
-              const assetId = imageLink.sys.id;
-              const asset = assetMap.get(assetId);
-              if (asset && asset.metadata && asset.metadata.tags) {
-                const isFeatured = asset.metadata.tags.some(tag => tag.sys.id === 'featured');
-                if (isFeatured && !uniqueAssetIds.has(assetId)) {
-                  uniqueAssetIds.add(assetId);
-                  return {
-                    ...asset,
-                    linkedProject: {
-                      id: project.sys.id,
-                      title: project.fields.title,
-                      collectionId: project.fields.collection ? project.fields.collection.sys.id : null
+        body: JSON.stringify({
+          query: `
+            query collectionProjectsQuery {
+              collection(id: "${collectionId}") {
+                sys { id }
+                projectsCollection {
+                  items {
+                    sys { id }
+                    ... on Project {
+                      title
+                      description { json }
+                      thumbnail { url }
+                      imagesCollection {
+                        items { 
+                          url
+                          sys { id }
+                        }
+                        total
+                      }
                     }
-                  };
+                  }
                 }
               }
-              return null;
-            }).filter(Boolean);
-          });
-          setFeaturedImages(featuredProjectImages);
-          sessionStorage.setItem('featuredImages', JSON.stringify(featuredProjectImages));
-        } catch (error) {
-          console.error('Error fetching projects and featured images:', error);
-        }
-      };
-      fetchProjectsWithFeaturedImages();
+            }
+          `,
+        }),
+      });
+
+      const { data, errors } = await response.json();
+
+      if (errors) {
+        console.error(errors);
+        return;
+      }
+
+      const collection = data.collection;
+      if (collection && collection.projectsCollection) {
+        const projectsData = collection.projectsCollection.items.map((project) => ({
+          id: project?.sys?.id,
+          title: project?.title,
+          description: project?.description,
+          thumbnail: project?.thumbnail?.url,
+          imagesCollection: {
+            items: project?.imagesCollection?.items.map(item => ({
+              id: item?.sys?.id,
+              url: item?.url
+            })),
+            total: project?.imagesCollection?.total
+          },
+        }));
+
+        setProjectsData(prevData => ({...prevData, [collectionId]: projectsData}));
+        sessionStorage.setItem(`projects_${collectionId}`, JSON.stringify(projectsData));
+        
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
     }
-  }, []);
+  };
+
+  useEffect(() => {
+    if (collections.length > 0) {
+      collections.forEach(collection => {
+        fetchProjects(collection.sys.id);
+      });
+    }
+  }, [collections]);
+  
 
   return (
     <>
     <Router>
       <Suspense fallback={<></>}>
         <Routes>
-          <Route path="/" element={<CollectionList calculatedHeight={calculatedHeight} collections={collections} featuredImages={featuredImages} />} />
-          <Route path="/collection/:collectionId/projects" element={<ProjectsList collections={collections} calculatedHeight={calculatedHeight} />} />
+          <Route path="/" element={<CollectionList calculatedHeight={calculatedHeight} collections={collections} featuredImages={featuredImages} finalImages={finalImages}  dataFetched={dataFetched}/>} />
+          <Route path="/collection/:collectionId/projects" element={<ProjectsList collections={collections} calculatedHeight={calculatedHeight} projectsData={projectsData} fetchProjects={fetchProjects} />} />
           <Route path="/collection/:collectionId/projects/:projectId" element={<ProjectDetail calculatedHeight={calculatedHeight}/>} />
           <Route path="*" element={<NotFound />} />
         </Routes>
@@ -132,3 +264,4 @@ export default function App() {
     </>
   );
 }
+

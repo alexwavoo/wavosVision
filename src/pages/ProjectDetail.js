@@ -1,7 +1,6 @@
 // ProjectDetail.js
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import ReactMarkdown from 'react-markdown';
 import '../style.css';
 import { Link } from 'react-router-dom';
 import FadeUp from '../components/FadeUp';
@@ -19,24 +18,35 @@ function ProjectDetail({calculatedHeight}) {
   const [modal, setModal] = useState(false);
   const [modalImage, setModalImage] = useState(null); 
   const [modalLoaded, setModalLoaded] = useState(false);
-  const [loadingProgress, setLoadingProgress] = useState(0);
-
+  const [dataFetched, setDataFetched] = useState(false);
   
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
-    const timeout = setTimeout(() => {
-      setTransition(true);
-      const readyTimeout = setTimeout(() => {
-        setReady(true);
-        document.body.style.overflow = "auto";
-      }, 600);
-    }, 3000);
-    return () => clearTimeout(timeout);
-  }, []);
+    if (dataFetched) {
+      const timeout = setTimeout(() => {
+        setTransition(true);
+        const readyTimeout = setTimeout(() => {
+          setReady(true);
+          document.body.style.overflow = "auto";
+        }, 600);
+        return () => clearTimeout(readyTimeout);
+      }, 3000);
+      return () => clearTimeout(timeout);
+    }
+  }, [dataFetched]);
 
   useEffect(() => {
     const fetchProjectData = async () => {
+      // Check if data is in sessionStorage
+      const cachedData = sessionStorage.getItem(`project_${projectId}`);
+      if (cachedData) {
+        const parsedData = JSON.parse(cachedData);
+        setProjectData(parsedData);
+        setDataFetched(true);
+        return;
+      }
+
       try {
         const response = await fetch('https://graphql.contentful.com/content/v1/spaces/oen9jg6suzgv/', {
           method: 'POST',
@@ -72,11 +82,15 @@ function ProjectDetail({calculatedHeight}) {
 
         const project = data.project;
         if (project) {
-          setProjectData({
+          const projectData = {
             title: project.title || '',
             description: project.description ? extractTextFromJson(project.description.json) : '',
             images: project.imagesCollection.items.map((image) => image?.url) || [],
-          });
+          };
+          setProjectData(projectData);
+          // Cache the data in sessionStorage
+          sessionStorage.setItem(`project_${projectId}`, JSON.stringify(projectData));
+          setDataFetched(true);
         }
       } catch (error) {
         console.error('Error fetching project data:', error);
@@ -85,7 +99,6 @@ function ProjectDetail({calculatedHeight}) {
 
     fetchProjectData();
   }, [projectId]);
-
   const extractTextFromJson = (json) => {
     try {
       const content = json.content || [];

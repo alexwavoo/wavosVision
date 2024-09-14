@@ -4,11 +4,10 @@ import '../style.css';
 import FadeUp from '../components/FadeUp';
 import { debounce } from 'lodash';
 
-function ProjectsList({ collections, calculatedHeight }) {
+function ProjectsList({ collections, calculatedHeight, projectsData, fetchProjects }) {
   const { collectionId } = useParams();
+  const navigate = useNavigate();
 
-
-  const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [collection, setCollection] = useState(null);
   const [transition, setTransition] = useState(false);
@@ -36,78 +35,13 @@ function ProjectsList({ collections, calculatedHeight }) {
     return () => clearTimeout(timeout);
   }, []);
 
-  const fetchProjects = useMemo(() => {
-    return async () => {
-      try {
-        const cachedProjects = sessionStorage.getItem(`projects_${collectionId}`);
-        if (cachedProjects) {
-          setProjects(JSON.parse(cachedProjects));
-          setLoading(false);
-          return;
-        }
-
-        const response = await fetch('https://graphql.contentful.com/content/v1/spaces/oen9jg6suzgv/', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: 'Bearer DVunWPNQGTy0uUwexdTPIoUiShuoqOrcDGi9q8x6tXo',
-          },
-          body: JSON.stringify({
-            query: `
-              query collectionProjectsQuery {
-                collection(id: "${collectionId}") {
-                  sys { id }
-                  projectsCollection {
-                    items {
-                      sys { id }
-                      ... on Project {
-                        title
-                        description { json }
-                        thumbnail { url }
-                        imagesCollection {
-                          items { url }
-                          total
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            `,
-          }),
-        });
-
-        const { data, errors } = await response.json();
-
-        if (errors) {
-          console.error(errors);
-          return;
-        }
-
-        const collection = data.collection;
-        if (collection && collection.projectsCollection) {
-          const projectsData = collection.projectsCollection.items.map((project) => ({
-            id: project?.sys?.id,
-            title: project?.title,
-            description: project?.description,
-            thumbnail: project?.thumbnail?.url,
-            imagesCollection: project?.imagesCollection,
-          }));
-
-          setProjects(projectsData);
-          sessionStorage.setItem(`projects_${collectionId}`, JSON.stringify(projectsData));
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-  }, [collectionId]);
-
   useEffect(() => {
-    fetchProjects();
-  }, [fetchProjects]);
+    if (!projectsData[collectionId]) {
+      fetchProjects(collectionId);
+    } else {
+      setLoading(false);
+    }
+  }, [collectionId, projectsData, fetchProjects]);
 
   const openModal = (project) => {
     if (!modal) {
@@ -134,6 +68,8 @@ function ProjectsList({ collections, calculatedHeight }) {
   if (loading) {
     return '';
   }
+
+  const projects = projectsData[collectionId] || [];
 
   if (projects.length === 0) {
     return (
@@ -164,14 +100,11 @@ function ProjectsList({ collections, calculatedHeight }) {
   const projectsLeft = projects.slice(0, midpoint);
   const projectsRight = projects.slice(midpoint);
 
-  
-
   const handleCollectionClick = (targetCollectionId) => {
     setTransition(false);
     setReady(false);
-    useNavigate(`/collection/${targetCollectionId}/projects`);
-    };
-
+    navigate(`/collection/${targetCollectionId}/projects`);
+  };
 
   return (
     <>

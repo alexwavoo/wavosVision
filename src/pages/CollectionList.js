@@ -4,17 +4,18 @@ import { Link } from 'react-router-dom';
 import { debounce } from 'lodash';
 import FadeUp from '../components/FadeUp';
 
-const CollectionList = ({ calculatedHeight, collections, featuredImages }) => {
+const CollectionList = ({ calculatedHeight, collections, finalImages, dataFetched }) => {
   const [showContent, setShowContent] = useState(false);
   const [imageGroups, setImageGroups] = useState([]);
-
   useEffect(() => {
     const timer = setTimeout(() => {
-      setShowContent(true);
-    }, 2000);
+      if (dataFetched) {
+        setShowContent(true);
+      }
+    }, 2500);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [dataFetched]);
 
   const splitImagesIntoGroups = useMemo(() => {
     return (images) => {
@@ -36,9 +37,9 @@ const CollectionList = ({ calculatedHeight, collections, featuredImages }) => {
   const debouncedHandleResize = useMemo(
     () =>
       debounce(() => {
-        setImageGroups(splitImagesIntoGroups(featuredImages));
+        setImageGroups(splitImagesIntoGroups(finalImages));
       }, 100),
-    [splitImagesIntoGroups, featuredImages]
+    [splitImagesIntoGroups, finalImages]
   );
 
   useEffect(() => {
@@ -51,6 +52,8 @@ const CollectionList = ({ calculatedHeight, collections, featuredImages }) => {
   }, [debouncedHandleResize]);
 
   if (!collections) return null;
+
+  if (!finalImages) return null;
 
   return (
     <>
@@ -70,21 +73,26 @@ const CollectionList = ({ calculatedHeight, collections, featuredImages }) => {
         </div>
         <div className='featured-title'>Featured Work</div>
         <div className="featured-images-container">
+          {finalImages.length === 0 && (
+            <div className="no-featured-images">
+              <p>No featured images available.</p>
+            </div>
+          )}
           {imageGroups.map((group, groupIndex) => (
             <div key={groupIndex} className="featured-images-column">
               {group.map((image, index) => (
                 
                 <FadeUp key={index}>
                 <div className="featured-image-item">
-                  <Link to={`/collection/${image.linkedProject.collectionId}/projects/${image.linkedProject.id}`}>
+                  <Link to={`/collection/${image.collectionId}/projects/${image.projectId}`}>
                     <img 
-                      src={`${image.fields.file.url}?w=550`} 
-                      alt={image.fields.title || 'Featured image'} 
+                      src={`${image.imageUrl}?w=550`} 
+                      alt={image.imageId}
                       className="featured-image" 
                       
                     />
                     <div className="featured-image-subtitle">
-                      {image.linkedProject.title}
+                      {image.projectTitle}
                     </div>
                   </Link>
                 </div>
