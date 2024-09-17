@@ -17,33 +17,41 @@ const CollectionList = ({ calculatedHeight, collections, finalImages, dataFetche
     return () => clearTimeout(timer);
   }, [dataFetched]);
 
+  const [currentGroup, setCurrentGroup] = useState(getGroupCount());
+
+  function getGroupCount() {
+    const screenWidth = window.innerWidth;
+    if (screenWidth > 1350) return 4;
+    if (screenWidth > 1000) return 3;
+    return 2;
+  }
+
   const splitImagesIntoGroups = useMemo(() => {
     return (images) => {
-      const screenWidth = window.innerWidth;
-      let groupCount;
-      if (screenWidth > 1350) {
-        groupCount = 4;
-      } else if (screenWidth > 1000) {
-        groupCount = 3;
-      } else {
-        groupCount = 2;
-      }
-      return Array.from({ length: groupCount }, (_, i) =>
-        images.filter((_, index) => index % groupCount === i)
+      return Array.from({ length: currentGroup }, (_, i) =>
+        images.filter((_, index) => index % currentGroup === i)
       );
     };
-  }, []);
+  }, [currentGroup]);
 
   const debouncedHandleResize = useMemo(
     () =>
       debounce(() => {
-        setImageGroups(splitImagesIntoGroups(finalImages));
-      }, 100),
-    [splitImagesIntoGroups, finalImages]
+        const newGroup = getGroupCount();
+        if (newGroup !== currentGroup) {
+          setCurrentGroup(newGroup);
+          setImageGroups(splitImagesIntoGroups(finalImages));
+        }
+      }, 20),
+    [splitImagesIntoGroups, finalImages, currentGroup]
   );
 
   useEffect(() => {
-    debouncedHandleResize();
+    setImageGroups(splitImagesIntoGroups(finalImages));
+    console.log('imageGroups:', finalImages);
+  }, [splitImagesIntoGroups, finalImages, currentGroup]);
+  
+  useEffect(() => {
     window.addEventListener('resize', debouncedHandleResize);
     return () => {
       window.removeEventListener('resize', debouncedHandleResize);

@@ -59,8 +59,8 @@ export default function App() {
 
   const matchFeaturedImages = () => {
     if (!projectsData) return;
-    console.log('projectsData:', Object.entries(projectsData));
-    console.log('featuredImages:', featuredImages);
+    // console.log('projectsData:', Object.entries(projectsData));
+    // console.log('featuredImages:', featuredImages);
     const matched = [];
     featuredImages.forEach(featuredImage => {
       for (const [collectionId, projects] of Object.entries(projectsData)) {
@@ -84,8 +84,8 @@ export default function App() {
     });
     setFeaturedImages(matched);
     setFinalImages(matched);
-    console.log('matched:', matched);
-    console.log('featuredImages:', featuredImages);
+    // console.log('matched:', matched);
+    // console.log('featuredImages:', featuredImages);
     sessionStorage.setItem('featuredImages', JSON.stringify(matched));
     setDataFetched(true);
   };
@@ -170,6 +170,7 @@ export default function App() {
       const cachedProjects = sessionStorage.getItem(`projects_${collectionId}`);
       if (cachedProjects) {
         setProjectsData(prevData => ({...prevData, [collectionId]: JSON.parse(cachedProjects)}));
+        // console.log('cachedProjects:', projectsData);
         return;
       }
 
@@ -232,7 +233,6 @@ export default function App() {
 
         setProjectsData(prevData => ({...prevData, [collectionId]: projectsData}));
         sessionStorage.setItem(`projects_${collectionId}`, JSON.stringify(projectsData));
-        
       }
     } catch (error) {
       console.error('Error fetching data:', error);
