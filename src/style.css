@@ -22,7 +22,16 @@ body {
   --modal-text-height: 0px;
 }
 
-
+html,
+body,
+div,
+input,
+textarea,
+button,
+select,
+a {
+    -webkit-tap-highlight-color: transparent;
+}
 ::-moz-selection { 
   color: #fdf8dc;
   background: #242323;
