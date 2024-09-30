@@ -17,7 +17,7 @@
 body {
   background: #fdf8dc;
   margin: 0;
-  font-family: "Roboto", sans-serif;
+  font-family: "Mate SC", serif;
   cursor: default;
   --modal-text-height: 0px;
 }
@@ -239,7 +239,7 @@ canvas {
 }
 
 .featured-image-subtitle{
-  font-size: 16px;
+  font-size: 12px;
   font-style: italic;
   text-transform: uppercase;
   width: 100%;
@@ -445,7 +445,7 @@ canvas {
   }
 
   .featured-image-subtitle{
-    font-size: 11px;
+    font-size: 7px;
     font-weight: 300;
   }
 
