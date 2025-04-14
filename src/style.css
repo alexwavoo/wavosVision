@@ -157,8 +157,8 @@ a:focus {
     opacity: 1;
   }
 }
-    
-  
+
+
 
 
 /* HOME SECTION */
@@ -199,6 +199,9 @@ a:focus {
   user-select: none;
   padding-top: 1rem;
   /* padding-bottom: 0.5rem; */
+}
+.collection {
+  text-decoration: underline;
 }
 
 /* COLLECTIONS LIST */
@@ -580,9 +583,6 @@ body.collection-page {
     font-size: 12px;
   }
 
-  .collection {
-    text-decoration: underline;
-  }
 
   .collection-item {
     width: 309.375px!important;
