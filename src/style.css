@@ -217,7 +217,7 @@ canvas {
 }
 
 body.collection-page {
-  height: 100vh;
+  height: var(--window-height);
   overflow-y: hidden;
 }
 

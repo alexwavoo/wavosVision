@@ -118,6 +118,7 @@ useEffect(() => {
           const dynamicHeight = window.innerHeight - menuHeight - 8; // 16px = 1rem
           featuredWrapper.style.height = `${dynamicHeight}px`;
         }
+        document.documentElement.style.setProperty('--window-height', `${window.innerHeight}px`);
       };
       
       // Set initial height
