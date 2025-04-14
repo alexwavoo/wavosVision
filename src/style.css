@@ -359,6 +359,7 @@ body.collection-page {
 
   .carousel-track {
     gap: 1rem;
+    padding: 0 1rem;
   }
 
   .carousel-item {
@@ -529,8 +530,7 @@ body.collection-page {
   /* MENU SECTION */
   .menu-wrapper {
     margin: 0 auto;
-    padding: 1rem;
-    padding-bottom: 0.5rem;
+    padding: 0.5rem;
     font-size: 12px;
   }
   .collection-item {
