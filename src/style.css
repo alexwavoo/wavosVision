@@ -338,6 +338,8 @@ body.collection-page {
 
 .carousel-item:hover .featured-image-subtitle {
   text-decoration: underline;
+  text-decoration-thickness: 0.5px;
+  text-decoration-color: #1c1c1c;
 }
 
 
