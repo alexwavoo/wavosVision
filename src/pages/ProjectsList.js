@@ -113,7 +113,7 @@ function ProjectsList({ collections, calculatedHeight, projectsData, fetchProjec
       <div className="wrapper">
         <div className="menu-wrapper">
           <div className="collections">
-            <p>COLLECTIONS:</p>
+            <p>WAVO'S VISION:</p>
             {collections.map(({ sys, title }) => (
               sys.id === collectionId ? (
                 <p key={sys.id} className="collection" id={`collection-item-${sys.id}`} style={{ textDecoration: 'underline' }}>

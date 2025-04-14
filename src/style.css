@@ -198,6 +198,7 @@ canvas {
 .collections {
   display: flex;
   gap: 2rem;
+  font-size: 14px;
 }
 
 .collection {
@@ -533,6 +534,10 @@ body.collection-page {
   .menu-wrapper {
     margin: 0 auto;
     padding: 0.5rem;
+    font-size: 12px;
+  }
+
+  .collections {
     font-size: 12px;
   }
 
