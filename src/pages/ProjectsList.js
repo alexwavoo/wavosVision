@@ -116,7 +116,7 @@ function ProjectsList({ collections, calculatedHeight, projectsData, fetchProjec
             <p>WAVO'S VISION:</p>
             {collections.map(({ sys, title }) => (
               sys.id === collectionId ? (
-                <p key={sys.id} className="collection" id={`collection-item-${sys.id}`} style={{ textDecoration: 'underline' }}>
+                <p key={sys.id} className="collection" id={`collection-item-${sys.id}`} style={{ textDecoration: 'none' }}>
                   {title}
                 </p>
               ) : (
