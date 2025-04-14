@@ -554,6 +554,7 @@ body.collection-page {
   }
   .featured-title {
     font-size: 14px;
+    padding: 0.5rem 1rem;
   }
 
   .featured-images-column {
