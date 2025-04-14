@@ -122,7 +122,7 @@ const CollectionList = ({ calculatedHeight, collections, finalImages, dataFetche
   const scrollCarousel = (ref, direction) => {
     if (!ref.current) return;
     
-    const scrollAmount = 800; // Adjust as needed
+    const scrollAmount = 1000; // Adjust as needed
     const currentScroll = ref.current.scrollLeft;
     
     ref.current.scrollTo({

@@ -267,9 +267,13 @@ body.collection-page {
 .carousel-item {
   min-width: 365px;
   max-width: 350px;
-  cursor: pointer;
+  cursor: grab;
   user-select: none;
   -webkit-user-drag: none;
+}
+
+.carousel-container:active .carousel-item {
+  cursor: grabbing;
 }
 
 .carousel-arrow {
@@ -356,12 +360,10 @@ body.collection-page {
     max-width: 260px;
   }
   
-  .carousel-item img {
-    height: 160px;
-  }
   .carousel-arrow {
     width: 30px;
     height: 30px;
+    font-size: 14px;
   }
 }
 
