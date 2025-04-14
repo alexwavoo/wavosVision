@@ -8,6 +8,8 @@ const CollectionList = ({ calculatedHeight, collections, finalImages, dataFetche
   const artisticCarouselRef = useRef(null);
   const [commercialScrollState, setCommercialScrollState] = useState({ atStart: true, atEnd: false });
   const [artisticScrollState, setArtisticScrollState] = useState({ atStart: true, atEnd: false });
+  const isDragging = useRef(false);
+  const dragStartX = useRef(0);
   
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -41,26 +43,35 @@ const CollectionList = ({ calculatedHeight, collections, finalImages, dataFetche
     if (!ref.current) return;
     
     const slider = ref.current;
-    let isDown = true;
+    isDragging.current = true;
+    dragStartX.current = e.pageX;
     const startX = e.pageX - slider.offsetLeft;
     const scrollLeft = slider.scrollLeft;
     
     const handleMouseMove = (e) => {
-      if (!isDown) return;
+      if (!isDragging.current) return;
       e.preventDefault();
       const x = e.pageX - slider.offsetLeft;
       const walk = (x - startX) * 2; // Scroll speed
       slider.scrollLeft = scrollLeft - walk;
     };
     
-    const handleMouseUp = () => {
-      isDown = false;
+    const handleMouseUp = (e) => {
+      isDragging.current = false;
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
     };
     
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseup', handleMouseUp);
+  };
+
+  // Prevent link clicks when dragging
+  const handleLinkClick = (e) => {
+    // If we've moved more than a small threshold, prevent the link click
+    if (Math.abs(e.pageX - dragStartX.current) > 5) {
+      e.preventDefault();
+    }
   };
 
   // Calculate menu height for CSS variable
@@ -118,14 +129,23 @@ const CollectionList = ({ calculatedHeight, collections, finalImages, dataFetche
     };
   }, [showContent]);
 
-  // Function to scroll the carousel
+  // Function to scroll the carousel based on screen size
   const scrollCarousel = (ref, direction) => {
     if (!ref.current) return;
     
-    const scrollAmount = 1000; // Adjust as needed
-    const currentScroll = ref.current.scrollLeft;
+    const container = ref.current;
+    const containerWidth = container.clientWidth;
     
-    ref.current.scrollTo({
+    // Calculate how many items are visible
+    const itemWidth = container.querySelector('.carousel-item')?.offsetWidth || 0;
+    const visibleItems = itemWidth > 0 ? Math.floor(containerWidth / itemWidth) : 1;
+    
+    // Scroll by approximately the width of visible items, but leave one partially visible
+    const scrollAmount = itemWidth * (visibleItems - 0.5);
+    
+    const currentScroll = container.scrollLeft;
+    
+    container.scrollTo({
       left: currentScroll + (direction === 'right' ? scrollAmount : -scrollAmount),
       behavior: 'smooth'
     });
@@ -169,7 +189,12 @@ const CollectionList = ({ calculatedHeight, collections, finalImages, dataFetche
             >
               <div className="carousel-track">
                 {commercialImages.map((image, index) => (
-                    <Link to={`/collection/${image.collectionId}/projects/${image.projectId}`} className="carousel-item" key={index}>
+                    <Link 
+                      to={`/collection/${image.collectionId}/projects/${image.projectId}`} 
+                      className="carousel-item" 
+                      key={index}
+                      onClick={handleLinkClick}
+                    >
                     <div className='featured-image-wrapper'>
                       <img 
                         src={`${image.imageUrl}?w=550`} 
@@ -212,7 +237,12 @@ const CollectionList = ({ calculatedHeight, collections, finalImages, dataFetche
             >
               <div className="carousel-track">
                 {artisticImages.map((image, index) => (
-                    <Link to={`/collection/${image.collectionId}/projects/${image.projectId}`} className="carousel-item" key={index}>
+                    <Link 
+                      to={`/collection/${image.collectionId}/projects/${image.projectId}`} 
+                      className="carousel-item" 
+                      key={index}
+                      onClick={handleLinkClick}
+                    >
                     <div className='featured-image-wrapper'>
                       <img 
                         src={`${image.imageUrl}?w=550`} 
