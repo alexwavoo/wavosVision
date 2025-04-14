@@ -6,7 +6,7 @@ import FadeUp from '../components/FadeUp';
 
 const CollectionList = ({ calculatedHeight, collections, finalImages, dataFetched }) => {
   const [showContent, setShowContent] = useState(false);
-  const [imageGroups, setImageGroups] = useState([]);
+  
   useEffect(() => {
     const timer = setTimeout(() => {
       if (dataFetched) {
@@ -17,50 +17,20 @@ const CollectionList = ({ calculatedHeight, collections, finalImages, dataFetche
     return () => clearTimeout(timer);
   }, [dataFetched]);
 
-  const [currentGroup, setCurrentGroup] = useState(getGroupCount());
+  // Split the finalImages into two categories (commercial and artistic)
+  const commercialImages = useMemo(() => {
+    if (!finalImages) return [];
+    // For now, just take the first half of the images for commercial
+    return finalImages.slice(0, Math.ceil(finalImages.length / 2));
+  }, [finalImages]);
 
-  function getGroupCount() {
-    const screenWidth = window.innerWidth;
-    if (screenWidth > 1350) return 4;
-    if (screenWidth > 1000) return 3;
-    return 2;
-  }
-
-  const splitImagesIntoGroups = useMemo(() => {
-    return (images) => {
-      return Array.from({ length: currentGroup }, (_, i) =>
-        images.filter((_, index) => index % currentGroup === i)
-      );
-    };
-  }, [currentGroup]);
-
-  const debouncedHandleResize = useMemo(
-    () =>
-      debounce(() => {
-        const newGroup = getGroupCount();
-        if (newGroup !== currentGroup) {
-          setCurrentGroup(newGroup);
-          setImageGroups(splitImagesIntoGroups(finalImages));
-        }
-      }, 20),
-    [splitImagesIntoGroups, finalImages, currentGroup]
-  );
-
-  useEffect(() => {
-    setImageGroups(splitImagesIntoGroups(finalImages));
-    console.log('imageGroups:', finalImages);
-  }, [splitImagesIntoGroups, finalImages, currentGroup]);
-  
-  useEffect(() => {
-    window.addEventListener('resize', debouncedHandleResize);
-    return () => {
-      window.removeEventListener('resize', debouncedHandleResize);
-      debouncedHandleResize.cancel();
-    };
-  }, [debouncedHandleResize]);
+  const artisticImages = useMemo(() => {
+    if (!finalImages) return [];
+    // Take the second half for artistic
+    return finalImages.slice(Math.ceil(finalImages.length / 2));
+  }, [finalImages]);
 
   if (!collections) return null;
-
   if (!finalImages) return null;
 
   return (
@@ -79,35 +49,55 @@ const CollectionList = ({ calculatedHeight, collections, finalImages, dataFetche
             ))}
           </div>
         </div>
-        <div className='featured-title'>Featured Work</div>
-        <div className="featured-images-container">
-          {finalImages.length === 0 && (
-            <div className="no-featured-images">
-              <p>No featured images available.</p>
-            </div>
-          )}
-          {imageGroups.map((group, groupIndex) => (
-            <div key={groupIndex} className="featured-images-column">
-              {group.map((image, index) => (
-                
+        
+        {/* Commercial Work Section */}
+        <div className='featured-section'>
+          <div className='featured-title'>Commercial Work</div>
+          <div className="carousel-container">
+            <div className="carousel-track">
+              {commercialImages.map((image, index) => (
                 <FadeUp key={index}>
-                <div className="featured-image-item">
-                  <Link to={`/collection/${image.collectionId}/projects/${image.projectId}`}>
-                    <img 
-                      src={`${image.imageUrl}?w=550`} 
-                      alt={image.imageId}
-                      className="featured-image" 
-                      
-                    />
-                    <div className="featured-image-subtitle">
-                      {image.projectTitle}
-                    </div>
-                  </Link>
-                </div>
+                  <div className="carousel-item">
+                    <Link to={`/collection/${image.collectionId}/projects/${image.projectId}`}>
+                      <img 
+                        src={`${image.imageUrl}?w=550`} 
+                        alt={image.imageId}
+                        className="featured-image" 
+                      />
+                      <div className="featured-image-subtitle">
+                        {image.projectTitle}
+                      </div>
+                    </Link>
+                  </div>
                 </FadeUp>
               ))}
             </div>
-          ))}
+          </div>
+        </div>
+        
+        {/* Artistic Work Section */}
+        <div className='featured-section'>
+          <div className='featured-title'>Artistic Work</div>
+          <div className="carousel-container">
+            <div className="carousel-track">
+              {artisticImages.map((image, index) => (
+                <FadeUp key={index}>
+                  <div className="carousel-item">
+                    <Link to={`/collection/${image.collectionId}/projects/${image.projectId}`}>
+                      <img 
+                        src={`${image.imageUrl}?w=550`} 
+                        alt={image.imageId}
+                        className="featured-image" 
+                      />
+                      <div className="featured-image-subtitle">
+                        {image.projectTitle}
+                      </div>
+                    </Link>
+                  </div>
+                </FadeUp>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </>
