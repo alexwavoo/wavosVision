@@ -563,6 +563,8 @@ body.collection-page {
   .featured-image-subtitle{
     font-size: 13px;
     width: max-content;
+    margin: 0 auto;
+    margin-top: 0.5rem;
   }
 
   /* LIST VIEW */
