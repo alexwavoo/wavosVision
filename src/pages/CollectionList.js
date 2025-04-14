@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useMemo, useRef } from 'react';
 import '../style.css';
 import { Link } from 'react-router-dom';
-import FadeUp from '../components/FadeUp';
 
 const CollectionList = ({ calculatedHeight, collections, finalImages, dataFetched }) => {
   const [showContent, setShowContent] = useState(false);

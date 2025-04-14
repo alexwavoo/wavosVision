@@ -209,19 +209,13 @@ canvas {
 
 .featured-title {
   max-width: 1500px;
-  margin: 0 auto;
-  padding: 0 1.5rem;
   text-transform: uppercase;
-  /* text-decoration: underline; */
+  padding: 0.5rem 1.5rem;
+  margin: 0;
   font-size: larger;
   font-weight: 500;
 }
 
-
-
-/* Add these styles to your existing style.css file */
-
-/* Add these new styles for the featured sections */
 body.collection-page {
   height: 100vh;
   overflow-y: hidden;
@@ -274,6 +268,8 @@ body.collection-page {
   min-width: 365px;
   max-width: 350px;
   cursor: pointer;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 .featured-image-wrapper {
@@ -287,6 +283,8 @@ body.collection-page {
   object-fit: cover;
   object-position: top;
   transition: transform 0.6s ease-out;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
 .carousel-item:hover img {
@@ -297,10 +295,6 @@ body.collection-page {
   text-decoration: underline;
 }
 
-.featured-title {
-  padding: 0.5rem 1.5rem;
-  margin: 0;
-}
 
 .featured-image-subtitle {
   font-size: 16px;
