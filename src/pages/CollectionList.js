@@ -18,7 +18,7 @@ const CollectionList = ({ calculatedHeight, collections, finalImages, dataFetche
         // Add class to body when this component is active
         document.body.classList.add('collection-page');
       }
-    }, 350);
+    }, 850);
 
     return () => {
       clearTimeout(timer);
