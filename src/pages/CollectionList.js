@@ -6,6 +6,8 @@ const CollectionList = ({ calculatedHeight, collections, finalImages, dataFetche
   const [showContent, setShowContent] = useState(false);
   const commercialCarouselRef = useRef(null);
   const artisticCarouselRef = useRef(null);
+  const [commercialScrollState, setCommercialScrollState] = useState({ atStart: true, atEnd: false });
+  const [artisticScrollState, setArtisticScrollState] = useState({ atStart: true, atEnd: false });
   
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -72,6 +74,63 @@ const CollectionList = ({ calculatedHeight, collections, finalImages, dataFetche
     }
   }, [showContent]);
 
+  // Check scroll position to determine if arrows should be shown
+  const checkScrollPosition = (ref, setScrollState) => {
+    if (!ref.current) return;
+    
+    const { scrollLeft, scrollWidth, clientWidth } = ref.current;
+    const atStart = scrollLeft <= 10;
+    const atEnd = scrollLeft >= scrollWidth - clientWidth - 10;
+    
+    setScrollState({ atStart, atEnd });
+  };
+
+  // Add scroll event listeners to check arrow visibility
+  useEffect(() => {
+    const commercialCarousel = commercialCarouselRef.current;
+    const artisticCarousel = artisticCarouselRef.current;
+    
+    if (commercialCarousel) {
+      checkScrollPosition(commercialCarouselRef, setCommercialScrollState);
+      commercialCarousel.addEventListener('scroll', () => 
+        checkScrollPosition(commercialCarouselRef, setCommercialScrollState)
+      );
+    }
+    
+    if (artisticCarousel) {
+      checkScrollPosition(artisticCarouselRef, setArtisticScrollState);
+      artisticCarousel.addEventListener('scroll', () => 
+        checkScrollPosition(artisticCarouselRef, setArtisticScrollState)
+      );
+    }
+    
+    return () => {
+      if (commercialCarousel) {
+        commercialCarousel.removeEventListener('scroll', () => 
+          checkScrollPosition(commercialCarouselRef, setCommercialScrollState)
+        );
+      }
+      if (artisticCarousel) {
+        artisticCarousel.removeEventListener('scroll', () => 
+          checkScrollPosition(artisticCarouselRef, setArtisticScrollState)
+        );
+      }
+    };
+  }, [showContent]);
+
+  // Function to scroll the carousel
+  const scrollCarousel = (ref, direction) => {
+    if (!ref.current) return;
+    
+    const scrollAmount = 800; // Adjust as needed
+    const currentScroll = ref.current.scrollLeft;
+    
+    ref.current.scrollTo({
+      left: currentScroll + (direction === 'right' ? scrollAmount : -scrollAmount),
+      behavior: 'smooth'
+    });
+  };
+
   if (!collections || !finalImages) return null;
 
   return (
@@ -93,8 +152,16 @@ const CollectionList = ({ calculatedHeight, collections, finalImages, dataFetche
         
         <div className="featured-wrapper prevent-select">
           {/* Commercial Work Section */}
-          <div className='featured-section'>
+          <div className='featured-section carousel-section'>
             <div className='featured-title'>Commercial Work</div>
+            {!commercialScrollState.atStart && (
+              <div 
+                className="carousel-arrow carousel-arrow-left" 
+                onClick={() => scrollCarousel(commercialCarouselRef, 'left')}
+              >
+                &#8592;
+              </div>
+            )}
             <div 
               className="carousel-container" 
               ref={commercialCarouselRef}
@@ -117,11 +184,27 @@ const CollectionList = ({ calculatedHeight, collections, finalImages, dataFetche
                 ))}
               </div>
             </div>
+            {!commercialScrollState.atEnd && (
+              <div 
+                className="carousel-arrow carousel-arrow-right" 
+                onClick={() => scrollCarousel(commercialCarouselRef, 'right')}
+              >
+                &#8594;
+              </div>
+            )}
           </div>
           
           {/* Artistic Work Section */}
-          <div className='featured-section'>
+          <div className='featured-section carousel-section'>
             <div className='featured-title'>Artistic Work</div>
+            {!artisticScrollState.atStart && (
+              <div 
+                className="carousel-arrow carousel-arrow-left" 
+                onClick={() => scrollCarousel(artisticCarouselRef, 'left')}
+              >
+                &#8592;
+              </div>
+            )}
             <div 
               className="carousel-container" 
               ref={artisticCarouselRef}
@@ -144,6 +227,14 @@ const CollectionList = ({ calculatedHeight, collections, finalImages, dataFetche
                 ))}
               </div>
             </div>
+            {!artisticScrollState.atEnd && (
+              <div 
+                className="carousel-arrow carousel-arrow-right" 
+                onClick={() => scrollCarousel(artisticCarouselRef, 'right')}
+              >
+                &#8594;
+              </div>
+            )}
           </div>
         </div>
       </div>

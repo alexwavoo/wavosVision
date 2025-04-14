@@ -272,6 +272,46 @@ body.collection-page {
   -webkit-user-drag: none;
 }
 
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(253, 248, 220, 0.7);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 18px;
+  display: flex;
+  line-height: 1px;
+  font-weight: 900;
+  cursor: pointer;
+  margin-top: 10px;
+  z-index: 10;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-arrow:hover {
+  background: rgba(253, 248, 220, 0.9);
+}
+
+.carousel-arrow-left {
+  left: 10px;
+}
+
+.carousel-arrow-right {
+  right: 10px;
+}
+
+
+.carousel-section {
+  position: relative;
+}
+
+
+
 .featured-image-wrapper {
   height: calc(100% - 1.5rem);
   overflow: hidden;
@@ -318,6 +358,10 @@ body.collection-page {
   
   .carousel-item img {
     height: 160px;
+  }
+  .carousel-arrow {
+    width: 30px;
+    height: 30px;
   }
 }
 
