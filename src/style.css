@@ -41,6 +41,13 @@ a {
   color: #fdf8dc;
   background: #242323;
 }
+
+.prevent-select {
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}
+
 ::-webkit-scrollbar {
   width: 0px;
 }
@@ -171,7 +178,7 @@ a:focus {
   justify-items: center;
   align-content: center;
   user-select: none;
-  padding-top: 1.5rem;
+  padding-top: 1rem;
   padding-bottom: 0.5rem;
 }
 
@@ -221,9 +228,12 @@ body.collection-page {
 }
 
 .featured-wrapper {
+  max-width: 1500px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  height: calc(100vh - var(--collection-menu-height));
+  height: calc(100vh - var(--collection-menu-height) - 1rem);
+  gap: 0.5rem;
 }
 
 .featured-section {
@@ -255,22 +265,27 @@ body.collection-page {
 
 .carousel-track {
   display: flex;
-  gap: 1.5rem;
+  gap: 2rem;
   padding: 0 1.5rem;
   height: 100%;
 }
 
 .carousel-item {
-  min-width: 300px;
+  min-width: 365px;
   max-width: 350px;
-  overflow: hidden;
   cursor: pointer;
 }
 
-.carousel-item img {
+.featured-image-wrapper {
+  height: calc(100% - 1.5rem);
+  overflow: hidden;
+}
+
+.featured-image {
   width: 100%;
-  height: 220px;
+  height: 100%;
   object-fit: cover;
+  object-position: top;
   transition: transform 0.6s ease-out;
 }
 
@@ -278,9 +293,20 @@ body.collection-page {
   transform: scale(1.05);
 }
 
+.carousel-item:hover .featured-image-subtitle {
+  text-decoration: underline;
+}
+
 .featured-title {
   padding: 0.5rem 1.5rem;
   margin: 0;
+}
+
+.featured-image-subtitle {
+  font-size: 16px;
+  font-style: italic;
+  text-align: center;
+  margin-top: 0.5rem;
 }
 
 /* Variable to store the collection menu height */

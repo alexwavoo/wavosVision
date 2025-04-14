@@ -15,7 +15,7 @@ const CollectionList = ({ calculatedHeight, collections, finalImages, dataFetche
         // Add class to body when this component is active
         document.body.classList.add('collection-page');
       }
-    }, 2500);
+    }, 350);
 
     return () => {
       clearTimeout(timer);
@@ -92,7 +92,7 @@ const CollectionList = ({ calculatedHeight, collections, finalImages, dataFetche
           </div>
         </div>
         
-        <div className="featured-wrapper">
+        <div className="featured-wrapper prevent-select">
           {/* Commercial Work Section */}
           <div className='featured-section'>
             <div className='featured-title'>Commercial Work</div>
@@ -104,11 +104,13 @@ const CollectionList = ({ calculatedHeight, collections, finalImages, dataFetche
               <div className="carousel-track">
                 {commercialImages.map((image, index) => (
                     <Link to={`/collection/${image.collectionId}/projects/${image.projectId}`} className="carousel-item" key={index}>
+                    <div className='featured-image-wrapper'>
                       <img 
                         src={`${image.imageUrl}?w=550`} 
                         alt={image.imageId}
                         className="featured-image" 
                       />
+                    </div>
                       <div className="featured-image-subtitle">
                         {image.projectTitle}
                       </div>
@@ -129,11 +131,13 @@ const CollectionList = ({ calculatedHeight, collections, finalImages, dataFetche
               <div className="carousel-track">
                 {artisticImages.map((image, index) => (
                     <Link to={`/collection/${image.collectionId}/projects/${image.projectId}`} className="carousel-item" key={index}>
+                    <div className='featured-image-wrapper'>
                       <img 
                         src={`${image.imageUrl}?w=550`} 
                         alt={image.imageId}
                         className="featured-image" 
                       />
+                    </div>
                       <div className="featured-image-subtitle">
                         {image.projectTitle}
                       </div>
