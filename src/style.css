@@ -558,7 +558,7 @@ body.collection-page {
     padding: 0.6rem 1rem;
   }
   .featured-title {
-    font-size: 14px;
+    font-size: 13px;
     padding: 0.5rem 1rem;
   }
 
@@ -567,7 +567,7 @@ body.collection-page {
   }
 
   .featured-image-subtitle{
-    font-size: 13px;
+    font-size: 11px;
     width: max-content;
     margin: 0 auto;
     margin-top: 0.5rem;
