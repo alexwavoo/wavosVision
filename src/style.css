@@ -77,6 +77,25 @@ a:focus {
   opacity: 0;
 }
 
+.fade-sides {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    black 2rem,
+    black calc(100% - 2.5rem),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    black 2rem,
+    black calc(100% - 2.5rem),
+    transparent 100%
+  );
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
 @keyframes fadeIn {
   0% {
     opacity: 0;
@@ -296,6 +315,7 @@ body.collection-page {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   align-items: center;
   justify-content: center;
+  display: none;
 }
 
 .carousel-arrow:hover {
@@ -528,6 +548,26 @@ body.collection-page {
     border-radius: 15px;
     padding: 0.3rem;
   }
+
+  .fade-sides {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      black 1.5rem,
+      black calc(100% - 1.5rem),
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      black 1.5rem,
+      black calc(100% - 1.5rem),
+      transparent 100%
+    );
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+  }
+
 
 
   /* MENU SECTION */

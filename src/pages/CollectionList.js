@@ -235,7 +235,7 @@ useEffect(() => {
               </div>
             )}
             <div 
-              className="carousel-container" 
+              className="carousel-container fade-sides" 
               ref={commercialCarouselRef}
               onMouseDown={handleMouseDown(commercialCarouselRef)}
             >
@@ -283,7 +283,7 @@ useEffect(() => {
               </div>
             )}
             <div 
-              className="carousel-container" 
+              className="carousel-container fade-sides" 
               ref={artisticCarouselRef}
               onMouseDown={handleMouseDown(artisticCarouselRef)}
             >
