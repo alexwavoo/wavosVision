@@ -75,15 +75,36 @@ const CollectionList = ({ calculatedHeight, collections, finalImages, dataFetche
   };
 
   // Calculate menu height for CSS variable
-  useEffect(() => {
-    if (showContent) {
-      const menuElement = document.querySelector('.menu-wrapper');
-      if (menuElement) {
-        const menuHeight = menuElement.offsetHeight;
-        document.documentElement.style.setProperty('--collection-menu-height', `${menuHeight}px`);
-      }
+useEffect(() => {
+  if (showContent) {
+    const menuElement = document.querySelector('.menu-wrapper');
+    if (menuElement) {
+      const menuHeight = menuElement.offsetHeight;
+      document.documentElement.style.setProperty('--collection-menu-height', `${menuHeight}px`);
+      
+      // Set the featured wrapper height dynamically
+      const setFeaturedWrapperHeight = () => {
+        const featuredWrapper = document.querySelector('.featured-wrapper');
+        if (featuredWrapper) {
+          const dynamicHeight = window.innerHeight - menuHeight - 16; // 16px = 1rem
+          featuredWrapper.style.height = `${dynamicHeight}px`;
+        }
+      };
+      
+      // Set initial height
+      setFeaturedWrapperHeight();
+      
+      // Update on resize
+      window.addEventListener('resize', setFeaturedWrapperHeight);
+      
+      // Clean up
+      return () => {
+        window.removeEventListener('resize', setFeaturedWrapperHeight);
+      };
     }
-  }, [showContent]);
+  }
+}, [showContent]);
+
 
   // Check scroll position to determine if arrows should be shown
   const checkScrollPosition = (ref, setScrollState) => {
@@ -173,7 +194,7 @@ const CollectionList = ({ calculatedHeight, collections, finalImages, dataFetche
         <div className="featured-wrapper prevent-select">
           {/* Commercial Work Section */}
           <div className='featured-section carousel-section'>
-            <div className='featured-title'>Commercial Work</div>
+            <div className='featured-title'>Client Facing</div>
             {!commercialScrollState.atStart && (
               <div 
                 className="carousel-arrow carousel-arrow-left" 
@@ -221,7 +242,7 @@ const CollectionList = ({ calculatedHeight, collections, finalImages, dataFetche
           
           {/* Artistic Work Section */}
           <div className='featured-section carousel-section'>
-            <div className='featured-title'>Artistic Work</div>
+            <div className='featured-title'>Signature Direction</div>
             {!artisticScrollState.atStart && (
               <div 
                 className="carousel-arrow carousel-arrow-left" 

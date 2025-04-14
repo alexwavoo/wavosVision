@@ -361,7 +361,7 @@ body.collection-page {
   }
 
   .carousel-item {
-    min-width: 180px;
+    min-width: 175px;
   }
   
   .carousel-arrow {
@@ -551,7 +551,7 @@ body.collection-page {
     padding: 0.6rem 1rem;
   }
   .featured-title {
-    font-size: 15px;
+    font-size: 14px;
   }
 
   .featured-images-column {
