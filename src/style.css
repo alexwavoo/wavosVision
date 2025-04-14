@@ -346,6 +346,7 @@ body.collection-page {
   font-style: italic;
   text-align: center;
   margin-top: 0.5rem;
+  font-weight: 300;
 }
 
 /* Variable to store the collection menu height */
@@ -542,7 +543,7 @@ body.collection-page {
     padding: 0.6rem 1rem;
   }
   .featured-title {
-    padding: 0 1rem;
+    font-size: 15px;
   }
 
   .featured-images-column {
@@ -550,8 +551,7 @@ body.collection-page {
   }
 
   .featured-image-subtitle{
-    font-size: 11px;
-    font-weight: 300;
+    font-size: 13px;
   }
 
   /* LIST VIEW */
