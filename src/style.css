@@ -248,11 +248,11 @@ body.collection-page {
   flex-direction: column;
   height: calc(100vh - var(--collection-menu-height) - 1rem);
   gap: 1rem;
-  max-height: 840px;
+  /* max-height: 840px; */
+  justify-content: center;
 }
 
 .featured-section {
-  flex: 1;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -260,7 +260,6 @@ body.collection-page {
 }
 
 .carousel-container {
-  flex: 1;
   overflow-x: auto;
   overflow-y: hidden;
   padding: 0.5rem 0;
