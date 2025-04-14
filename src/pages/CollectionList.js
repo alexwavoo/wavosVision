@@ -170,6 +170,7 @@ useEffect(() => {
       left: currentScroll + (direction === 'right' ? scrollAmount : -scrollAmount),
       behavior: 'smooth'
     });
+    console.log('Scroll amount:', scrollAmount);
   };
 
   if (!collections || !finalImages) return null;

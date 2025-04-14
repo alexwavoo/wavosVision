@@ -562,6 +562,7 @@ body.collection-page {
 
   .featured-image-subtitle{
     font-size: 13px;
+    width: max-content;
   }
 
   /* LIST VIEW */
