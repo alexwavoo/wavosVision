@@ -265,8 +265,7 @@ body.collection-page {
 }
 
 .carousel-item {
-  min-width: 365px;
-  max-width: 350px;
+  min-width: 260px;
   cursor: grab;
   user-select: none;
   -webkit-user-drag: none;
@@ -356,9 +355,13 @@ body.collection-page {
 
 /* Mobile adjustments */
 @media only screen and (max-width: 768px) {
+
+  .carousel-track {
+    gap: 1rem;
+  }
+
   .carousel-item {
-    min-width: 220px;
-    max-width: 260px;
+    min-width: 180px;
   }
   
   .carousel-arrow {
