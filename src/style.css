@@ -228,6 +228,7 @@ body.collection-page {
   flex-direction: column;
   height: calc(100vh - var(--collection-menu-height) - 1rem);
   gap: 1rem;
+  max-height: 840px;
 }
 
 .featured-section {
