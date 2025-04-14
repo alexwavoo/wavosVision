@@ -365,6 +365,7 @@ body.collection-page {
     width: 30px;
     height: 30px;
     font-size: 14px;
+    line-height: 0px;
   }
 
   .featured-wrapper {
