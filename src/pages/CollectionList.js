@@ -86,7 +86,7 @@ useEffect(() => {
       const setFeaturedWrapperHeight = () => {
         const featuredWrapper = document.querySelector('.featured-wrapper');
         if (featuredWrapper) {
-          const dynamicHeight = window.innerHeight - menuHeight - 16; // 16px = 1rem
+          const dynamicHeight = window.innerHeight - menuHeight - 8; // 16px = 1rem
           featuredWrapper.style.height = `${dynamicHeight}px`;
         }
       };

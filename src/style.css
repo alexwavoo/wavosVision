@@ -529,6 +529,7 @@ body.collection-page {
   .menu-wrapper {
     margin: 0 auto;
     padding: 1rem;
+    padding-bottom: 0.5rem;
     font-size: 12px;
   }
   .collection-item {
