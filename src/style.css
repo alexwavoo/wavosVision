@@ -366,6 +366,10 @@ body.collection-page {
     height: 30px;
     font-size: 14px;
   }
+
+  .featured-wrapper {
+    gap: 0.5rem;
+  }
 }
 
 
