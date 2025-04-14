@@ -39,32 +39,61 @@ const CollectionList = ({ calculatedHeight, collections, finalImages, dataFetche
   }, [finalImages]);
 
   // Function to handle mouse drag scrolling
-  const handleMouseDown = (ref) => (e) => {
-    if (!ref.current) return;
+  // Replace the existing handleMouseDown function with this enhanced version
+const handleMouseDown = (ref) => (e) => {
+  if (!ref.current) return;
+  
+  const slider = ref.current;
+  isDragging.current = true;
+  dragStartX.current = e.pageX;
+  
+  const startX = e.pageX - slider.offsetLeft;
+  const scrollLeft = slider.scrollLeft;
+  
+  let lastX = e.pageX;
+  let lastTime = Date.now();
+  let velocity = 0;
+  
+  const handleMouseMove = (e) => {
+    if (!isDragging.current) return;
+    e.preventDefault();
     
-    const slider = ref.current;
-    isDragging.current = true;
-    dragStartX.current = e.pageX;
-    const startX = e.pageX - slider.offsetLeft;
-    const scrollLeft = slider.scrollLeft;
+    const x = e.pageX - slider.offsetLeft;
+    const walk = (x - startX) * 2; // Scroll speed
+    slider.scrollLeft = scrollLeft - walk;
     
-    const handleMouseMove = (e) => {
-      if (!isDragging.current) return;
-      e.preventDefault();
-      const x = e.pageX - slider.offsetLeft;
-      const walk = (x - startX) * 2; // Scroll speed
-      slider.scrollLeft = scrollLeft - walk;
-    };
-    
-    const handleMouseUp = (e) => {
-      isDragging.current = false;
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
-    };
-    
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
+    // Calculate velocity for momentum scrolling
+    const now = Date.now();
+    const dt = now - lastTime;
+    if (dt > 0) {
+      velocity = (e.pageX - lastX) / dt;
+    }
+    lastX = e.pageX;
+    lastTime = now;
   };
+  
+  const handleMouseUp = (e) => {
+    isDragging.current = false;
+    document.removeEventListener('mousemove', handleMouseMove);
+    document.removeEventListener('mouseup', handleMouseUp);
+    
+    // Apply momentum scrolling
+    if (Math.abs(velocity) > 0.1) {
+      const momentumScroll = () => {
+        if (Math.abs(velocity) < 0.05) return;
+        
+        slider.scrollLeft -= velocity * 10;
+        velocity *= 0.95; // Friction factor
+        requestAnimationFrame(momentumScroll);
+      };
+      requestAnimationFrame(momentumScroll);
+    }
+  };
+  
+  document.addEventListener('mousemove', handleMouseMove);
+  document.addEventListener('mouseup', handleMouseUp);
+};
+
 
   // Prevent link clicks when dragging
   const handleLinkClick = (e) => {
