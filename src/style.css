@@ -533,6 +533,11 @@ body.collection-page {
     padding: 0.5rem;
     font-size: 12px;
   }
+
+  .collection {
+    text-decoration: underline;
+  }
+
   .collection-item {
     width: 309.375px!important;
     height: 225px!important;

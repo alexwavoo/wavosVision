@@ -183,7 +183,7 @@ useEffect(() => {
       <div className="collection-wrapper" style={{ display: showContent ? 'block' : 'none' }}>
         <div className='menu-wrapper'>
           <div className="collections">
-            <p>COLLECTIONS:</p>
+            <p>WAVO'S VISION:</p>
             {collections.map(({ sys, title }) => (
               <Link key={sys.id} to={`/collection/${sys.id}/projects`} className="collection" id={`collection-item-${sys.id}`}>
                 <p>{title}</p>
