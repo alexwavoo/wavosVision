@@ -326,6 +326,14 @@
     .menu-wrapper{
       justify-items: unset;
     }
+    .collections-featured:hover {
+      background-color: transparent;
+      color: black;
+    }
+    .collection:hover p {
+      background-color: transparent;
+      color: black;
+    }
   }
   
   /* ===========================
