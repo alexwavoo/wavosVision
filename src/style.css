@@ -282,6 +282,10 @@
     gap: 2rem;
     font-size: 14px;
   }
+
+  .collections p {
+    font-style: italic;
+  }
   
   .collection {
     font-style: italic;
@@ -307,6 +311,10 @@
   @media only screen and (max-width: 768px) {
     .collections {
       font-size: 12px;
+      justify-content: space-around;
+    }
+    .menu-wrapper{
+      justify-items: unset;
     }
   }
   

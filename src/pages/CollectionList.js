@@ -149,7 +149,7 @@ const CollectionList = ({ calculatedHeight, collections, finalImages, dataFetche
         {/* Menu */}
         <div className="menu-wrapper">
           <div className="collections">
-            <p>WAVO'S VISION:</p>
+            <p>FEATURED WORK</p>
             {collections.map(({ sys, title }) => (
               <Link
                 key={sys.id}
