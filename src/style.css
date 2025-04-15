@@ -286,13 +286,18 @@
     transition: 0.2s ease;
   }
   
-  .collection:hover {
+  .collection:hover p {
     text-decoration: underline;
-    transform: translateY(-2px);
+    color: #fdf8dc;
+    background-color: #1c1c1c;
   }
   
   a.collection {
     color: inherit;
+  }
+
+  .collection p {
+    transition: all 0.2s ease-out;
   }
   
   @media only screen and (max-width: 768px) {
@@ -468,6 +473,12 @@
     gap: 2.5rem;
     color: #fdf8dc;
     cursor: pointer;
+  }
+
+  .collection-title {
+    color: black;
+    font-size: 26px;
+    font-weight: 300;
   }
   
   .wrapper {
