@@ -456,6 +456,8 @@
     .carousel-item {
       transform: translate(0, 0rem);
       transition: all 0.2s ease-out;
+      opacity: 1;
+      will-change: opacity;
     }
   
   
