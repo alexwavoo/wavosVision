@@ -3,10 +3,9 @@ import { useParams, Link } from 'react-router-dom';
 import '../style.css';
 import FadeUp from '../components/FadeUp';
 
-function ProjectDetail({ calculatedHeight }) {
+function ProjectDetail({ calculatedHeight, dataFetched  }) {
   const { projectId } = useParams();
 
-  // State variables
   const [projectData, setProjectData] = useState({
     title: '',
     description: '',
@@ -17,7 +16,7 @@ function ProjectDetail({ calculatedHeight }) {
   const [modal, setModal] = useState(false);
   const [modalImage, setModalImage] = useState(null);
   const [modalLoaded, setModalLoaded] = useState(false);
-  const [dataFetched, setDataFetched] = useState(false);
+  const [localDataFetched, setLocalDataFetched] = useState(false);
 
   // Extract plain text from Contentful rich text JSON
   const extractTextFromJson = (json) => {
@@ -32,96 +31,72 @@ function ProjectDetail({ calculatedHeight }) {
     }
   };
 
-  // Fetch project data and cache in sessionStorage
   useEffect(() => {
-    const fetchProjectData = async () => {
-      const cachedData = sessionStorage.getItem(`project_${projectId}`);
-      if (cachedData) {
-        setProjectData(JSON.parse(cachedData));
-        setDataFetched(true);
-        return;
-      }
+    if (!dataFetched) {
+      // Wait until app data is fetched
+      return;
+    }
 
-      try {
-        const response = await fetch(
-          'https://graphql.contentful.com/content/v1/spaces/oen9jg6suzgv/',
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization:
-                'Bearer DVunWPNQGTy0uUwexdTPIoUiShuoqOrcDGi9q8x6tXo',
-            },
-            body: JSON.stringify({
-              query: `
-                query projectQuery {
-                  project(id: "${projectId}") {
-                    title
-                    description {
-                      json
-                    }
-                    imagesCollection {
-                      items {
-                        url
-                      }
-                    }
-                  }
-                }
-              `,
-            }),
-          }
-        );
+    // Load all projects from sessionStorage keys starting with 'projects_'
+    const allProjects = [];
 
-        const { data, errors } = await response.json();
-
-        if (errors) {
-          console.error(errors);
-          return;
+    for (let i = 0; i < sessionStorage.length; i++) {
+      const key = sessionStorage.key(i);
+      if (key.startsWith('projects_')) {
+        const projects = JSON.parse(sessionStorage.getItem(key));
+        if (Array.isArray(projects)) {
+          allProjects.push(...projects);
         }
-
-        const project = data.project;
-        if (project) {
-          const projectData = {
-            title: project.title || '',
-            description: project.description
-              ? extractTextFromJson(project.description.json)
-              : '',
-            images:
-              project.imagesCollection.items.map((image) => image?.url) || [],
-          };
-          setProjectData(projectData);
-          sessionStorage.setItem(
-            `project_${projectId}`,
-            JSON.stringify(projectData)
-          );
-          setDataFetched(true);
-        }
-      } catch (error) {
-        console.error('Error fetching project data:', error);
       }
-    };
+    }
 
-    fetchProjectData();
-  }, [projectId]);
+    // Find project by projectId
+    const project = allProjects.find((p) => p.id === projectId);
+
+    console.log('All projects:', allProjects);
+
+    if (project) {
+      setProjectData({
+        title: project.title || '',
+        description: project.description
+          ? extractTextFromJson(project.description.json)
+          : '',
+        images: project.imagesCollection?.items.map((img) => img.url) || [],
+      });
+    } else {
+      console.warn(`Project with id ${projectId} not found in cache.`);
+    }
+    setLocalDataFetched(true);
+  }, [dataFetched, projectId]);
 
   // Handle page transition and body scroll lock
   useEffect(() => {
+    if (!localDataFetched) return;
+
     document.body.style.overflow = 'hidden';
 
-    if (dataFetched) {
-      const timeout = setTimeout(() => {
-        setTransition(true);
-        const readyTimeout = setTimeout(() => {
-          setReady(true);
-          document.body.style.overflow = 'auto';
-        }, 600);
+    const timeout = setTimeout(() => {
+      setTransition(true);
+      const readyTimeout = setTimeout(() => {
+        setReady(true);
+        document.body.style.overflow = 'auto';
+      }, 600);
 
-        return () => clearTimeout(readyTimeout);
-      }, 3000);
+      return () => clearTimeout(readyTimeout);
+    }, 3000);
 
-      return () => clearTimeout(timeout);
-    }
-  }, [dataFetched]);
+    return () => clearTimeout(timeout);
+  }, [localDataFetched]);
+
+  if (!localDataFetched) {
+    // Show loading or null while waiting for data
+    return <div style={{ padding: '2rem', textAlign: 'center' }}>Loading project...</div>;
+  }
+
+  if (!projectData.title) {
+    // Project not found after data fetched
+    return <div style={{ padding: '2rem', textAlign: 'center' }}>Project not found.</div>;
+  }
 
   // Open modal with selected image
   const openModal = (imageUrl) => {
@@ -150,7 +125,6 @@ function ProjectDetail({ calculatedHeight }) {
     return () => clearTimeout(timeout);
   };
 
-  // Return null if no project title (data not loaded yet)
   if (!projectData.title) return null;
 
   // Split images into two columns
@@ -186,7 +160,6 @@ function ProjectDetail({ calculatedHeight }) {
           className="description"
           style={{
             transform: transition ? 'translateY(-500px)' : 'translateY(0)',
-            // display: projectData.description.length === 0 ? 'none' : 'block',
           }}
         >
           {projectData.description}
@@ -196,14 +169,15 @@ function ProjectDetail({ calculatedHeight }) {
       {/* Main content */}
       <div className="wrapper">
         <div className="header">{projectData.title}</div>
-        <div 
+        <div
           className="description"
-            style={{
-              transform: transition ? 'translateY(0)' : 'translateY(-500px)',
-              display: projectData.description.length === 0 ? 'none' : 'block',
-            }}
-          > 
-          {projectData.description}</div>
+          style={{
+            transform: transition ? 'translateY(0)' : 'translateY(-500px)',
+            display: projectData.description.length === 0 ? 'none' : 'block',
+          }}
+        >
+          {projectData.description}
+        </div>
 
         <div className="flex-container">
           {/* Left column */}

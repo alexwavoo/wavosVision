@@ -42,9 +42,7 @@ function ProjectsList({ collections, calculatedHeight, projectsData, fetchProjec
   useEffect(() => {
     if (!projectsData[collectionId]) {
       fetchProjects(collectionId);
-      console.log('Fetching projects for collection:', collectionId);
     } else {
-      console.log('Already had projects for collection:', collectionId, projectsData);
       setLoading(false);
     }
   }, [collectionId, projectsData, fetchProjects]);
