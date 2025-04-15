@@ -75,7 +75,8 @@ export default function App() {
               imageUrl: featuredImage.fields.file.url,
               projectId: project.id,
               projectTitle: project.title,
-              collectionId: collectionId
+              collectionId: collectionId,
+              tags: featuredImage.contentfulMetadata?.tags?.map(tag => tag.name) || [],
             });
             break;
           }
@@ -102,6 +103,7 @@ export default function App() {
   useEffect(() => {
     const cachedFeaturedImages = sessionStorage.getItem('featuredImages');
     const cachedProjectsData = sessionStorage.getItem('projectsData');
+    console.log('cachedFeaturedImages:', collections);
 
     if (cachedFeaturedImages && cachedProjectsData) {
       setFeaturedImages(JSON.parse(cachedFeaturedImages));
@@ -122,11 +124,18 @@ export default function App() {
                 query {
                   featuredImagesCollection(limit: 1) {
                     items {
-                      imagesCollection(limit: 100) {
+                      imagesCollection(limit: 150) {
                         items {
-                          sys { id }
+                          sys {
+                            id
+                          }
                           title
                           url
+                          contentfulMetadata {
+                            tags {
+                              name
+                            }
+                          }
                         }
                       }
                     }
@@ -143,6 +152,9 @@ export default function App() {
             fields: {
               title: item.title,
               file: { url: item.url }
+            },
+            contentfulMetadata: {
+              tags: item.contentfulMetadata?.tags || []
             }
           }));
 
@@ -150,7 +162,6 @@ export default function App() {
           sessionStorage.setItem('featuredImages', JSON.stringify(featuredImages));
 
           // Fetch projects data for all collections
-          const projectsData = {};
           for (const collection of collections) {
             await fetchProjects(collection.sys.id);
           }
@@ -264,4 +275,3 @@ export default function App() {
     </>
   );
 }
-

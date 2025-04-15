@@ -7,8 +7,8 @@ const CollectionList = ({ calculatedHeight, collections, finalImages, dataFetche
   const [showContent, setShowContent] = useState(false);
 
   // Refs for carousel containers and drag state
-  const commercialCarouselRef = useRef(null);
-  const artisticCarouselRef = useRef(null);
+  const clientCarouselRef = useRef(null);
+  const signatureCarouselRef = useRef(null);
   const isDragging = useRef(false);
   const dragStartX = useRef(0);
 
@@ -27,15 +27,15 @@ const CollectionList = ({ calculatedHeight, collections, finalImages, dataFetche
     };
   }, [dataFetched]);
 
-  // Split finalImages into commercial and artistic halves
-  const commercialImages = useMemo(() => {
+  // Split finalImages into client and signature halves
+  const clientImages = useMemo(() => {
     if (!finalImages) return [];
-    return finalImages.slice(0, Math.ceil(finalImages.length / 2));
+    return finalImages.filter(image => image.tags.includes('client'));
   }, [finalImages]);
 
-  const artisticImages = useMemo(() => {
+  const signatureImages = useMemo(() => {
     if (!finalImages) return [];
-    return finalImages.slice(Math.ceil(finalImages.length / 2));
+    return finalImages.filter(image => image.tags.includes('signature'));
   }, [finalImages]);
 
   // Enhanced mouse drag scrolling handler with momentum
@@ -95,7 +95,7 @@ const CollectionList = ({ calculatedHeight, collections, finalImages, dataFetche
 
   // Prevent link navigation if dragging occurred
   const handleLinkClick = (e) => {
-    if (Math.abs(e.pageX - dragStartX.current) > 5) {
+    if (Math.abs(e.pageX - dragStartX.current) > 0) {
       e.preventDefault();
     }
   };
@@ -165,16 +165,16 @@ const CollectionList = ({ calculatedHeight, collections, finalImages, dataFetche
 
         {/* Featured Sections */}
         <div className="featured-wrapper prevent-select">
-          {/* Commercial Work */}
+          {/* Client Work */}
           <section className="featured-section carousel-section">
             <h2 className="featured-title">Client Facing</h2>
             <div
               className="carousel-container fade-sides"
-              ref={commercialCarouselRef}
-              onMouseDown={handleMouseDown(commercialCarouselRef)}
+              ref={clientCarouselRef}
+              onMouseDown={handleMouseDown(clientCarouselRef)}
             >
               <div className="carousel-track">
-                {commercialImages.map((image, index) => (
+                {clientImages.map((image, index) => (
                   <Link
                     key={index}
                     to={`/collection/${image.collectionId}/projects/${image.projectId}`}
@@ -195,16 +195,16 @@ const CollectionList = ({ calculatedHeight, collections, finalImages, dataFetche
             </div>
           </section>
 
-          {/* Artistic Work */}
+          {/* Signature Work */}
           <section className="featured-section carousel-section">
             <h2 className="featured-title">Signature Direction</h2>
             <div
               className="carousel-container fade-sides"
-              ref={artisticCarouselRef}
-              onMouseDown={handleMouseDown(artisticCarouselRef)}
+              ref={signatureCarouselRef}
+              onMouseDown={handleMouseDown(signatureCarouselRef)}
             >
               <div className="carousel-track">
-                {artisticImages.map((image, index) => (
+                {signatureImages.map((image, index) => (
                   <Link
                     key={index}
                     to={`/collection/${image.collectionId}/projects/${image.projectId}`}
