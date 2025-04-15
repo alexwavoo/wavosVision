@@ -286,6 +286,17 @@
   .collections p {
     font-style: italic;
   }
+
+  .collections-featured {
+    text-decoration: underline;
+    transition: 0.2s ease;
+  }
+
+  .collections-featured:hover {
+    cursor: pointer;
+    color: #fdf8dc;
+    background-color: #1c1c1c;
+  }
   
   .collection {
     font-style: italic;
@@ -295,7 +306,6 @@
   }
   
   .collection:hover p {
-    text-decoration: underline;
     color: #fdf8dc;
     background-color: #1c1c1c;
   }
