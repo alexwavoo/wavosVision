@@ -3,10 +3,8 @@ import { useParams, Link } from 'react-router-dom';
 import '../style.css';
 import FadeUp from '../components/FadeUp';
 import { debounce } from 'lodash';
-import { useNavigate } from 'react-router-dom';
 
 function ProjectsList({ collections, calculatedHeight, projectsData, fetchProjects }) {
-  const navigate = useNavigate();
   const { collectionId } = useParams();
 
   // State variables
@@ -83,9 +81,7 @@ function ProjectsList({ collections, calculatedHeight, projectsData, fetchProjec
     []
   );
 
-  const handleHomeLink = () => {
-    navigate('/');
-  };
+
 
   // Show nothing while loading
   if (loading) return null;
@@ -149,7 +145,9 @@ function ProjectsList({ collections, calculatedHeight, projectsData, fetchProjec
         {/* Menu */}
         <div className="menu-wrapper">
           <div className="collections">
-            <p className='collections-featured'onClick={handleHomeLink}>FEATURED WORK</p>
+            <Link to={'/'}>
+              <p className='collections-featured'>FEATURED WORK</p>
+            </Link>
             {collections.map(({ sys, title }) =>
               sys.id === collectionId ? (
                 <p
