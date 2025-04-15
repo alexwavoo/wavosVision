@@ -405,16 +405,13 @@
   }
 
   .carousel-item {
-    transform: translate(0, -3rem);
-    opacity: 0;
-    will-change: transform, opacity;
-    transition: transform 0.3s, opacity 0.15s ease-out;
+    opacity: 0.6;
+    will-change: opacity;
+    transition: all 0.4s ease-out;
   }
   
   .carousel-item.in-view {
-    transform: translate(0, 0);
     opacity: 1;
-    transition: transform 0.3s, opacity 0.15s ease-out;
   }
 
   
@@ -451,13 +448,6 @@
   
     .carousel-item {
       min-width: 175px;
-    }
-  
-    .carousel-item {
-      transform: translate(0, 0rem);
-      transition: all 0.2s ease-out;
-      opacity: 1;
-      will-change: opacity;
     }
   
   
