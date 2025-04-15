@@ -183,6 +183,8 @@ const CollectionList = ({ calculatedHeight, collections, finalImages, dataFetche
   // Return null if required data is missing
   if (!collections || !finalImages) return null;
 
+  const imageWidth = window.innerWidth <= 768 ? 170 : 270;
+
   return (
     <>
       {/* Loading / Title Screen */}
@@ -242,7 +244,7 @@ const CollectionList = ({ calculatedHeight, collections, finalImages, dataFetche
                   >
                     <div className="featured-image-wrapper">
                       <img
-                        src={`${image.imageUrl}?w=270`}
+                        src={`${image.imageUrl}?w=${imageWidth}`}
                         alt={image.imageId}
                         className="featured-image"
                       />
@@ -275,7 +277,7 @@ const CollectionList = ({ calculatedHeight, collections, finalImages, dataFetche
                   >
                     <div className="featured-image-wrapper">
                       <img
-                        src={`${image.imageUrl}?w=270`}
+                        src={`${image.imageUrl}?w=${imageWidth}`}
                         alt={image.imageId}
                         className="featured-image"
                       />
