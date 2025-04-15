@@ -3,31 +3,31 @@ import '../style.css';
 import { Link } from 'react-router-dom';
 
 const CollectionList = ({ calculatedHeight, collections, finalImages, dataFetched }) => {
+  // State to control content visibility after data is fetched
   const [showContent, setShowContent] = useState(false);
+
+  // Refs for carousel containers and drag state
   const commercialCarouselRef = useRef(null);
   const artisticCarouselRef = useRef(null);
-  const [commercialScrollState, setCommercialScrollState] = useState({ atStart: true, atEnd: false });
-  const [artisticScrollState, setArtisticScrollState] = useState({ atStart: true, atEnd: false });
   const isDragging = useRef(false);
   const dragStartX = useRef(0);
-  
+
+  // Show content with delay after data is fetched and add body class
   useEffect(() => {
     const timer = setTimeout(() => {
       if (dataFetched) {
         setShowContent(true);
-        // Add class to body when this component is active
         document.body.classList.add('collection-page');
       }
     }, 850);
 
     return () => {
       clearTimeout(timer);
-      // Remove class when component unmounts
       document.body.classList.remove('collection-page');
     };
   }, [dataFetched]);
 
-  // Split the finalImages into two categories (commercial and artistic)
+  // Split finalImages into commercial and artistic halves
   const commercialImages = useMemo(() => {
     if (!finalImages) return [];
     return finalImages.slice(0, Math.ceil(finalImages.length / 2));
@@ -38,286 +38,192 @@ const CollectionList = ({ calculatedHeight, collections, finalImages, dataFetche
     return finalImages.slice(Math.ceil(finalImages.length / 2));
   }, [finalImages]);
 
-  // Function to handle mouse drag scrolling
-  // Replace the existing handleMouseDown function with this enhanced version
-const handleMouseDown = (ref) => (e) => {
-  if (!ref.current) return;
-  
-  const slider = ref.current;
-  isDragging.current = true;
-  dragStartX.current = e.pageX;
-  
-  const startX = e.pageX - slider.offsetLeft;
-  const scrollLeft = slider.scrollLeft;
-  
-  let lastX = e.pageX;
-  let lastTime = Date.now();
-  let velocity = 0;
-  
-  const handleMouseMove = (e) => {
-    if (!isDragging.current) return;
-    e.preventDefault();
-    
-    const x = e.pageX - slider.offsetLeft;
-    const walk = (x - startX) * 2; // Scroll speed
-    slider.scrollLeft = scrollLeft - walk;
-    
-    // Calculate velocity for momentum scrolling
-    const now = Date.now();
-    const dt = now - lastTime;
-    if (dt > 0) {
-      velocity = (e.pageX - lastX) / dt;
-    }
-    lastX = e.pageX;
-    lastTime = now;
-  };
-  
-  const handleMouseUp = (e) => {
-    isDragging.current = false;
-    document.removeEventListener('mousemove', handleMouseMove);
-    document.removeEventListener('mouseup', handleMouseUp);
-    
-    // Apply momentum scrolling
-    if (Math.abs(velocity) > 0.1) {
-      const momentumScroll = () => {
-        if (Math.abs(velocity) < 0.05) return;
-        
-        slider.scrollLeft -= velocity * 10;
-        velocity *= 0.95; // Friction factor
+  // Enhanced mouse drag scrolling handler with momentum
+  const handleMouseDown = (ref) => (e) => {
+    if (!ref.current) return;
+
+    const slider = ref.current;
+    isDragging.current = true;
+    dragStartX.current = e.pageX;
+
+    const startX = e.pageX - slider.offsetLeft;
+    const scrollLeft = slider.scrollLeft;
+
+    let lastX = e.pageX;
+    let lastTime = Date.now();
+    let velocity = 0;
+
+    const handleMouseMove = (e) => {
+      if (!isDragging.current) return;
+      e.preventDefault();
+
+      const x = e.pageX - slider.offsetLeft;
+      const walk = (x - startX) * 2; // Scroll speed multiplier
+      slider.scrollLeft = scrollLeft - walk;
+
+      // Calculate velocity for momentum scrolling
+      const now = Date.now();
+      const dt = now - lastTime;
+      if (dt > 0) {
+        velocity = (e.pageX - lastX) / dt;
+      }
+      lastX = e.pageX;
+      lastTime = now;
+    };
+
+    const handleMouseUp = () => {
+      isDragging.current = false;
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+
+      // Apply momentum scrolling if velocity is significant
+      if (Math.abs(velocity) > 0.1) {
+        const momentumScroll = () => {
+          if (Math.abs(velocity) < 0.05) return;
+
+          slider.scrollLeft -= velocity * 10;
+          velocity *= 0.95; // Friction factor
+          requestAnimationFrame(momentumScroll);
+        };
         requestAnimationFrame(momentumScroll);
-      };
-      requestAnimationFrame(momentumScroll);
-    }
+      }
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
   };
-  
-  document.addEventListener('mousemove', handleMouseMove);
-  document.addEventListener('mouseup', handleMouseUp);
-};
 
-
-  // Prevent link clicks when dragging
+  // Prevent link navigation if dragging occurred
   const handleLinkClick = (e) => {
-    // If we've moved more than a small threshold, prevent the link click
     if (Math.abs(e.pageX - dragStartX.current) > 5) {
       e.preventDefault();
     }
   };
 
-  // Calculate menu height for CSS variable
-useEffect(() => {
-  if (showContent) {
-    const menuElement = document.querySelector('.menu-wrapper');
-    if (menuElement) {
-      const menuHeight = menuElement.offsetHeight;
-      document.documentElement.style.setProperty('--collection-menu-height', `${menuHeight}px`);
-      
-      // Set the featured wrapper height dynamically
-      const setFeaturedWrapperHeight = () => {
-        const featuredWrapper = document.querySelector('.featured-wrapper');
-        if (featuredWrapper) {
-          const dynamicHeight = window.innerHeight - menuHeight - 8; // 16px = 1rem
-          featuredWrapper.style.height = `${dynamicHeight}px`;
-        }
-        document.documentElement.style.setProperty('--window-height', `${window.innerHeight}px`);
-      };
-      
-      // Set initial height
-      setFeaturedWrapperHeight();
-      
-      // Update on resize
-      window.addEventListener('resize', setFeaturedWrapperHeight);
-      
-      // Clean up
-      return () => {
-        window.removeEventListener('resize', setFeaturedWrapperHeight);
-      };
-    }
-  }
-}, [showContent]);
-
-
-  // Check scroll position to determine if arrows should be shown
-  const checkScrollPosition = (ref, setScrollState) => {
-    if (!ref.current) return;
-    
-    const { scrollLeft, scrollWidth, clientWidth } = ref.current;
-    const atStart = scrollLeft <= 10;
-    const atEnd = scrollLeft >= scrollWidth - clientWidth - 10;
-    
-    setScrollState({ atStart, atEnd });
-  };
-
-  // Add scroll event listeners to check arrow visibility
+  // Dynamically calculate and set CSS variables for menu and featured wrapper heights
   useEffect(() => {
-    const commercialCarousel = commercialCarouselRef.current;
-    const artisticCarousel = artisticCarouselRef.current;
-    
-    if (commercialCarousel) {
-      checkScrollPosition(commercialCarouselRef, setCommercialScrollState);
-      commercialCarousel.addEventListener('scroll', () => 
-        checkScrollPosition(commercialCarouselRef, setCommercialScrollState)
-      );
-    }
-    
-    if (artisticCarousel) {
-      checkScrollPosition(artisticCarouselRef, setArtisticScrollState);
-      artisticCarousel.addEventListener('scroll', () => 
-        checkScrollPosition(artisticCarouselRef, setArtisticScrollState)
-      );
-    }
-    
+    if (!showContent) return;
+
+    const menuElement = document.querySelector('.menu-wrapper');
+    if (!menuElement) return;
+
+    const menuHeight = menuElement.offsetHeight;
+    document.documentElement.style.setProperty('--collection-menu-height', `${menuHeight}px`);
+
+    const setFeaturedWrapperHeight = () => {
+      const featuredWrapper = document.querySelector('.featured-wrapper');
+      if (featuredWrapper) {
+        const dynamicHeight = window.innerHeight - menuHeight - 8; // 8px = 0.5rem approx
+        featuredWrapper.style.height = `${dynamicHeight}px`;
+      }
+      document.documentElement.style.setProperty('--window-height', `${window.innerHeight}px`);
+    };
+
+    setFeaturedWrapperHeight();
+    window.addEventListener('resize', setFeaturedWrapperHeight);
+
     return () => {
-      if (commercialCarousel) {
-        commercialCarousel.removeEventListener('scroll', () => 
-          checkScrollPosition(commercialCarouselRef, setCommercialScrollState)
-        );
-      }
-      if (artisticCarousel) {
-        artisticCarousel.removeEventListener('scroll', () => 
-          checkScrollPosition(artisticCarouselRef, setArtisticScrollState)
-        );
-      }
+      window.removeEventListener('resize', setFeaturedWrapperHeight);
     };
   }, [showContent]);
 
-  // Function to scroll the carousel based on screen size
-  const scrollCarousel = (ref, direction) => {
-    if (!ref.current) return;
-    
-    const container = ref.current;
-    const containerWidth = container.clientWidth;
-    
-    // Calculate how many items are visible
-    const itemWidth = container.querySelector('.carousel-item')?.offsetWidth || 0;
-    const visibleItems = itemWidth > 0 ? Math.floor(containerWidth / itemWidth) : 1;
-    
-    // Scroll by approximately the width of visible items, but leave one partially visible
-    const scrollAmount = itemWidth * (visibleItems - 0.5);
-    
-    const currentScroll = container.scrollLeft;
-    
-    container.scrollTo({
-      left: currentScroll + (direction === 'right' ? scrollAmount : -scrollAmount),
-      behavior: 'smooth'
-    });
-    console.log('Scroll amount:', scrollAmount);
-  };
-
+  // Return null if required data is missing
   if (!collections || !finalImages) return null;
 
   return (
     <>
-      <div style={{ display: !showContent ? 'flex' : 'none', justifyContent: 'center', alignItems: 'center', height: calculatedHeight ? `${calculatedHeight}px` : `${window.innerHeight}px` }}>
+      {/* Loading / Title Screen */}
+      <div
+        style={{
+          display: !showContent ? 'flex' : 'none',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: calculatedHeight ? `${calculatedHeight}px` : `${window.innerHeight}px`,
+        }}
+      >
         <div className="title">WAVO'S VISION</div>
       </div>
+
+      {/* Main Content */}
       <div className="collection-wrapper" style={{ display: showContent ? 'block' : 'none' }}>
-        <div className='menu-wrapper'>
+        {/* Menu */}
+        <div className="menu-wrapper">
           <div className="collections">
             <p>WAVO'S VISION:</p>
             {collections.map(({ sys, title }) => (
-              <Link key={sys.id} to={`/collection/${sys.id}/projects`} className="collection" id={`collection-item-${sys.id}`}>
+              <Link
+                key={sys.id}
+                to={`/collection/${sys.id}/projects`}
+                className="collection"
+                id={`collection-item-${sys.id}`}
+              >
                 <p>{title}</p>
               </Link>
             ))}
           </div>
         </div>
-        
+
+        {/* Featured Sections */}
         <div className="featured-wrapper prevent-select">
-          {/* Commercial Work Section */}
-          <div className='featured-section carousel-section'>
-            <div className='featured-title'>Client Facing</div>
-            {!commercialScrollState.atStart && (
-              <div 
-                className="carousel-arrow carousel-arrow-left" 
-                onClick={() => scrollCarousel(commercialCarouselRef, 'left')}
-              >
-                &#8592;
-              </div>
-            )}
-            <div 
-              className="carousel-container fade-sides" 
+          {/* Commercial Work */}
+          <section className="featured-section carousel-section">
+            <h2 className="featured-title">Client Facing</h2>
+            <div
+              className="carousel-container fade-sides"
               ref={commercialCarouselRef}
               onMouseDown={handleMouseDown(commercialCarouselRef)}
             >
               <div className="carousel-track">
                 {commercialImages.map((image, index) => (
-                    <Link 
-                      to={`/collection/${image.collectionId}/projects/${image.projectId}`} 
-                      className="carousel-item" 
-                      key={index}
-                      onClick={handleLinkClick}
-                    >
-                    <div className='featured-image-wrapper'>
-                      <img 
-                        src={`${image.imageUrl}?w=550`} 
+                  <Link
+                    key={index}
+                    to={`/collection/${image.collectionId}/projects/${image.projectId}`}
+                    className="carousel-item"
+                    onClick={handleLinkClick}
+                  >
+                    <div className="featured-image-wrapper">
+                      <img
+                        src={`${image.imageUrl}?w=550`}
                         alt={image.imageId}
-                        className="featured-image" 
+                        className="featured-image"
                       />
                     </div>
-                      <div className="featured-image-subtitle">
-                        {image.projectTitle}
-                      </div>
-                    </Link>
+                    <div className="featured-image-subtitle">{image.projectTitle}</div>
+                  </Link>
                 ))}
               </div>
             </div>
-            {!commercialScrollState.atEnd && (
-              <div 
-                className="carousel-arrow carousel-arrow-right" 
-                onClick={() => scrollCarousel(commercialCarouselRef, 'right')}
-              >
-                &#8594;
-              </div>
-            )}
-          </div>
-          
-          {/* Artistic Work Section */}
-          <div className='featured-section carousel-section'>
-            <div className='featured-title'>Signature Direction</div>
-            {!artisticScrollState.atStart && (
-              <div 
-                className="carousel-arrow carousel-arrow-left" 
-                onClick={() => scrollCarousel(artisticCarouselRef, 'left')}
-              >
-                &#8592;
-              </div>
-            )}
-            <div 
-              className="carousel-container fade-sides" 
+          </section>
+
+          {/* Artistic Work */}
+          <section className="featured-section carousel-section">
+            <h2 className="featured-title">Signature Direction</h2>
+            <div
+              className="carousel-container fade-sides"
               ref={artisticCarouselRef}
               onMouseDown={handleMouseDown(artisticCarouselRef)}
             >
               <div className="carousel-track">
                 {artisticImages.map((image, index) => (
-                    <Link 
-                      to={`/collection/${image.collectionId}/projects/${image.projectId}`} 
-                      className="carousel-item" 
-                      key={index}
-                      onClick={handleLinkClick}
-                    >
-                    <div className='featured-image-wrapper'>
-                      <img 
-                        src={`${image.imageUrl}?w=550`} 
+                  <Link
+                    key={index}
+                    to={`/collection/${image.collectionId}/projects/${image.projectId}`}
+                    className="carousel-item"
+                    onClick={handleLinkClick}
+                  >
+                    <div className="featured-image-wrapper">
+                      <img
+                        src={`${image.imageUrl}?w=550`}
                         alt={image.imageId}
-                        className="featured-image" 
+                        className="featured-image"
                       />
                     </div>
-                      <div className="featured-image-subtitle">
-                        {image.projectTitle}
-                      </div>
-                    </Link>
+                    <div className="featured-image-subtitle">{image.projectTitle}</div>
+                  </Link>
                 ))}
               </div>
             </div>
-            {!artisticScrollState.atEnd && (
-              <div 
-                className="carousel-arrow carousel-arrow-right" 
-                onClick={() => scrollCarousel(artisticCarouselRef, 'right')}
-              >
-                &#8594;
-              </div>
-            )}
-          </div>
+          </section>
         </div>
       </div>
     </>
