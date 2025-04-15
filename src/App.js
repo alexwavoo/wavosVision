@@ -14,7 +14,6 @@ export default function App() {
   const [featuredImages, setFeaturedImages] = useState([]);
   const [projectsData, setProjectsData] = useState({});
   const [dataFetched, setDataFetched] = useState(false);
-  const [collectionsFetched, setCollectionsFetched] = useState(false);
   const [finalImages, setFinalImages] = useState([]);
 
 
@@ -49,7 +48,6 @@ export default function App() {
             }
           }));
           setCollections(fetchedCollections);
-          setCollectionsFetched(true);
           sessionStorage.setItem('collections', JSON.stringify(fetchedCollections));
           
         })

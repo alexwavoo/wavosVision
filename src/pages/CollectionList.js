@@ -242,7 +242,7 @@ const CollectionList = ({ calculatedHeight, collections, finalImages, dataFetche
                   >
                     <div className="featured-image-wrapper">
                       <img
-                        src={`${image.imageUrl}?w=550`}
+                        src={`${image.imageUrl}?w=270`}
                         alt={image.imageId}
                         className="featured-image"
                       />
@@ -275,7 +275,7 @@ const CollectionList = ({ calculatedHeight, collections, finalImages, dataFetche
                   >
                     <div className="featured-image-wrapper">
                       <img
-                        src={`${image.imageUrl}?w=550`}
+                        src={`${image.imageUrl}?w=270`}
                         alt={image.imageId}
                         className="featured-image"
                       />
