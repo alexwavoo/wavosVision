@@ -186,6 +186,7 @@ function ProjectDetail({ calculatedHeight }) {
           className="description"
           style={{
             transform: transition ? 'translateY(-500px)' : 'translateY(0)',
+            // display: projectData.description.length === 0 ? 'none' : 'block',
           }}
         >
           {projectData.description}
@@ -195,7 +196,14 @@ function ProjectDetail({ calculatedHeight }) {
       {/* Main content */}
       <div className="wrapper">
         <div className="header">{projectData.title}</div>
-        <div className="description">{projectData.description}</div>
+        <div 
+          className="description"
+            style={{
+              transform: transition ? 'translateY(0)' : 'translateY(-500px)',
+              display: projectData.description.length === 0 ? 'none' : 'block',
+            }}
+          > 
+          {projectData.description}</div>
 
         <div className="flex-container">
           {/* Left column */}

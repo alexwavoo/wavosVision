@@ -474,7 +474,7 @@
     z-index: 1000;
     transition: opacity 0.6s ease-in;
     flex-direction: column;
-    gap: 2.5rem;
+    gap: 0rem;
     color: #fdf8dc;
     cursor: pointer;
   }
@@ -634,6 +634,8 @@
     font-size: 18px;
     font-weight: 300;
     transition: all 0.3s ease-in;
+    color: #000;
+    padding-bottom: 1rem;
   }
   
   /* Responsive Detail View */
@@ -645,7 +647,7 @@
     .description {
       width: 75%;
       font-size: 13px;
-      padding-bottom: 1.75rem;
+      padding-bottom: 1.5rem;
     }
   }
   
