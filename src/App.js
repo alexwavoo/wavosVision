@@ -253,7 +253,7 @@ export default function App() {
     <Router>
       <Suspense fallback={<></>}>
         <Routes>
-          <Route path="/" element={<CollectionList calculatedHeight={calculatedHeight} collections={collections} featuredImages={featuredImages} finalImages={finalImages}  dataFetched={dataFetched}/>} />
+          <Route path="/" element={<CollectionList calculatedHeight={calculatedHeight} collections={collections} finalImages={finalImages}  dataFetched={dataFetched}/>} />
           <Route path="/collection/:collectionId/projects" element={<ProjectsList collections={collections} calculatedHeight={calculatedHeight} projectsData={projectsData} fetchProjects={fetchProjects} />} />
           <Route path="/collection/:collectionId/projects/:projectId" element={<ProjectDetail calculatedHeight={calculatedHeight}/>} />
           <Route path="*" element={<NotFound />} />
