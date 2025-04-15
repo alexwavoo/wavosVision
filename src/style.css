@@ -452,11 +452,10 @@
       min-width: 175px;
     }
   
-    .carousel-arrow {
-      width: 30px;
-      height: 30px;
-      font-size: 14px;
-      line-height: 0;
+    .carousel-item {
+      transform: translate(0, -3rem);
+      opacity: 0;
+      transition: all 0.5s ease-out;
     }
   
     .featured-wrapper {
