@@ -408,6 +408,7 @@
     transform: translate(0, -3rem);
     opacity: 0;
     will-change: transform, opacity;
+    transition: transform 0.3s, opacity 0.15s ease-out;
   }
   
   .carousel-item.in-view {
@@ -455,6 +456,7 @@
     .carousel-item {
       transform: translate(0, -1rem);
       transition: all 0.3s ease-out;
+      transition: transform 0.15s, opacity 0.35s ease-out;
     }
   
     .carousel-item.in-view {
