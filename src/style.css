@@ -458,7 +458,7 @@
     }
   
     .carousel-item.in-view {
-      transition: transform 0.4s, opacity 0.2s ease-out;
+      transition: transform 0.15s, opacity 0.35s ease-out;
     }
   
     .featured-wrapper {
