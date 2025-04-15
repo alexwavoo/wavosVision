@@ -403,6 +403,19 @@
     text-decoration-thickness: 0.5px;
     text-decoration-color: #1c1c1c;
   }
+
+  .carousel-item {
+    transform: translate(0, -3rem);
+    opacity: 0.1;
+    transition: all 0.15s ease-out;
+    will-change: transform, opacity;
+  }
+  
+  .carousel-item.in-view {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+
   
   .featured-image-wrapper {
     height: calc(100% - 1.5rem);
