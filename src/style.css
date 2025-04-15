@@ -507,7 +507,7 @@
     flex-direction: column;
     gap: 0rem;
     color: #fdf8dc;
-    cursor: pointer;
+    cursor: default;
   }
 
   .collection-title,
