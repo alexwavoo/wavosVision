@@ -83,7 +83,7 @@ function ProjectDetail({ calculatedHeight, dataFetched  }) {
       }, 600);
 
       return () => clearTimeout(readyTimeout);
-    }, 3000);
+    }, 1700);
 
     return () => clearTimeout(timeout);
   }, [localDataFetched]);

@@ -33,7 +33,7 @@ function ProjectsList({ collections, calculatedHeight, projectsData, fetchProjec
         setReady(true);
       }, 500);
       return () => clearTimeout(readyTimeout);
-    }, 2500);
+    }, 1700);
 
     return () => clearTimeout(timeout);
   }, []);
