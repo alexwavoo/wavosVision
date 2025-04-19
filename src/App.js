@@ -120,7 +120,10 @@ export default function App() {
             body: JSON.stringify({
               query: `
                 query {
-                  featuredImagesCollection(limit: 1) {
+                  featuredImagesCollection(
+                    where: { sys: { id: "6iFAvhe5O4JsDf1dqx4IZx" } }
+                    limit: 1
+                  ) {
                     items {
                       imagesCollection(limit: 100) {
                         items {
