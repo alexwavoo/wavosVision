@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { debounce } from 'lodash';
 import { Analytics } from '@vercel/analytics/react';
 
+import './style.css';
+
 const CollectionList = lazy(() => import('./pages/CollectionList'));
 const ProjectsList = lazy(() => import('./pages/ProjectsList'));
 const ProjectDetail = lazy(() => import('./pages/ProjectDetail'));
@@ -11,9 +13,11 @@ const NotFound = lazy(() => import('./pages/NotFound'));
 export default function App() {
   const [calculatedHeight, setCalculatedHeight] = useState(0);
   const [collections, setCollections] = useState([]);
-  const [featuredImages, setFeaturedImages] = useState([]);
+  const [clientImages, setClientImages] = useState([]);
+  const [signatureImages, setSignatureImages] = useState([]);
   const [projectsData, setProjectsData] = useState({});
-  const [finalImages, setFinalImages] = useState([]);
+  const [finalClientImages, setFinalClientImages] = useState([]);
+  const [finalSignatureImages, setFinalSignatureImages] = useState([]);
   const [dataFetched, setDataFetched] = useState(false);
 
   // Calculate window height with debounce
@@ -61,13 +65,16 @@ export default function App() {
     }
   }, []);
 
-  // Fetch featuredImages or load from cache
+  // Fetch featured image collections or load from cache
   useEffect(() => {
     if (collections.length === 0) return; // Wait for collections
 
-    const cachedFeaturedImages = sessionStorage.getItem('featuredImages');
-    if (cachedFeaturedImages) {
-      setFeaturedImages(JSON.parse(cachedFeaturedImages));
+    const cachedClientImages = sessionStorage.getItem('clientImages');
+    const cachedSignatureImages = sessionStorage.getItem('signatureImages');
+    
+    if (cachedClientImages && cachedSignatureImages) {
+      setClientImages(JSON.parse(cachedClientImages));
+      setSignatureImages(JSON.parse(cachedSignatureImages));
     } else {
       // Fetch featured images from GraphQL
       fetch('https://graphql.contentful.com/content/v1/spaces/oen9jg6suzgv/environments/master', {
@@ -79,16 +86,14 @@ export default function App() {
         body: JSON.stringify({
           query: `
             query {
-              featuredImagesCollection(limit: 1) {
+              featuredImagesCollection(limit: 3) {
                 items {
+                  name
                   imagesCollection(limit: 150) {
                     items {
                       sys { id }
                       title
                       url
-                      contentfulMetadata {
-                        tags { name }
-                      }
                     }
                   }
                 }
@@ -99,20 +104,37 @@ export default function App() {
       })
         .then((res) => res.json())
         .then((data) => {
-          const items =
-            data.data.featuredImagesCollection?.items?.[0]?.imagesCollection?.items || [];
-          const images = items.map((item) => ({
+          const collections = data.data.featuredImagesCollection?.items || [];
+          
+          // Find client facing and signature direction collections
+          const clientCollection = collections.find(item => item.name === "Client Facing");
+          const signatureCollection = collections.find(item => item.name === "Signature Direction");
+          
+          // Process client images
+          const clientItems = clientCollection?.imagesCollection?.items || [];
+          const clientImagesData = clientItems.map((item) => ({
             sys: { id: item.sys.id },
             fields: {
               title: item.title,
               file: { url: item.url },
             },
-            contentfulMetadata: {
-              tags: item.contentfulMetadata?.tags || [],
+          }));
+          
+          // Process signature images
+          const signatureItems = signatureCollection?.imagesCollection?.items || [];
+          const signatureImagesData = signatureItems.map((item) => ({
+            sys: { id: item.sys.id },
+            fields: {
+              title: item.title,
+              file: { url: item.url },
             },
           }));
-          setFeaturedImages(images);
-          sessionStorage.setItem('featuredImages', JSON.stringify(images));
+          
+          setClientImages(clientImagesData);
+          setSignatureImages(signatureImagesData);
+          
+          sessionStorage.setItem('clientImages', JSON.stringify(clientImagesData));
+          sessionStorage.setItem('signatureImages', JSON.stringify(signatureImagesData));
         })
         .catch((err) => console.error('Error fetching featured images:', err));
     }
@@ -204,32 +226,31 @@ export default function App() {
     });
   }, [collections]);
 
-  // Match featured images to projects and collections, format finalImages
+  // Match client images to projects and collections
   useEffect(() => {
     if (
       collections.length === 0 ||
-      featuredImages.length === 0 ||
+      clientImages.length === 0 ||
       Object.keys(projectsData).length !== collections.length
     )
       return;
 
-    // Match featured images to projects
+    // Match client images to projects
     const matched = [];
 
-    featuredImages.forEach((featuredImage) => {
+    clientImages.forEach((clientImage) => {
       for (const [collectionId, projects] of Object.entries(projectsData)) {
         for (const project of projects) {
           const matchingImage = project.imagesCollection.items.find(
-            (img) => img.id === featuredImage.sys.id
+            (img) => img.id === clientImage.sys.id
           );
           if (matchingImage) {
             matched.push({
-              imageId: featuredImage.sys.id,
-              imageUrl: featuredImage.fields.file.url,
+              imageId: clientImage.sys.id,
+              imageUrl: clientImage.fields.file.url,
               projectId: project.id,
               projectTitle: project.title,
               collectionId,
-              tags: featuredImage.contentfulMetadata?.tags?.map((tag) => tag.name) || [],
             });
             break; // Stop searching projects once matched
           }
@@ -237,10 +258,46 @@ export default function App() {
       }
     });
 
-    setFinalImages(matched);
-    sessionStorage.setItem('featuredImagesMatched', JSON.stringify(matched));
+    setFinalClientImages(matched);
+    sessionStorage.setItem('finalClientImagesMatched', JSON.stringify(matched));
+  }, [collections, clientImages, projectsData]);
+
+  // Match signature images to projects and collections
+  useEffect(() => {
+    if (
+      collections.length === 0 ||
+      signatureImages.length === 0 ||
+      Object.keys(projectsData).length !== collections.length
+    )
+      return;
+
+    // Match signature images to projects
+    const matched = [];
+
+    signatureImages.forEach((signatureImage) => {
+      for (const [collectionId, projects] of Object.entries(projectsData)) {
+        for (const project of projects) {
+          const matchingImage = project.imagesCollection.items.find(
+            (img) => img.id === signatureImage.sys.id
+          );
+          if (matchingImage) {
+            matched.push({
+              imageId: signatureImage.sys.id,
+              imageUrl: signatureImage.fields.file.url,
+              projectId: project.id,
+              projectTitle: project.title,
+              collectionId,
+            });
+            break; // Stop searching projects once matched
+          }
+        }
+      }
+    });
+
+    setFinalSignatureImages(matched);
+    sessionStorage.setItem('finalSignatureImagesMatched', JSON.stringify(matched));
     setDataFetched(true);
-  }, [collections, featuredImages, projectsData]);
+  }, [collections, signatureImages, projectsData]);
 
   return (
     <>
@@ -253,7 +310,8 @@ export default function App() {
                 <CollectionList
                   calculatedHeight={calculatedHeight}
                   collections={collections}
-                  finalImages={finalImages}
+                  clientImages={finalClientImages}
+                  signatureImages={finalSignatureImages}
                   dataFetched={dataFetched}
                 />
               }

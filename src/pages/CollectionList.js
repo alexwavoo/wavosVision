@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo, useRef } from 'react';
 import '../style.css';
 import { Link } from 'react-router-dom';
 
-const CollectionList = ({ calculatedHeight, collections, finalImages, dataFetched }) => {
+const CollectionList = ({ calculatedHeight, collections, clientImages, signatureImages, dataFetched }) => {
   // State to control content visibility after data is fetched
   const [showContent, setShowContent] = useState(false);
 
@@ -31,16 +31,6 @@ const CollectionList = ({ calculatedHeight, collections, finalImages, dataFetche
     };
   }, [dataFetched]);
 
-  // Split finalImages into client and signature halves
-  const clientImages = useMemo(() => {
-    if (!finalImages) return [];
-    return finalImages.filter((image) => image.tags.includes('client'));
-  }, [finalImages]);
-
-  const signatureImages = useMemo(() => {
-    if (!finalImages) return [];
-    return finalImages.filter((image) => image.tags.includes('signature'));
-  }, [finalImages]);
 
   // Enhanced mouse drag scrolling handler with momentum
   const handleMouseDown = (ref) => (e) => {
@@ -181,7 +171,7 @@ const CollectionList = ({ calculatedHeight, collections, finalImages, dataFetche
   signatureItemsRef.current = [];
 
   // Return null if required data is missing
-  if (!collections || !finalImages) return null;
+  if (!collections || !clientImages || !signatureImages) return null;
   
 
   return (
