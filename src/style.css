@@ -342,10 +342,10 @@
      =========================== */
   .featured-title {
     max-width: 1500px;
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
     padding: 0.5rem 1.5rem;
     margin: 0;
-    font-size: larger;
+    font-size: 18px;
     font-family: 'Playfair Display', serif;
     font-style: italic;
     /* font-weight: 500; */
@@ -466,7 +466,7 @@
     }
   
     .featured-title {
-      font-size: 13px;
+      font-size: 15px;
       padding: 0.5rem 1rem 0;
     }
   
