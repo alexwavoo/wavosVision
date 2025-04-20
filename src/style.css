@@ -349,7 +349,7 @@
     margin: 0;
     font-size: 19px;
     font-family: 'Cormorant Garamond', serif;
-    font-weight: 900;
+    font-weight: 600;
   }
   
   .featured-wrapper {
@@ -476,10 +476,10 @@
     }
   
     .featured-title {
-      font-size: 19px;
+      font-size: 20px;
       padding: 0.5rem 1rem;
       padding-top: 0;
-      padding-bottom: 0.25rem;
+      padding-bottom: 0.1rem;
     }
   
     .featured-image-subtitle {
