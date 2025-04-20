@@ -346,7 +346,9 @@
     padding: 0.5rem 1.5rem;
     margin: 0;
     font-size: larger;
-    font-weight: 500;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    /* font-weight: 500; */
   }
   
   .featured-wrapper {
@@ -441,7 +443,6 @@
   
   .featured-image-subtitle {
     font-size: 14px;
-    font-style: italic;
     text-align: center;
     width: max-content;
     margin: 0.5rem auto 0;
