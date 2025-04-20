@@ -389,7 +389,7 @@
   
   .carousel-track {
     display: flex;
-    gap: 1.5rem;
+    gap: 2rem;
     padding: 0 1.5rem;
     height: 100%;
   }
@@ -453,8 +453,11 @@
   
   /* Responsive Carousel */
   @media only screen and (max-width: 768px) {
+    .carousel-container {
+      padding-top: 0.75rem;
+    }
+
     .carousel-track {
-      gap: 1rem;
       padding: 0 1rem;
     }
   
@@ -464,12 +467,14 @@
   
   
     .featured-wrapper {
-      gap: 0.5rem;
+      gap: 0rem;
     }
   
     .featured-title {
       font-size: 21px;
-      padding: 0.5rem 1rem 0;
+      padding: 0.5rem 1rem;
+      padding-bottom: 0.25rem;
+      border-bottom: solid 1px #1d1d1d;
     }
   
     .featured-image-subtitle {
