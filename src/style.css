@@ -266,6 +266,7 @@
     .menu-wrapper {
       margin: 0 auto;
       padding: 0.5rem;
+      padding-bottom: 0.2rem;
       font-size: 12px;
     }
   }
@@ -344,10 +345,10 @@
     max-width: 1500px;
     /* text-transform: uppercase; */
     padding: 0.5rem 1.5rem;
+    padding-top: 0px;
     margin: 0;
-    font-size: 21px;
+    font-size: 19px;
     font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
     font-weight: 900;
   }
   
@@ -471,12 +472,13 @@
   
   
     .featured-wrapper {
-      gap: 0rem;
+      gap: 0.5rem;
     }
   
     .featured-title {
       font-size: 21px;
       padding: 0.5rem 1rem;
+      padding-top: 0;
       padding-bottom: 0.25rem;
     }
   
