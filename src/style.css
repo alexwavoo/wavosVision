@@ -357,8 +357,8 @@
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    height: calc(100vh - var(--collection-menu-height) - 1rem);
-    gap: 0.5rem;
+    height: calc(100vh - var(--collection-menu-height) - 0.5rem);
+    gap: 1rem;
     justify-content: center;
   }
   
@@ -455,6 +455,7 @@
   /* Responsive Carousel */
   @media only screen and (max-width: 768px) {
     .carousel-container {
+      padding: 0.5rem 0;
       padding-top: 0.75rem;
     }
 

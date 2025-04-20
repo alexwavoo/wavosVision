@@ -110,7 +110,8 @@ const CollectionList = ({ calculatedHeight, collections, clientImages, signature
     const setFeaturedWrapperHeight = () => {
       const featuredWrapper = document.querySelector('.featured-wrapper');
       if (featuredWrapper) {
-        const dynamicHeight = window.innerHeight - menuHeight - 8; // 8px = 0.5rem approx
+        const mobileFactor = window.innerWidth < 768 ? 8 : 0;
+        const dynamicHeight = window.innerHeight - menuHeight + mobileFactor; // 8px = 0.5rem approx
         featuredWrapper.style.height = `${dynamicHeight}px`;
       }
       document.documentElement.style.setProperty(
