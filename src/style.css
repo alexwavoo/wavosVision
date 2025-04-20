@@ -377,8 +377,8 @@
     scrollbar-width: none; /* Firefox */
     cursor: grab;
     background: #fffdef;
-    border-top: solid 1px #797979;
-    border-bottom: solid 1px #797979;
+    border-top: solid 1px #959595;
+    border-bottom: solid 1px #959595;
   }
   
   .carousel-container::-webkit-scrollbar {
