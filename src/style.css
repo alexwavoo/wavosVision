@@ -376,7 +376,7 @@
     padding-top: 1rem;
     scrollbar-width: none; /* Firefox */
     cursor: grab;
-    background: #fffdef;
+    background: #fffceae8;
     border-top: solid 1px #959595;
     border-bottom: solid 1px #959595;
   }
@@ -476,7 +476,7 @@
     }
   
     .featured-title {
-      font-size: 21px;
+      font-size: 19px;
       padding: 0.5rem 1rem;
       padding-top: 0;
       padding-bottom: 0.25rem;
