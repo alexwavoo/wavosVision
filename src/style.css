@@ -359,7 +359,7 @@
     flex-direction: column;
     height: calc(100vh - var(--collection-menu-height) - 0.5rem);
     gap: 1rem;
-    justify-content: center;
+    justify-content: space-around;
   }
   
   .featured-section {
