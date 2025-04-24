@@ -234,7 +234,7 @@ const CollectionList = ({ calculatedHeight, collections, clientImages, signature
                   >
                     <div className="featured-image-wrapper">
                       <img
-                        src={`${image.imageUrl}?w=270`}
+                        src={`${image.imageUrl}?w=500`}
                         alt={image.imageId}
                         className="featured-image"
                       />
