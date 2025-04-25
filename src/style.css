@@ -259,7 +259,7 @@
     justify-items: center;
     align-content: center;
     user-select: none;
-    padding-top: 1rem;
+    padding: 0.5rem 0;
   }
   
   @media only screen and (max-width: 768px) {
@@ -343,11 +343,12 @@
      =========================== */
   .featured-title {
     max-width: 1500px;
-    /* text-transform: uppercase; */
     padding: 0.5rem 1.5rem;
-    padding-top: 0px;
+    padding-top: 0.5rem;
+    border-top: solid 1px #959595;
+    background: #fffceae8;
     margin: 0;
-    font-size: 2.2rem;
+    font-size: 25px;
     letter-spacing: -1px;
     font-family: 'Cormorant Garamond', serif;
     font-weight: 600;
@@ -359,7 +360,6 @@
     display: flex;
     flex-direction: column;
     height: calc(100vh - var(--collection-menu-height) - 0.5rem);
-    gap: 1rem;
     justify-content: space-around;
   }
   
@@ -374,11 +374,10 @@
     overflow-x: auto;
     overflow-y: hidden;
     padding: 0.5rem 0;
-    padding-top: 1rem;
+    padding-top: 0rem;
     scrollbar-width: none; /* Firefox */
     cursor: grab;
     background: #fffceae8;
-    border-top: solid 1px #959595;
     border-bottom: solid 1px #959595;
   }
   
@@ -460,7 +459,7 @@
   @media only screen and (max-width: 768px) {
     .carousel-container {
       padding: 0.5rem 0;
-      padding-top: 0.75rem;
+      padding-top: 0rem;
     }
 
     .carousel-track {
@@ -473,14 +472,14 @@
   
   
     .featured-wrapper {
-      gap: 0.75rem;
+      gap: 0rem;
     }
   
     .featured-title {
-      font-size: 1.6rem;
-      padding: 0.5rem 1rem;
-      padding-top: 0;
-      padding-bottom: 0.1rem;
+      font-size: 22px;
+      padding: 0.35rem 1rem;
+      padding-bottom: 0.5rem;
+      font-weight: 700;
     }
   
     .featured-image-subtitle {

@@ -217,7 +217,7 @@ const CollectionList = ({ calculatedHeight, collections, clientImages, signature
         <div className="featured-wrapper prevent-select">
           {/* Client Work */}
           <section className="featured-section carousel-section">
-            <h2 className="featured-title">Client Facing</h2>
+            <h2 className="featured-title fade-sides">Client Facing</h2>
             <div
               className="carousel-container fade-sides"
               ref={clientCarouselRef}
@@ -250,7 +250,7 @@ const CollectionList = ({ calculatedHeight, collections, clientImages, signature
 
           {/* Signature Work */}
           <section className="featured-section carousel-section">
-            <h2 className="featured-title">Signature Direction</h2>
+            <h2 className="featured-title fade-sides">Signature Direction</h2>
             <div
               className="carousel-container fade-sides"
               ref={signatureCarouselRef}
