@@ -357,6 +357,8 @@
   .featured-wrapper {
     max-width: 1500px;
     margin: 0 auto;
+    gap: 0.75rem;
+    padding-bottom: 1rem;
     display: flex;
     flex-direction: column;
     height: calc(100vh - var(--collection-menu-height) - 0.5rem);
