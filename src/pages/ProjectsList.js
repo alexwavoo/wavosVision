@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import '../style.css';
 import FadeUp from '../components/FadeUp';
 import { debounce } from 'lodash';
+import { useNavigate } from 'react-router-dom';
 
 function ProjectsList({ collections, calculatedHeight, projectsData, fetchProjects }) {
   const { collectionId } = useParams();
@@ -16,12 +17,16 @@ function ProjectsList({ collections, calculatedHeight, projectsData, fetchProjec
   const [modalImage, setModalImage] = useState(null);
   const [modalText, setModalText] = useState(null);
   const [modalLoaded, setModalLoaded] = useState(false);
+  const navigate = useNavigate();
+
+
 
   // Find the current collection based on collectionId param
   useEffect(() => {
     if (collections) {
       const foundCollection = collections.find((col) => col.sys.id === collectionId);
       setCollection(foundCollection);
+      console.log('Found collection:', foundCollection);
     }
   }, [collections, collectionId]);
 
@@ -78,6 +83,32 @@ function ProjectsList({ collections, calculatedHeight, projectsData, fetchProjec
       }, 500),
     []
   );
+
+  const handleCollectionSwitch = (id) => {
+    const newCollectionId = id;
+
+    setLoading(true);
+    setCollection(null);
+    setTransition(false);
+    setReady(false);
+    setModal(false);
+    setModalImage(null);
+    setModalText(null);
+    setModalLoaded(false);
+    
+    navigate(`/collection/${newCollectionId}/projects`);
+
+    const timeout = setTimeout(() => {
+      setTransition(true);
+      const readyTimeout = setTimeout(() => {
+        setReady(true);
+      }, 500);
+      return () => clearTimeout(readyTimeout);
+    }, 1700);
+
+    return () => clearTimeout(timeout);
+
+  };
 
 
 
@@ -157,14 +188,14 @@ function ProjectsList({ collections, calculatedHeight, projectsData, fetchProjec
                   {title}
                 </p>
               ) : (
-                <a
+                <div
                   key={sys.id}
-                  href={`/collection/${sys.id}/projects`}
+                  onClick={() => handleCollectionSwitch(sys.id)}
                   className="collection"
                   id={`collection-item-${sys.id}`}
                 >
                   <p>{title}</p>
-                </a>
+                </div>
               )
             )}
           </div>
