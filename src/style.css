@@ -322,8 +322,9 @@
   
   @media only screen and (max-width: 768px) {
     .collections {
-      font-size: 12px;
-      justify-content: space-around;
+      font-size: 10px;
+      justify-content: space-between;
+      padding: 0 0.5rem;
     }
     .menu-wrapper{
       justify-items: unset;
