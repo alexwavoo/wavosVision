@@ -237,7 +237,8 @@ const CollectionList = ({ calculatedHeight, collections, clientImages, signature
                         src={`${image.imageUrl}?w=500`}
                         alt={image.imageId}
                         className="featured-image"
-                      />
+                        draggable="false"
+	              />
                     </div>
                     <div className="featured-image-subtitle">
                       {image.projectTitle}
@@ -270,6 +271,7 @@ const CollectionList = ({ calculatedHeight, collections, clientImages, signature
                         src={`${image.imageUrl}?w=270`}
                         alt={image.imageId}
                         className="featured-image"
+			draggable="false"
                       />
                     </div>
                     <div className="featured-image-subtitle">
