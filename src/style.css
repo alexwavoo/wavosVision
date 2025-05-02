@@ -285,9 +285,9 @@
     font-size: 14px;
   }
 
-  .collections p {
+  /*.collections p {
     font-style: italic;
-  }
+  }*/
 
   .collections-featured {
     text-decoration: underline;
@@ -301,7 +301,7 @@
   }
   
   .collection {
-    font-style: italic;
+    /*font-style: italic;*/
     text-decoration: underline;
     cursor: pointer;
     transition: 0.2s ease;
@@ -351,8 +351,9 @@
     margin: 0;
     font-size: 25px;
     letter-spacing: -1px;
-    font-family: 'Cormorant Garamond', serif;
-    font-weight: 600;
+    font-style: italic;
+    /*font-family: 'Cormorant Garamond', serif;*/
+    font-weight: 400;
   }
   
   .featured-wrapper {
@@ -480,10 +481,10 @@
     }
   
     .featured-title {
-      font-size: 22px;
+      font-size: 20px;
       padding: 0.35rem 1rem;
       padding-bottom: 0.5rem;
-      font-weight: 700;
+      font-weight: 400;
     }
   
     .featured-image-subtitle {
