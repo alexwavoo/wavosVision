@@ -1,3 +1,19 @@
+/* DARK
+background: #1d1d1d;
+color: #fdf8dc; 
+background-accent: #252525;
+border-color: #575656;
+*/
+
+/* LIGHT
+background: #fdf8dc;
+color: #000000;
+background-accent: #fffceae8;
+border-color: #959595;
+*/
+
+
+
 /* ===========================
    :root & CSS Variables
    =========================== */
@@ -5,6 +21,10 @@
     --group-count: 4;
     --collection-menu-height: 60px;
     --modal-text-height: 0px;
+    --background : #1d1d1d;
+    --background-accent: #252525;
+    --border-color: #575656;
+    --text-color: #fdf8dc;
   }
   
   @media (max-width: 1350px) {
@@ -37,7 +57,8 @@
   }
   
   body {
-    background: #fdf8dc;
+    background: var(--background);
+    color: var(--text-color);
     font-family: "Roboto", sans-serif;
     cursor: default;
     --modal-text-height: 0px;
@@ -59,13 +80,13 @@
   }
   
   ::-moz-selection {
-    color: #fdf8dc;
-    background: #242323;
+    color: var(--background);
+    background: var(--text-color);
   }
   
   ::selection {
-    color: #fdf8dc;
-    background: #242323;
+    color: var(--background);
+    background: var(--text-color);
   }
   
   ::-webkit-scrollbar {
@@ -170,7 +191,7 @@
     bottom: 15px;
     left: calc(50% - 40px);
     width: 70px;
-    background: #fdf8dc80;
+    background: #1d1d1dbe;
     backdrop-filter: blur(4px);
     filter: grayscale(0.25);
     padding: 5px;
@@ -346,10 +367,10 @@
     max-width: 1500px;
     padding: 0.5rem 1.5rem;
     padding-top: 0.5rem;
-    border-top: solid 1px #959595;
-    background: #fffceae8;
+    border-top: solid 1px var(--border-color);
+    background: var(--background-accent);
     margin: 0;
-    font-size: 25px;
+    font-size: 22px;
     letter-spacing: -1px;
     font-style: italic;
     /*font-family: 'Cormorant Garamond', serif;*/
@@ -381,8 +402,8 @@
     padding-top: 0rem;
     scrollbar-width: none; /* Firefox */
     cursor: grab;
-    background: #fffceae8;
-    border-bottom: solid 1px #959595;
+    background: var(--background-accent);
+    border-bottom: solid 1px var(--border-color);
   }
   
   .carousel-container::-webkit-scrollbar {
@@ -481,7 +502,7 @@
     }
   
     .featured-title {
-      font-size: 20px;
+      font-size: 19px;
       padding: 0.35rem 1rem;
       padding-bottom: 0.5rem;
       font-weight: 400;
@@ -517,7 +538,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: #fdf8dc;
+    background: var(--background);
     backdrop-filter: blur(15px);
     display: flex;
     align-items: center;
@@ -532,7 +553,7 @@
 
   .collection-title,
   .header {
-    color: black;
+    color: var(--text-color);
     font-size: 26px;
     font-weight: 300;
   }
@@ -579,7 +600,7 @@
     font-style: italic;
     text-transform: uppercase;
     width: 100%;
-    color: #000;
+    color: var(--text-color);
     text-align: center;
     padding-top: 0.35rem;
     box-sizing: border-box;
@@ -685,7 +706,7 @@
     font-size: 18px;
     font-weight: 300;
     transition: all 0.3s ease-in;
-    color: #000;
+    color: var(--text-color);
     padding-bottom: 1rem;
   }
   
