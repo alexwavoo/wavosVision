@@ -234,7 +234,7 @@ const CollectionList = ({ calculatedHeight, collections, clientImages, signature
                   >
                     <div className="featured-image-wrapper">
                       <img
-                        src={`${image.imageUrl}?w=500`}
+                        src={image.imageUrl}
                         alt={image.imageId}
                         className="featured-image"
                         draggable="false"
@@ -268,7 +268,7 @@ const CollectionList = ({ calculatedHeight, collections, clientImages, signature
                   >
                     <div className="featured-image-wrapper">
                       <img
-                        src={`${image.imageUrl}?w=270`}
+                        src={image.imageUrl}
                         alt={image.imageId}
                         className="featured-image"
 			draggable="false"

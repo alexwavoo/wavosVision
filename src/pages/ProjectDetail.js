@@ -3,6 +3,16 @@ import { useParams, Link } from 'react-router-dom';
 import '../style.css';
 import FadeUp from '../components/FadeUp';
 
+// Utility function to construct proper Contentful image URLs with transformations
+const getContentfulImageUrl = (url, width) => {
+  if (!url) return '';
+  
+  // Check if URL already has query parameters
+  const separator = url.includes('?') ? '&' : '?';
+  // Add fit=scale to force proper scaling
+  return `${url}${separator}w=${width}&fit=scale`;
+};
+
 function ProjectDetail({ calculatedHeight, dataFetched  }) {
   const { projectId } = useParams();
 
@@ -191,7 +201,7 @@ function ProjectDetail({ calculatedHeight, dataFetched  }) {
               >
                 <FadeUp>
                   <img
-                    src={`${imageUrl}?w=565`}
+                    src={getContentfulImageUrl(imageUrl, 565)}
                     alt={`Image ${index + 1}`}
                     style={{ cursor: 'crosshair' }}
                   />
@@ -212,7 +222,7 @@ function ProjectDetail({ calculatedHeight, dataFetched  }) {
                 >
                   <FadeUp>
                     <img
-                      src={`${imageUrl}?w=565`}
+                      src={getContentfulImageUrl(imageUrl, 565)}
                       alt={`Image ${index + 1}`}
                       style={{ cursor: 'crosshair' }}
                     />
@@ -232,13 +242,13 @@ function ProjectDetail({ calculatedHeight, dataFetched  }) {
           style={{ height: `${calculatedHeight}px` }}
         >
           {modalLoaded ? (
-            <img src={`${modalImage}?w=2560`} width="80%" alt="Modal" />
+            <img src={getContentfulImageUrl(modalImage, 2560)} width="80%" alt="Modal" />
           ) : (
             <>
               <span className="loader"></span>
               <img
                 onLoad={handleImageLoaded}
-                src={`${modalImage}?w=2560`}
+                src={getContentfulImageUrl(modalImage, 2560)}
                 style={{ display: 'none' }}
                 alt="Modal"
               />

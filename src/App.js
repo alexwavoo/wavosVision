@@ -5,6 +5,16 @@ import { Analytics } from '@vercel/analytics/react';
 
 import './style.css';
 
+// Utility function to construct proper Contentful image URLs with transformations
+const getContentfulImageUrl = (url, width) => {
+  if (!url) return '';
+  
+  // Check if URL already has query parameters
+  const separator = url.includes('?') ? '&' : '?';
+  // Add multiple parameters to force proper processing
+  return `${url}${separator}w=${width}&fit=scale&fm=jpg`;
+};
+
 const CollectionList = lazy(() => import('./pages/CollectionList'));
 const ProjectsList = lazy(() => import('./pages/ProjectsList'));
 const ProjectDetail = lazy(() => import('./pages/ProjectDetail'));
@@ -94,6 +104,8 @@ export default function App() {
                       sys { id }
                       title
                       url
+                      width
+                      height
                     }
                   }
                 }
@@ -116,7 +128,12 @@ export default function App() {
             sys: { id: item.sys.id },
             fields: {
               title: item.title,
-              file: { url: item.url },
+              file: { 
+                url: getContentfulImageUrl(item.url, 270),
+                originalUrl: item.url,
+                width: item.width,
+                height: item.height
+              },
             },
           }));
           
@@ -126,7 +143,12 @@ export default function App() {
             sys: { id: item.sys.id },
             fields: {
               title: item.title,
-              file: { url: item.url },
+              file: { 
+                url: getContentfulImageUrl(item.url, 270),
+                originalUrl: item.url,
+                width: item.width,
+                height: item.height
+              },
             },
           }));
           
@@ -172,11 +194,17 @@ export default function App() {
                       ... on Project {
                         title
                         description { json }
-                        thumbnail { url }
+                        thumbnail { 
+                          url
+                          width
+                          height
+                        }
                         imagesCollection {
                           items {
                             sys { id }
                             url
+                            width
+                            height
                           }
                           total
                         }
@@ -200,11 +228,14 @@ export default function App() {
             id: project.sys.id,
             title: project.title,
             description: project.description,
-            thumbnail: project.thumbnail?.url,
+            thumbnail: project.thumbnail?.url ? getContentfulImageUrl(project.thumbnail.url, 565) : null,
             imagesCollection: {
               items: project.imagesCollection?.items.map((img) => ({
                 id: img.sys.id,
-                url: img.url,
+                url: getContentfulImageUrl(img.url, 565),
+                originalUrl: img.url,
+                width: img.width,
+                height: img.height
               })),
               total: project.imagesCollection?.total,
             },
