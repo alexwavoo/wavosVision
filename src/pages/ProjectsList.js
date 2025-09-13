@@ -5,16 +5,6 @@ import FadeUp from '../components/FadeUp';
 import { debounce } from 'lodash';
 import { useNavigate } from 'react-router-dom';
 
-// Utility function to construct proper Contentful image URLs with transformations
-const getContentfulImageUrl = (url, width) => {
-  if (!url) return '';
-  
-  // Check if URL already has query parameters
-  const separator = url.includes('?') ? '&' : '?';
-  // Add fit=scale to force proper scaling
-  return `${url}${separator}w=${width}&fit=scale`;
-};
-
 function ProjectsList({ collections, calculatedHeight, projectsData, fetchProjects }) {
   const { collectionId } = useParams();
 
@@ -224,7 +214,7 @@ function ProjectsList({ collections, calculatedHeight, projectsData, fetchProjec
                   <FadeUp>
                     <div className="grid-item" style={{ marginBottom: '1.5rem' }}>
                       <img
-                        src={getContentfulImageUrl(project.thumbnail, 565)}
+                        src={`${project.thumbnail}?w=565`}
                         alt={project.title}
                         loading="lazy"
                       />
@@ -279,7 +269,7 @@ function ProjectsList({ collections, calculatedHeight, projectsData, fetchProjec
                       style={{ marginBottom: '1.5rem', cursor: 'crosshair' }}
                     >
                       <img
-                        src={getContentfulImageUrl(project.thumbnail, 565)}
+                        src={`${project.thumbnail}?w=565`}
                         alt={project.title}
                         loading="lazy"
                       />
@@ -301,13 +291,13 @@ function ProjectsList({ collections, calculatedHeight, projectsData, fetchProjec
           style={{ height: `${calculatedHeight}px` }}
         >
           {modalLoaded ? (
-            <img src={getContentfulImageUrl(modalImage, 2560)} width="80%" alt="Modal" />
+            <img src={`${modalImage}?w=2560`} width="80%" alt="Modal" />
           ) : (
             <>
               <span className="loader"></span>
               <img
                 onLoad={handleImageLoaded}
-                src={getContentfulImageUrl(modalImage, 2560)}
+                src={`${modalImage}?w=2560`}
                 style={{ display: 'none' }}
                 alt="Modal"
               />
