@@ -8,6 +8,7 @@
     "compressorjs": "^1.2.1",
     "contentful-management": "^11.33.0",
     "framer-motion": "^11.0.5",
+    "hamburger-react": "^2.5.2",
     "lodash": "^4.17.21",
     "react": "18.2.0",
     "react-dom": "18.2.0",

@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import '../style.css';
 
 const Footer = () => {
-  const instagramUrl = '#'; // Placeholder
+  const instagramUrl = 'https://www.instagram.com/alexwavo/'; // Placeholder
   const footerRef = useRef(null);
   const location = useLocation();
 
