@@ -32,6 +32,11 @@ function ProjectsList({ collections, calculatedHeight, projectsData, fetchProjec
 
   // Handle transition and ready states with timeouts
   useEffect(() => {
+    // Reset animation states when collectionId changes
+    setTransition(false);
+    setReady(false);
+    setLoading(true);
+
     const timeout = setTimeout(() => {
       setTransition(true);
       const readyTimeout = setTimeout(() => {
@@ -41,7 +46,7 @@ function ProjectsList({ collections, calculatedHeight, projectsData, fetchProjec
     }, 1700);
 
     return () => clearTimeout(timeout);
-  }, []);
+  }, [collectionId]);
 
   // Fetch projects if not already loaded
   useEffect(() => {
@@ -126,6 +131,7 @@ function ProjectsList({ collections, calculatedHeight, projectsData, fetchProjec
           style={{
             opacity: transition ? 0 : 1,
             zIndex: ready ? 0 : undefined,
+            transition: transition ? 'opacity 0.6s ease-in' : 'none',
           }}
         >
           <div className="subtitle">{collection?.title}</div>
@@ -133,7 +139,7 @@ function ProjectsList({ collections, calculatedHeight, projectsData, fetchProjec
         <div className="wrapper">
           <div className="flex-container">
             <div className="column-left">
-              <div className="grid-item" style={{ marginBottom: '1.5rem' }}>
+              <div className="grid-item" style={{ marginBottom: '0.5rem' }}>
                 <div className="subtitle">No projects found</div>
               </div>
             </div>
@@ -164,6 +170,7 @@ function ProjectsList({ collections, calculatedHeight, projectsData, fetchProjec
         style={{
           opacity: transition ? 0 : 1,
           zIndex: ready ? 0 : undefined,
+          transition: transition ? 'opacity 0.6s ease-in' : 'none',
         }}
       >
         <p className="collection-title">{collection?.title}</p>
@@ -171,70 +178,48 @@ function ProjectsList({ collections, calculatedHeight, projectsData, fetchProjec
 
       {/* Main wrapper */}
       <div className="wrapper">
-        {/* Menu */}
-        <div className="menu-wrapper">
-          <div className="collections">
-            <Link to={'/'}>
-              <p className='collections-featured'>FEATURED WORK</p>
-            </Link>
-            {collections.map(({ sys, title }) =>
-              sys.id === collectionId ? (
-                <p
-                  key={sys.id}
-                  className="collection"
-                  id={`collection-item-${sys.id}`}
-                  style={{ textDecoration: 'none' }}
-                >
-                  {title}
-                </p>
-              ) : (
-                <div
-                  key={sys.id}
-                  onClick={() => handleCollectionSwitch(sys.id)}
-                  className="collection"
-                  id={`collection-item-${sys.id}`}
-                >
-                  <p>{title}</p>
-                </div>
-              )
-            )}
-          </div>
-        </div>
-
         {/* Projects columns */}
         <div className="flex-container">
           {/* Left column */}
-          <div className="column-left">
+          <div className="column-left" key={`left-${collectionId}`}>
             {projectsLeft.map((project) =>
               project.imagesCollection.total > 1 ? (
                 <Link
-                  key={project.id}
+                  key={`${collectionId}-${project.id}`}
                   to={`/collection/${collectionId}/projects/${project.id}`}
                 >
                   <FadeUp>
-                    <div className="grid-item" style={{ marginBottom: '1.5rem' }}>
+                    <div className="grid-item" style={{ marginBottom: '0.5rem' }}>
+                      <div className="grid-image-wrapper">
+                        <img
+                          src={`${project.thumbnail}?w=565`}
+                          alt={project.title}
+                          loading="lazy"
+                        />
+                        <div className="grid-subtitle-overlay">
+                          {project.title}
+                        </div>
+                      </div>
+                    </div>
+                  </FadeUp>
+                </Link>
+              ) : (
+                <FadeUp key={`${collectionId}-${project.id}`}>
+                  <div
+                    onClick={() => openModal(project)}
+                    className="grid-item"
+                    style={{ marginBottom: '0.5rem', cursor: 'crosshair' }}
+                  >
+                    <div className="grid-image-wrapper">
                       <img
                         src={`${project.thumbnail}?w=565`}
                         alt={project.title}
                         loading="lazy"
                       />
-                      <div className="subtitle">{project.title}</div>
+                      <div className="grid-subtitle-overlay">
+                        {project.title}
+                      </div>
                     </div>
-                  </FadeUp>
-                </Link>
-              ) : (
-                <FadeUp key={project.id}>
-                  <div
-                    onClick={() => openModal(project)}
-                    className="grid-item"
-                    style={{ marginBottom: '1.5rem', cursor: 'crosshair' }}
-                  >
-                    <img
-                      src={`${project.thumbnail}?w=565`}
-                      alt={project.title}
-                      loading="lazy"
-                    />
-                    <div className="subtitle">{project.title}</div>
                   </div>
                 </FadeUp>
               )
@@ -243,37 +228,45 @@ function ProjectsList({ collections, calculatedHeight, projectsData, fetchProjec
 
           {/* Right column */}
           {projectsRight.length > 0 && (
-            <div className="column-right">
+            <div className="column-right" key={`right-${collectionId}`}>
               {projectsRight.map((project) =>
                 project.imagesCollection.total > 1 ? (
                   <Link
-                    key={project.id}
+                    key={`${collectionId}-${project.id}`}
                     to={`/collection/${collectionId}/projects/${project.id}`}
                   >
                     <FadeUp>
-                      <div className="grid-item" style={{ marginBottom: '1.5rem' }}>
+                      <div className="grid-item" style={{ marginBottom: '0.5rem' }}>
+                        <div className="grid-image-wrapper">
+                          <img
+                            src={`${project.thumbnail}?w=565`}
+                            alt={project.title}
+                            loading="lazy"
+                          />
+                          <div className="grid-subtitle-overlay">
+                            {project.title}
+                          </div>
+                        </div>
+                      </div>
+                    </FadeUp>
+                  </Link>
+                ) : (
+                  <FadeUp key={`${collectionId}-${project.id}`}>
+                    <div
+                      onClick={() => openModal(project)}
+                      className="grid-item"
+                      style={{ marginBottom: '0.5rem', cursor: 'crosshair' }}
+                    >
+                      <div className="grid-image-wrapper">
                         <img
                           src={`${project.thumbnail}?w=565`}
                           alt={project.title}
                           loading="lazy"
                         />
-                        <div className="subtitle">{project.title}</div>
+                        <div className="grid-subtitle-overlay">
+                          {project.title}
+                        </div>
                       </div>
-                    </FadeUp>
-                  </Link>
-                ) : (
-                  <FadeUp key={project.id}>
-                    <div
-                      onClick={() => openModal(project)}
-                      className="grid-item"
-                      style={{ marginBottom: '1.5rem', cursor: 'crosshair' }}
-                    >
-                      <img
-                        src={`${project.thumbnail}?w=565`}
-                        alt={project.title}
-                        loading="lazy"
-                      />
-                      <div className="subtitle">{project.title}</div>
                     </div>
                   </FadeUp>
                 )
@@ -310,10 +303,6 @@ function ProjectsList({ collections, calculatedHeight, projectsData, fetchProjec
         </div>
       )}
 
-      {/* Logo link */}
-      <Link to="/">
-        <img className="logo" src="/stars.png" alt="Logo" />
-      </Link>
     </>
   );
 }

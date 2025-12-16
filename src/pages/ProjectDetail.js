@@ -90,7 +90,7 @@ function ProjectDetail({ calculatedHeight, dataFetched  }) {
 
   if (!localDataFetched) {
     // Show loading or null while waiting for data
-    return <div style={{ padding: '2rem', textAlign: 'center' }}>Loading project...</div>;
+    return <div style={{ padding: '2rem', textAlign: 'center' }}></div>;
   }
 
   if (!projectData.title) {
@@ -186,7 +186,7 @@ function ProjectDetail({ calculatedHeight, dataFetched  }) {
               <div
                 key={index}
                 className="grid-item"
-                style={{ marginBottom: '2.5rem' }}
+                style={{ marginBottom: '0.3rem' }}
                 onClick={() => openModal(imageUrl)}
               >
                 <FadeUp>
@@ -207,7 +207,7 @@ function ProjectDetail({ calculatedHeight, dataFetched  }) {
                 <div
                   key={index}
                   className="grid-item"
-                  style={{ marginBottom: '2.5rem' }}
+                  style={{ marginBottom: '0.3rem' }}
                   onClick={() => openModal(imageUrl)}
                 >
                   <FadeUp>
@@ -248,9 +248,9 @@ function ProjectDetail({ calculatedHeight, dataFetched  }) {
       )}
 
       {/* Logo link */}
-      <Link to="/">
+      {/* <Link to="/">
         <img className="logo" src="/stars.png" alt="Logo" />
-      </Link>
+      </Link> */}
     </>
   );
 }

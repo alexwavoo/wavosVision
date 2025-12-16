@@ -4,6 +4,8 @@ import { debounce } from 'lodash';
 import { Analytics } from '@vercel/analytics/react';
 
 import './style.css';
+import Header from './components/Header';
+import Footer from './components/Footer';
 
 const CollectionList = lazy(() => import('./pages/CollectionList'));
 const ProjectsList = lazy(() => import('./pages/ProjectsList'));
@@ -302,6 +304,7 @@ export default function App() {
   return (
     <>
       <Router>
+        <Header collections={collections} />
         <Suspense fallback={<></>}>
           <Routes>
             <Route
@@ -334,6 +337,7 @@ export default function App() {
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Suspense>
+        <Footer />
       </Router>
       <Analytics />
     </>
