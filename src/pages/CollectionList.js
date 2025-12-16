@@ -1,34 +1,71 @@
 import React, { useEffect, useState } from 'react';
 import '../style.css';
 import { Link } from 'react-router-dom';
+import MasonryFadeItem from '../components/MasonryFadeItem';
 
 const CollectionList = ({ calculatedHeight, collections, clientImages, signatureImages, dataFetched }) => {
   // State to control content visibility after data is fetched
   const [showContent, setShowContent] = useState(false);
+  // Track how many initial images have loaded
+  const [imagesPreloaded, setImagesPreloaded] = useState(false);
 
-  // Show content with delay after data is fetched
+  // Combine client and signature images into single array
+  const allImages = [...(clientImages || []), ...(signatureImages || [])];
+  
+  // Number of images to preload before showing content (first batch above fold)
+  const PRELOAD_COUNT = Math.min(12, allImages.length);
+
+  // Preload initial images before showing content
   useEffect(() => {
-    const timer = setTimeout(() => {
-      if (dataFetched) {
-        setShowContent(true);
-      }
-    }, 850);
+    if (!dataFetched || allImages.length === 0) return;
 
-    return () => {
-      clearTimeout(timer);
+    const imagesToPreload = allImages.slice(0, PRELOAD_COUNT);
+    let loadedCount = 0;
+
+    const checkAllLoaded = () => {
+      loadedCount++;
+      if (loadedCount >= imagesToPreload.length) {
+        setImagesPreloaded(true);
+      }
     };
-  }, [dataFetched]);
+
+    // Preload images
+    imagesToPreload.forEach((image) => {
+      const img = new Image();
+      img.onload = checkAllLoaded;
+      img.onerror = checkAllLoaded; // Count errors too so we don't hang
+      img.src = `${image.imageUrl}?w=800`;
+    });
+
+    // Fallback timeout in case images take too long
+    const fallbackTimeout = setTimeout(() => {
+      if (!imagesPreloaded) {
+        setImagesPreloaded(true);
+      }
+    }, 5000);
+
+    return () => clearTimeout(fallbackTimeout);
+  }, [dataFetched, allImages.length]);
+
+  // Show content after images are preloaded
+  useEffect(() => {
+    if (imagesPreloaded) {
+      // Small delay to ensure layout is stable
+      const timer = setTimeout(() => {
+        setShowContent(true);
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [imagesPreloaded]);
 
   // Return null if required data is missing
   if (!collections || !clientImages || !signatureImages) return null;
-
-  // Combine client and signature images into single array
-  const allImages = [...clientImages, ...signatureImages];
 
   return (
     <>
       {/* Loading / Title Screen */}
       <div
+        className="loading-screen"
         style={{
           position: 'absolute',
           top: 0,
@@ -38,9 +75,6 @@ const CollectionList = ({ calculatedHeight, collections, clientImages, signature
           alignItems: 'center',
           backgroundColor: 'var(--background)',
           zIndex: 9999,
-          height: calculatedHeight
-          ? `${calculatedHeight}px`
-          : `${window.innerHeight}px`,
           width: '100vw',
           height: '100vh',
         }}
@@ -59,19 +93,15 @@ const CollectionList = ({ calculatedHeight, collections, clientImages, signature
             <Link
               key={`${image.imageId}-${index}`}
               to={`/collection/${image.collectionId}/projects/${image.projectId}`}
-              className="masonry-item"
+              style={{ textDecoration: 'none' }}
             >
-              <div className="masonry-image-wrapper">
-                <img
-                  src={`${image.imageUrl}?w=800`}
-                  alt={image.projectTitle || image.imageId}
-                  className="masonry-image"
-                  loading="lazy"
-                />
-                <div className="masonry-subtitle-overlay">
-                  {image.projectTitle}
-                </div>
-              </div>
+              <MasonryFadeItem
+                src={`${image.imageUrl}?w=800`}
+                width={image.imageWidth}
+                height={image.imageHeight}
+                alt={image.projectTitle || image.imageId}
+                projectTitle={image.projectTitle}
+              />
             </Link>
           ))}
         </div>

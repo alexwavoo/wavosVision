@@ -96,6 +96,8 @@ export default function App() {
                       sys { id }
                       title
                       url
+                      width
+                      height
                     }
                   }
                 }
@@ -119,6 +121,8 @@ export default function App() {
             fields: {
               title: item.title,
               file: { url: item.url },
+              width: item.width,
+              height: item.height,
             },
           }));
           
@@ -129,6 +133,8 @@ export default function App() {
             fields: {
               title: item.title,
               file: { url: item.url },
+              width: item.width,
+              height: item.height,
             },
           }));
           
@@ -250,6 +256,8 @@ export default function App() {
             matched.push({
               imageId: clientImage.sys.id,
               imageUrl: clientImage.fields.file.url,
+              imageWidth: clientImage.fields.width,
+              imageHeight: clientImage.fields.height,
               projectId: project.id,
               projectTitle: project.title,
               collectionId,
@@ -286,6 +294,8 @@ export default function App() {
             matched.push({
               imageId: signatureImage.sys.id,
               imageUrl: signatureImage.fields.file.url,
+              imageWidth: signatureImage.fields.width,
+              imageHeight: signatureImage.fields.height,
               projectId: project.id,
               projectTitle: project.title,
               collectionId,
