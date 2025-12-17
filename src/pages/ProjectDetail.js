@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import '../style.css';
 import FadeUp from '../components/FadeUp';
 
@@ -53,7 +53,6 @@ function ProjectDetail({ calculatedHeight, dataFetched  }) {
     // Find project by projectId
     const project = allProjects.find((p) => p.id === projectId);
 
-    console.log('All projects:', allProjects);
 
     if (project) {
       setProjectData({
@@ -246,11 +245,6 @@ function ProjectDetail({ calculatedHeight, dataFetched  }) {
           )}
         </div>
       )}
-
-      {/* Logo link */}
-      {/* <Link to="/">
-        <img className="logo" src="/stars.png" alt="Logo" />
-      </Link> */}
     </>
   );
 }
