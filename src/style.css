@@ -557,6 +557,7 @@ border-color: #959595;
   @media only screen and (max-width: 768px) {
     .masonry-container {
       columns: 2!important;
+      column-width: auto;
       gap: 0.3rem;
       padding: 0 0.3rem;
     }
@@ -736,7 +737,7 @@ border-color: #959595;
     background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
     color: var(--text-color);
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 400;
     font-style: italic;
     text-transform: uppercase;
     opacity: 0;
