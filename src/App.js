@@ -6,11 +6,17 @@ import { Analytics } from '@vercel/analytics/react';
 import './style.css';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import ErrorBoundary from './components/ErrorBoundary';
 
 const CollectionList = lazy(() => import('./pages/CollectionList'));
 const ProjectsList = lazy(() => import('./pages/ProjectsList'));
 const ProjectDetail = lazy(() => import('./pages/ProjectDetail'));
 const NotFound = lazy(() => import('./pages/NotFound'));
+
+const SPACE_ID = process.env.REACT_APP_CONTENTFUL_SPACE_ID;
+const ACCESS_TOKEN = process.env.REACT_APP_CONTENTFUL_ACCESS_TOKEN;
+const REST_BASE = `https://cdn.contentful.com/spaces/${SPACE_ID}/environments/master`;
+const GRAPHQL_BASE = `https://graphql.contentful.com/content/v1/spaces/${SPACE_ID}/environments/master`;
 
 export default function App() {
   const [calculatedHeight, setCalculatedHeight] = useState(0);
@@ -22,7 +28,6 @@ export default function App() {
   const [finalSignatureImages, setFinalSignatureImages] = useState([]);
   const [dataFetched, setDataFetched] = useState(false);
 
-  // Calculate window height with debounce
   const calculateHeight = useMemo(
     () =>
       debounce(() => {
@@ -40,14 +45,13 @@ export default function App() {
     };
   }, [calculateHeight]);
 
-  // Fetch collections or load from cache
   useEffect(() => {
     const cachedCollections = sessionStorage.getItem('collections');
     if (cachedCollections) {
       setCollections(JSON.parse(cachedCollections));
     } else {
       fetch(
-        'https://cdn.contentful.com/spaces/oen9jg6suzgv/environments/master/entries?access_token=DVunWPNQGTy0uUwexdTPIoUiShuoqOrcDGi9q8x6tXo&content_type=collection&include=2'
+        `${REST_BASE}/entries?access_token=${ACCESS_TOKEN}&content_type=collection&include=2`
       )
         .then((res) => res.json())
         .then((data) => {
@@ -67,9 +71,8 @@ export default function App() {
     }
   }, []);
 
-  // Fetch featured image collections or load from cache
   useEffect(() => {
-    if (collections.length === 0) return; // Wait for collections
+    if (collections.length === 0) return;
 
     const cachedClientImages = sessionStorage.getItem('clientImages');
     const cachedSignatureImages = sessionStorage.getItem('signatureImages');
@@ -78,12 +81,11 @@ export default function App() {
       setClientImages(JSON.parse(cachedClientImages));
       setSignatureImages(JSON.parse(cachedSignatureImages));
     } else {
-      // Fetch featured images from GraphQL
-      fetch('https://graphql.contentful.com/content/v1/spaces/oen9jg6suzgv/environments/master', {
+      fetch(GRAPHQL_BASE, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: 'Bearer DVunWPNQGTy0uUwexdTPIoUiShuoqOrcDGi9q8x6tXo',
+          Authorization: `Bearer ${ACCESS_TOKEN}`,
         },
         body: JSON.stringify({
           query: `
@@ -108,13 +110,11 @@ export default function App() {
       })
         .then((res) => res.json())
         .then((data) => {
-          const collections = data.data.featuredImagesCollection?.items || [];
+          const cols = data.data.featuredImagesCollection?.items || [];
           
-          // Find client facing and signature direction collections
-          const clientCollection = collections.find(item => item.name === "Client Facing");
-          const signatureCollection = collections.find(item => item.name === "Signature Direction");
+          const clientCollection = cols.find(item => item.name === "Client Facing");
+          const signatureCollection = cols.find(item => item.name === "Signature Direction");
           
-          // Process client images
           const clientItems = clientCollection?.imagesCollection?.items || [];
           const clientImagesData = clientItems.map((item) => ({
             sys: { id: item.sys.id },
@@ -126,7 +126,6 @@ export default function App() {
             },
           }));
           
-          // Process signature images
           const signatureItems = signatureCollection?.imagesCollection?.items || [];
           const signatureImagesData = signatureItems.map((item) => ({
             sys: { id: item.sys.id },
@@ -148,7 +147,6 @@ export default function App() {
     }
   }, [collections]);
 
-  // Fetch projects for each collection or load from cache
   useEffect(() => {
     if (collections.length === 0) return;
 
@@ -163,11 +161,11 @@ export default function App() {
       }
 
       try {
-        const response = await fetch('https://graphql.contentful.com/content/v1/spaces/oen9jg6suzgv/environments/master', {
+        const response = await fetch(GRAPHQL_BASE, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: 'Bearer DVunWPNQGTy0uUwexdTPIoUiShuoqOrcDGi9q8x6tXo',
+            Authorization: `Bearer ${ACCESS_TOKEN}`,
           },
           body: JSON.stringify({
             query: `
@@ -228,13 +226,11 @@ export default function App() {
       }
     };
 
-    // Load projects for all collections
     collections.forEach(({ sys }) => {
       loadProjectsForCollection(sys.id);
     });
   }, [collections]);
 
-  // Match client images to projects and collections
   useEffect(() => {
     if (
       collections.length === 0 ||
@@ -243,7 +239,6 @@ export default function App() {
     )
       return;
 
-    // Match client images to projects
     const matched = [];
 
     clientImages.forEach((clientImage) => {
@@ -262,7 +257,7 @@ export default function App() {
               projectTitle: project.title,
               collectionId,
             });
-            break; // Stop searching projects once matched
+            break;
           }
         }
       }
@@ -272,7 +267,6 @@ export default function App() {
     sessionStorage.setItem('finalClientImagesMatched', JSON.stringify(matched));
   }, [collections, clientImages, projectsData]);
 
-  // Match signature images to projects and collections
   useEffect(() => {
     if (
       collections.length === 0 ||
@@ -281,7 +275,6 @@ export default function App() {
     )
       return;
 
-    // Match signature images to projects
     const matched = [];
 
     signatureImages.forEach((signatureImage) => {
@@ -300,7 +293,7 @@ export default function App() {
               projectTitle: project.title,
               collectionId,
             });
-            break; // Stop searching projects once matched
+            break;
           }
         }
       }
@@ -314,40 +307,41 @@ export default function App() {
   return (
     <>
       <Router>
-        <Header collections={collections} />
-        <Suspense fallback={<></>}>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <CollectionList
-                  calculatedHeight={calculatedHeight}
-                  collections={collections}
-                  clientImages={finalClientImages}
-                  signatureImages={finalSignatureImages}
-                  dataFetched={dataFetched}
-                />
-              }
-            />
-            <Route
-              path="/collection/:collectionId/projects"
-              element={
-                <ProjectsList
-                  collections={collections}
-                  calculatedHeight={calculatedHeight}
-                  projectsData={projectsData}
-                  fetchProjects={() => {}} // No need to fetch here anymore
-                />
-              }
-            />
-            <Route
-              path="/collection/:collectionId/projects/:projectId"
-              element={<ProjectDetail calculatedHeight={calculatedHeight} dataFetched={dataFetched} />}
-            />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Suspense>
-        <Footer />
+        <ErrorBoundary>
+          <Header collections={collections} />
+          <Suspense fallback={<></>}>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <CollectionList
+                    calculatedHeight={calculatedHeight}
+                    collections={collections}
+                    clientImages={finalClientImages}
+                    signatureImages={finalSignatureImages}
+                    dataFetched={dataFetched}
+                  />
+                }
+              />
+              <Route
+                path="/collection/:collectionId/projects"
+                element={
+                  <ProjectsList
+                    collections={collections}
+                    calculatedHeight={calculatedHeight}
+                    projectsData={projectsData}
+                  />
+                }
+              />
+              <Route
+                path="/collection/:collectionId/projects/:projectId"
+                element={<ProjectDetail calculatedHeight={calculatedHeight} projectsData={projectsData} dataFetched={dataFetched} />}
+              />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
+          <Footer />
+        </ErrorBoundary>
       </Router>
       <Analytics />
     </>

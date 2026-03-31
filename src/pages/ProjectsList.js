@@ -1,25 +1,21 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import '../style.css';
 import FadeUp from '../components/FadeUp';
-import { debounce } from 'lodash';
+import Modal from '../components/Modal';
 
-function ProjectsList({ collections, calculatedHeight, projectsData, fetchProjects }) {
+function ProjectsList({ collections, calculatedHeight, projectsData }) {
   const { collectionId } = useParams();
 
-  // State variables
   const [loading, setLoading] = useState(true);
   const [collection, setCollection] = useState(null);
   const [transition, setTransition] = useState(false);
   const [ready, setReady] = useState(false);
   const [modal, setModal] = useState(false);
   const [modalImage, setModalImage] = useState(null);
-  const [modalText, setModalText] = useState(null);
-  const [modalLoaded, setModalLoaded] = useState(false);
+  const [modalTitle, setModalTitle] = useState(null);
+  const [modalSubtitle, setModalSubtitle] = useState(null);
 
-
-
-  // Find the current collection based on collectionId param
   useEffect(() => {
     if (collections) {
       const foundCollection = collections.find((col) => col.sys.id === collectionId);
@@ -27,9 +23,7 @@ function ProjectsList({ collections, calculatedHeight, projectsData, fetchProjec
     }
   }, [collections, collectionId]);
 
-  // Handle transition and ready states with timeouts
   useEffect(() => {
-    // Reset animation states when collectionId changes
     setTransition(false);
     setReady(false);
     setLoading(true);
@@ -45,55 +39,32 @@ function ProjectsList({ collections, calculatedHeight, projectsData, fetchProjec
     return () => clearTimeout(timeout);
   }, [collectionId]);
 
-  // Fetch projects if not already loaded
   useEffect(() => {
-    if (!projectsData[collectionId]) {
-      fetchProjects(collectionId);
-    } else {
+    if (projectsData[collectionId]) {
       setLoading(false);
     }
-  }, [collectionId, projectsData, fetchProjects]);
+  }, [collectionId, projectsData]);
 
-  // Open modal with project details
   const openModal = (project) => {
     if (!modal) {
       setModalImage(project.thumbnail);
+      setModalTitle(project.title);
+      setModalSubtitle(project.description?.json?.content?.[0]?.content?.[0]?.value || '');
       setModal(true);
-      setModalText([
-        project.title,
-        project.description?.json?.content?.[0]?.content?.[0]?.value || '',
-      ]);
       document.body.style.overflow = 'hidden';
       document.body.style.setProperty('--modal-text-height', '92px');
     }
   };
 
-  // Close modal and reset states
   const closeModal = () => {
-    if (modal) {
-      setModal(false);
-      document.body.style.overflow = 'auto';
-      setModalLoaded(false);
-    }
+    setModal(false);
+    document.body.style.overflow = 'auto';
   };
 
-  // Debounced handler for modal image load
-  const handleImageLoaded = useMemo(
-    () =>
-      debounce(() => {
-        setModalLoaded(true);
-      }, 500),
-    []
-  );
-
-
-
-  // Show nothing while loading
   if (loading) return null;
 
   const projects = projectsData[collectionId] || [];
 
-  // Render when no projects found
   if (projects.length === 0) {
     return (
       <>
@@ -128,14 +99,59 @@ function ProjectsList({ collections, calculatedHeight, projectsData, fetchProjec
     );
   }
 
-  // Split projects into two columns
   const midpoint = Math.ceil(projects.length / 2);
   const projectsLeft = projects.slice(0, midpoint);
   const projectsRight = projects.slice(midpoint);
 
+  const renderProject = (project) => {
+    if (project.imagesCollection.total > 1) {
+      return (
+        <Link
+          key={`${collectionId}-${project.id}`}
+          to={`/collection/${collectionId}/projects/${project.id}`}
+        >
+          <FadeUp>
+            <div className="grid-item" style={{ marginBottom: '0.5rem' }}>
+              <div className="grid-image-wrapper">
+                <img
+                  src={`${project.thumbnail}?w=565`}
+                  alt={project.title}
+                  loading="lazy"
+                />
+                <div className="grid-subtitle-overlay">
+                  {project.title}
+                </div>
+              </div>
+            </div>
+          </FadeUp>
+        </Link>
+      );
+    }
+
+    return (
+      <FadeUp key={`${collectionId}-${project.id}`}>
+        <div
+          onClick={() => openModal(project)}
+          className="grid-item"
+          style={{ marginBottom: '0.5rem', cursor: 'crosshair' }}
+        >
+          <div className="grid-image-wrapper">
+            <img
+              src={`${project.thumbnail}?w=565`}
+              alt={project.title}
+              loading="lazy"
+            />
+            <div className="grid-subtitle-overlay">
+              {project.title}
+            </div>
+          </div>
+        </div>
+      </FadeUp>
+    );
+  };
+
   return (
     <>
-      {/* Page Cover with collection title */}
       <div
         className="page-cover"
         style={{
@@ -147,133 +163,28 @@ function ProjectsList({ collections, calculatedHeight, projectsData, fetchProjec
         <p className="collection-title">{collection?.title}</p>
       </div>
 
-      {/* Main wrapper */}
       <div className="wrapper">
-        {/* Projects columns */}
         <div className="flex-container">
-          {/* Left column */}
           <div className="column-left" key={`left-${collectionId}`}>
-            {projectsLeft.map((project) =>
-              project.imagesCollection.total > 1 ? (
-                <Link
-                  key={`${collectionId}-${project.id}`}
-                  to={`/collection/${collectionId}/projects/${project.id}`}
-                >
-                  <FadeUp>
-                    <div className="grid-item" style={{ marginBottom: '0.5rem' }}>
-                      <div className="grid-image-wrapper">
-                        <img
-                          src={`${project.thumbnail}?w=565`}
-                          alt={project.title}
-                          loading="lazy"
-                        />
-                        <div className="grid-subtitle-overlay">
-                          {project.title}
-                        </div>
-                      </div>
-                    </div>
-                  </FadeUp>
-                </Link>
-              ) : (
-                <FadeUp key={`${collectionId}-${project.id}`}>
-                  <div
-                    onClick={() => openModal(project)}
-                    className="grid-item"
-                    style={{ marginBottom: '0.5rem', cursor: 'crosshair' }}
-                  >
-                    <div className="grid-image-wrapper">
-                      <img
-                        src={`${project.thumbnail}?w=565`}
-                        alt={project.title}
-                        loading="lazy"
-                      />
-                      <div className="grid-subtitle-overlay">
-                        {project.title}
-                      </div>
-                    </div>
-                  </div>
-                </FadeUp>
-              )
-            )}
+            {projectsLeft.map(renderProject)}
           </div>
 
-          {/* Right column */}
           {projectsRight.length > 0 && (
             <div className="column-right" key={`right-${collectionId}`}>
-              {projectsRight.map((project) =>
-                project.imagesCollection.total > 1 ? (
-                  <Link
-                    key={`${collectionId}-${project.id}`}
-                    to={`/collection/${collectionId}/projects/${project.id}`}
-                  >
-                    <FadeUp>
-                      <div className="grid-item" style={{ marginBottom: '0.5rem' }}>
-                        <div className="grid-image-wrapper">
-                          <img
-                            src={`${project.thumbnail}?w=565`}
-                            alt={project.title}
-                            loading="lazy"
-                          />
-                          <div className="grid-subtitle-overlay">
-                            {project.title}
-                          </div>
-                        </div>
-                      </div>
-                    </FadeUp>
-                  </Link>
-                ) : (
-                  <FadeUp key={`${collectionId}-${project.id}`}>
-                    <div
-                      onClick={() => openModal(project)}
-                      className="grid-item"
-                      style={{ marginBottom: '0.5rem', cursor: 'crosshair' }}
-                    >
-                      <div className="grid-image-wrapper">
-                        <img
-                          src={`${project.thumbnail}?w=565`}
-                          alt={project.title}
-                          loading="lazy"
-                        />
-                        <div className="grid-subtitle-overlay">
-                          {project.title}
-                        </div>
-                      </div>
-                    </div>
-                  </FadeUp>
-                )
-              )}
+              {projectsRight.map(renderProject)}
             </div>
           )}
         </div>
       </div>
 
-      {/* Modal */}
-      {modal && (
-        <div
-          onClick={closeModal}
-          className="modal-wrapper"
-          style={{ height: `${calculatedHeight}px` }}
-        >
-          {modalLoaded ? (
-            <img src={`${modalImage}?w=2560`} width="80%" alt="Modal" />
-          ) : (
-            <>
-              <span className="loader"></span>
-              <img
-                onLoad={handleImageLoaded}
-                src={`${modalImage}?w=2560`}
-                style={{ display: 'none' }}
-                alt="Modal"
-              />
-            </>
-          )}
-          <div className="modal-text">
-            <div className="modal-title">{modalText[0]}</div>
-            <div className="modal-subtitle">{modalText[1]}</div>
-          </div>
-        </div>
-      )}
-
+      <Modal
+        isOpen={modal}
+        imageUrl={modalImage}
+        title={modalTitle}
+        subtitle={modalSubtitle}
+        calculatedHeight={calculatedHeight}
+        onClose={closeModal}
+      />
     </>
   );
 }

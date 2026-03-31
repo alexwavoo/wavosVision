@@ -2,9 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import '../style.css';
 import FadeUp from '../components/FadeUp';
+import Modal from '../components/Modal';
 
-function ProjectDetail({ calculatedHeight, dataFetched  }) {
-  const { projectId } = useParams();
+const SPACE_ID = process.env.REACT_APP_CONTENTFUL_SPACE_ID;
+const ACCESS_TOKEN = process.env.REACT_APP_CONTENTFUL_ACCESS_TOKEN;
+const GRAPHQL_BASE = `https://graphql.contentful.com/content/v1/spaces/${SPACE_ID}/environments/master`;
+
+function ProjectDetail({ calculatedHeight, projectsData, dataFetched }) {
+  const { projectId, collectionId } = useParams();
 
   const [projectData, setProjectData] = useState({
     title: '',
@@ -15,10 +20,8 @@ function ProjectDetail({ calculatedHeight, dataFetched  }) {
   const [ready, setReady] = useState(false);
   const [modal, setModal] = useState(false);
   const [modalImage, setModalImage] = useState(null);
-  const [modalLoaded, setModalLoaded] = useState(false);
   const [localDataFetched, setLocalDataFetched] = useState(false);
 
-  // Extract plain text from Contentful rich text JSON
   const extractTextFromJson = (json) => {
     try {
       const content = json.content || [];
@@ -31,44 +34,100 @@ function ProjectDetail({ calculatedHeight, dataFetched  }) {
     }
   };
 
+  const applyProject = (project) => {
+    setProjectData({
+      title: project.title || '',
+      description: project.description
+        ? extractTextFromJson(project.description.json || project.description)
+        : '',
+      images: project.imagesCollection?.items.map((img) => img.url) || [],
+    });
+  };
+
+  // Try to find the project from props or sessionStorage, fall back to API
   useEffect(() => {
-    if (!dataFetched) {
-      // Wait until app data is fetched
-      return;
+    if (!dataFetched) return;
+
+    // 1. Check projectsData prop first
+    if (projectsData) {
+      for (const projects of Object.values(projectsData)) {
+        const project = projects.find((p) => p.id === projectId);
+        if (project) {
+          applyProject(project);
+          setLocalDataFetched(true);
+          return;
+        }
+      }
     }
 
-    // Load all projects from sessionStorage keys starting with 'projects_'
-    const allProjects = [];
-
+    // 2. Check sessionStorage
     for (let i = 0; i < sessionStorage.length; i++) {
       const key = sessionStorage.key(i);
       if (key.startsWith('projects_')) {
         const projects = JSON.parse(sessionStorage.getItem(key));
         if (Array.isArray(projects)) {
-          allProjects.push(...projects);
+          const project = projects.find((p) => p.id === projectId);
+          if (project) {
+            applyProject(project);
+            setLocalDataFetched(true);
+            return;
+          }
         }
       }
     }
 
-    // Find project by projectId
-    const project = allProjects.find((p) => p.id === projectId);
-
-
-    if (project) {
-      setProjectData({
-        title: project.title || '',
-        description: project.description
-          ? extractTextFromJson(project.description.json)
-          : '',
-        images: project.imagesCollection?.items.map((img) => img.url) || [],
+    // 3. Fallback: fetch from API directly
+    fetch(GRAPHQL_BASE, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${ACCESS_TOKEN}`,
+      },
+      body: JSON.stringify({
+        query: `
+          query {
+            project(id: "${projectId}") {
+              sys { id }
+              title
+              description { json }
+              thumbnail { url }
+              imagesCollection {
+                items {
+                  sys { id }
+                  url
+                }
+                total
+              }
+            }
+          }
+        `,
+      }),
+    })
+      .then((res) => res.json())
+      .then(({ data, errors }) => {
+        if (errors) {
+          console.error(errors);
+          setLocalDataFetched(true);
+          return;
+        }
+        const project = data?.project;
+        if (project) {
+          setProjectData({
+            title: project.title || '',
+            description: project.description
+              ? extractTextFromJson(project.description.json)
+              : '',
+            images: project.imagesCollection?.items.map((img) => img.url) || [],
+          });
+        }
+        setLocalDataFetched(true);
+      })
+      .catch((err) => {
+        console.error('Error fetching project:', err);
+        setLocalDataFetched(true);
       });
-    } else {
-      console.warn(`Project with id ${projectId} not found in cache.`);
-    }
-    setLocalDataFetched(true);
-  }, [dataFetched, projectId]);
+  }, [dataFetched, projectId, projectsData]);
 
-  // Handle page transition and body scroll lock
   useEffect(() => {
     if (!localDataFetched) return;
 
@@ -88,16 +147,13 @@ function ProjectDetail({ calculatedHeight, dataFetched  }) {
   }, [localDataFetched]);
 
   if (!localDataFetched) {
-    // Show loading or null while waiting for data
     return <div style={{ padding: '2rem', textAlign: 'center' }}></div>;
   }
 
   if (!projectData.title) {
-    // Project not found after data fetched
     return <div style={{ padding: '2rem', textAlign: 'center' }}>Project not found.</div>;
   }
 
-  // Open modal with selected image
   const openModal = (imageUrl) => {
     if (!modal) {
       setModalImage(imageUrl);
@@ -107,39 +163,17 @@ function ProjectDetail({ calculatedHeight, dataFetched  }) {
     }
   };
 
-  // Close modal and reset states
   const closeModal = () => {
-    if (modal) {
-      setModal(false);
-      document.body.style.overflow = 'auto';
-      setModalLoaded(false);
-    }
+    setModal(false);
+    document.body.style.overflow = 'auto';
   };
 
-  // Handle modal image load with slight delay
-  const handleImageLoaded = () => {
-    const timeout = setTimeout(() => {
-      setModalLoaded(true);
-    }, 250);
-    return () => clearTimeout(timeout);
-  };
-
-  if (!projectData.title) return null;
-
-  // Split images into two columns
-  const splitImages = (images) => {
-    const midpoint = Math.ceil(images.length / 2);
-    return {
-      leftImages: images.slice(0, midpoint),
-      rightImages: images.slice(midpoint),
-    };
-  };
-
-  const { leftImages, rightImages } = splitImages(projectData.images);
+  const midpoint = Math.ceil(projectData.images.length / 2);
+  const leftImages = projectData.images.slice(0, midpoint);
+  const rightImages = projectData.images.slice(midpoint);
 
   return (
     <>
-      {/* Page Cover with transition */}
       <div
         className="page-cover"
         style={{
@@ -165,7 +199,6 @@ function ProjectDetail({ calculatedHeight, dataFetched  }) {
         </div>
       </div>
 
-      {/* Main content */}
       <div className="wrapper">
         <div className="header">{projectData.title}</div>
         <div
@@ -179,7 +212,6 @@ function ProjectDetail({ calculatedHeight, dataFetched  }) {
         </div>
 
         <div className="flex-container">
-          {/* Left column */}
           <div className="column-left">
             {leftImages.map((imageUrl, index) => (
               <div
@@ -199,7 +231,6 @@ function ProjectDetail({ calculatedHeight, dataFetched  }) {
             ))}
           </div>
 
-          {/* Right column */}
           {rightImages.length > 0 && (
             <div className="column-right">
               {rightImages.map((imageUrl, index) => (
@@ -223,28 +254,12 @@ function ProjectDetail({ calculatedHeight, dataFetched  }) {
         </div>
       </div>
 
-      {/* Modal */}
-      {modal && (
-        <div
-          onClick={closeModal}
-          className="modal-wrapper"
-          style={{ height: `${calculatedHeight}px` }}
-        >
-          {modalLoaded ? (
-            <img src={`${modalImage}?w=2560`} width="80%" alt="Modal" />
-          ) : (
-            <>
-              <span className="loader"></span>
-              <img
-                onLoad={handleImageLoaded}
-                src={`${modalImage}?w=2560`}
-                style={{ display: 'none' }}
-                alt="Modal"
-              />
-            </>
-          )}
-        </div>
-      )}
+      <Modal
+        isOpen={modal}
+        imageUrl={modalImage}
+        calculatedHeight={calculatedHeight}
+        onClose={closeModal}
+      />
     </>
   );
 }
