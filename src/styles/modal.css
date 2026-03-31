@@ -1,0 +1,114 @@
+/* ===========================
+   Modal Styles
+   =========================== */
+.modal-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(15px);
+  color: #fdf8dc;
+  cursor: pointer;
+  animation: fadeIn 0.2s ease-in;
+  gap: 2.5rem;
+  z-index: 9999;
+}
+
+.modal-wrapper img {
+  width: 80%;
+  max-height: calc(100vh - var(--modal-text-height));
+  max-width: 1000px;
+  object-fit: contain;
+  cursor: pointer;
+  animation: fadeIn 0.5s ease;
+}
+
+.modal-text {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.modal-title {
+  font-size: 32px;
+  font-weight: 300;
+}
+
+.modal-subtitle {
+  font-size: 16px;
+  font-weight: 300;
+  max-width: 80%;
+  margin: 0 auto;
+}
+
+/* Navigation arrows */
+.modal-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: rgba(253, 248, 220, 0.6);
+  font-size: 2.5rem;
+  cursor: pointer;
+  padding: 1rem;
+  z-index: 10000;
+  transition: color 0.2s ease;
+  line-height: 1;
+  user-select: none;
+}
+
+.modal-nav:hover {
+  color: rgba(253, 248, 220, 1);
+}
+
+.modal-nav.prev {
+  left: 0.5rem;
+}
+
+.modal-nav.next {
+  right: 0.5rem;
+}
+
+.modal-counter {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
+  font-size: 13px;
+  font-weight: 300;
+  opacity: 0.6;
+  user-select: none;
+}
+
+@media only screen and (max-width: 768px) {
+  .modal-wrapper img {
+    width: 98%;
+  }
+
+  .modal-title {
+    font-size: 24px;
+  }
+
+  .modal-subtitle {
+    font-size: 14px;
+  }
+
+  .modal-nav {
+    font-size: 2rem;
+    padding: 0.5rem;
+  }
+
+  .modal-nav.prev {
+    left: 0.25rem;
+  }
+
+  .modal-nav.next {
+    right: 0.25rem;
+  }
+}

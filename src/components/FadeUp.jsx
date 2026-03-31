@@ -20,7 +20,6 @@ export default function FadeUp({ children }) {
     );
 
     observer.observe(element);
-
     return () => observer.disconnect();
   }, []);
 

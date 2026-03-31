@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import InstagramIcon from './InstagramIcon';
-import '../style.css';
+import '../styles/footer.css';
 
 const Footer = () => {
   const instagramUrl = 'https://www.instagram.com/alexwavo/';
@@ -19,8 +19,8 @@ const Footer = () => {
 
   return (
     <footer ref={footerRef} className="site-footer">
-      <a 
-        href={instagramUrl} 
+      <a
+        href={instagramUrl}
         className="footer-instagram-link"
         target="_blank"
         rel="noopener noreferrer"

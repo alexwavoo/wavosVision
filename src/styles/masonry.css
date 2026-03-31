@@ -1,0 +1,142 @@
+/* ===========================
+   Collections List
+   =========================== */
+.collection-wrapper {
+  font-size: 14px;
+  padding: 2rem 1rem;
+  padding-top: 5rem;
+}
+
+/* ===========================
+   Masonry Layout
+   =========================== */
+.masonry-container {
+  columns: 250px;
+  gap: 0.25rem;
+  max-width: 1650px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  min-height: 100vh;
+}
+
+.masonry-fade-item {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.masonry-fade-item.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.masonry-item {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+  display: block;
+  break-inside: avoid;
+}
+
+.masonry-item:hover {
+  opacity: 0.8;
+}
+
+.masonry-subtitle-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  color: var(--text-color);
+  font-size: 14px;
+  font-style: italic;
+  font-weight: 400;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.masonry-item:hover .masonry-subtitle-overlay {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media only screen and (max-width: 768px) {
+  .masonry-container {
+    columns: 2 !important;
+    column-width: auto;
+    gap: 0.3rem;
+    padding: 0 0.3rem;
+  }
+
+  .collection-wrapper {
+    padding: 1rem 0rem;
+  }
+
+  .masonry-subtitle-overlay {
+    font-size: 12px;
+    padding: 0.75rem;
+  }
+}
+
+/* ===========================
+   Skeleton Loading Animation
+   =========================== */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.masonry-image-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  display: block;
+  margin-top: 0.25rem;
+}
+
+.masonry-skeleton {
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    var(--background-accent) 25%,
+    rgba(255, 255, 255, 0.05) 50%,
+    var(--background-accent) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 2px;
+}
+
+.masonry-skeleton.hidden {
+  background: transparent;
+  animation: none;
+}
+
+.masonry-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.3s ease, opacity 0.3s ease-out;
+  transform-origin: top center;
+}
+
+.masonry-image.loaded {
+  opacity: 1;
+}
+
+.masonry-item:hover .masonry-image {
+  transform: scale(1.02);
+}

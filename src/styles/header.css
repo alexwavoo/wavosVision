@@ -1,0 +1,241 @@
+/* ===========================
+   Header
+   =========================== */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #111111d3;
+  backdrop-filter: blur(15px);
+}
+
+.header-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+}
+
+.header-logo img {
+  width: 70px;
+  height: auto;
+  filter: grayscale(0.25);
+  transition: filter 0.3s ease-in-out;
+}
+
+.header-logo:hover img {
+  filter: grayscale(0);
+}
+
+.header-instagram {
+  display: flex;
+  align-items: center;
+  color: var(--text-color);
+  transition: opacity 0.2s ease;
+}
+
+.header-instagram:hover {
+  opacity: 0.7;
+}
+
+.header-instagram svg {
+  width: 18px;
+  height: 18px;
+}
+
+.header-nav-row {
+  display: flex !important;
+  justify-content: center;
+  padding: 0.5rem 0.5rem 1.5rem;
+}
+
+.header-nav {
+  display: flex;
+  gap: 2rem;
+  font-size: 14px;
+}
+
+.nav-link {
+  text-decoration: underline;
+  color: var(--text-color);
+  transition: all 0.2s ease;
+  text-decoration-color: transparent;
+}
+
+.nav-link:hover {
+  opacity: 0.7;
+}
+
+.nav-link.active {
+  text-decoration-color: var(--text-color);
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+  opacity: 1;
+}
+
+/* Mobile Menu Button */
+.mobile-menu-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0rem;
+  position: relative;
+  z-index: 1001;
+  min-width: 44px;
+  min-height: 44px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-color);
+}
+
+.mobile-menu-button > button {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  width: auto;
+  height: auto;
+  background: none;
+  border: none;
+  pointer-events: none;
+}
+
+/* Mobile Dropdown */
+.mobile-dropdown {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}
+
+.mobile-dropdown.open {
+  max-height: 500px;
+}
+
+.mobile-nav {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 1.5rem;
+  gap: 1rem;
+}
+
+.mobile-nav-link {
+  text-decoration: underline;
+  color: var(--text-color);
+  font-size: 14px;
+  transition: opacity 0.2s ease;
+  text-decoration-color: transparent;
+}
+
+.mobile-nav-link:hover {
+  opacity: 0.7;
+}
+
+.mobile-nav-link.active {
+  text-decoration-color: var(--text-color);
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+  opacity: 1;
+}
+
+.mobile-instagram-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Desktop/Mobile visibility helpers */
+.desktop-only {
+  display: block;
+}
+
+.mobile-only {
+  display: none;
+}
+
+@media only screen and (max-width: 768px) {
+  .desktop-only {
+    display: none;
+  }
+
+  .mobile-only {
+    display: block;
+  }
+
+  .header-top-row {
+    padding: 0.75rem 1rem;
+  }
+
+  .header-logo img {
+    width: 60px;
+  }
+
+  .header-nav-row {
+    display: none !important;
+  }
+}
+
+/* ===========================
+   Menu Section
+   =========================== */
+.menu-wrapper {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  user-select: none;
+  padding: 0.5rem 0;
+}
+
+@media only screen and (max-width: 768px) {
+  .menu-wrapper {
+    margin: 0 auto;
+    padding: 0.5rem;
+    font-size: 12px;
+    padding-bottom: 0.3rem;
+  }
+}
+
+/* ===========================
+   Fade Sides Mask
+   =========================== */
+.fade-sides {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    black 2rem,
+    black calc(100% - 2.5rem),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    black 2rem,
+    black calc(100% - 2.5rem),
+    transparent 100%
+  );
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+@media only screen and (max-width: 768px) {
+  .fade-sides {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      black 1.5rem,
+      black calc(100% - 1.5rem),
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      black 1.5rem,
+      black calc(100% - 1.5rem),
+      transparent 100%
+    );
+  }
+}

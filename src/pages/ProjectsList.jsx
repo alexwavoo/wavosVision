@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import '../style.css';
+import { Helmet } from 'react-helmet-async';
 import FadeUp from '../components/FadeUp';
 import Modal from '../components/Modal';
+import { useScrollRestoration } from '../hooks/useScrollRestoration';
+import { gridUrl } from '../utils/contentfulImage';
+import '../styles/grid.css';
 
-function ProjectsList({ collections, calculatedHeight, projectsData }) {
+function ProjectsList({ collections, calculatedHeight, projectsData, projectsError, projectQueries }) {
   const { collectionId } = useParams();
 
   const [loading, setLoading] = useState(true);
@@ -16,10 +19,13 @@ function ProjectsList({ collections, calculatedHeight, projectsData }) {
   const [modalTitle, setModalTitle] = useState(null);
   const [modalSubtitle, setModalSubtitle] = useState(null);
 
+  const projects = projectsData[collectionId] || [];
+  useScrollRestoration(!loading);
+
   useEffect(() => {
     if (collections) {
-      const foundCollection = collections.find((col) => col.sys.id === collectionId);
-      setCollection(foundCollection);
+      const found = collections.find((col) => col.sys.id === collectionId);
+      setCollection(found);
     }
   }, [collections, collectionId]);
 
@@ -34,7 +40,7 @@ function ProjectsList({ collections, calculatedHeight, projectsData }) {
         setReady(true);
       }, 500);
       return () => clearTimeout(readyTimeout);
-    }, 1700);
+    }, 2200);
 
     return () => clearTimeout(timeout);
   }, [collectionId]);
@@ -61,13 +67,26 @@ function ProjectsList({ collections, calculatedHeight, projectsData }) {
     document.body.style.overflow = 'auto';
   };
 
-  if (loading) return null;
+  if (loading && !projectsError) return null;
 
-  const projects = projectsData[collectionId] || [];
+  if (projectsError) {
+    const collectionQuery = projectQueries?.find(
+      (_, i) => collections?.[i]?.sys?.id === collectionId
+    );
+    return (
+      <div className="error-state">
+        <p>Failed to load projects. Please try again.</p>
+        <button onClick={() => collectionQuery?.refetch?.()}>Retry</button>
+      </div>
+    );
+  }
 
   if (projects.length === 0) {
     return (
       <>
+        <Helmet>
+          <title>{collection?.title || 'Collection'} | WAVO'S VISION</title>
+        </Helmet>
         <div
           className="page-cover"
           style={{
@@ -76,9 +95,9 @@ function ProjectsList({ collections, calculatedHeight, projectsData }) {
             transition: transition ? 'opacity 0.6s ease-in' : 'none',
           }}
         >
-          <div className="subtitle">{collection?.title}</div>
-        </div>
-        <div className="wrapper">
+        <div className="subtitle" key={collectionId}>{collection?.title}</div>
+      </div>
+      <div className="wrapper">
           <div className="flex-container">
             <div className="column-left">
               <div className="grid-item" style={{ marginBottom: '0.5rem' }}>
@@ -91,7 +110,7 @@ function ProjectsList({ collections, calculatedHeight, projectsData }) {
           <img
             className="logo"
             src="/stars.png"
-            alt="Logo"
+            alt="Back to home"
             style={{ position: 'absolute', right: '0.5rem' }}
           />
         </Link>
@@ -114,7 +133,7 @@ function ProjectsList({ collections, calculatedHeight, projectsData }) {
             <div className="grid-item" style={{ marginBottom: '0.5rem' }}>
               <div className="grid-image-wrapper">
                 <img
-                  src={`${project.thumbnail}?w=565`}
+                  src={gridUrl(project.thumbnail)}
                   alt={project.title}
                   loading="lazy"
                 />
@@ -132,12 +151,21 @@ function ProjectsList({ collections, calculatedHeight, projectsData }) {
       <FadeUp key={`${collectionId}-${project.id}`}>
         <div
           onClick={() => openModal(project)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              openModal(project);
+            }
+          }}
+          role="button"
+          tabIndex={0}
           className="grid-item"
           style={{ marginBottom: '0.5rem', cursor: 'crosshair' }}
+          aria-label={`View ${project.title}`}
         >
           <div className="grid-image-wrapper">
             <img
-              src={`${project.thumbnail}?w=565`}
+              src={gridUrl(project.thumbnail)}
               alt={project.title}
               loading="lazy"
             />
@@ -152,6 +180,10 @@ function ProjectsList({ collections, calculatedHeight, projectsData }) {
 
   return (
     <>
+      <Helmet>
+        <title>{collection?.title || 'Collection'} | WAVO'S VISION</title>
+      </Helmet>
+
       <div
         className="page-cover"
         style={{
@@ -160,7 +192,7 @@ function ProjectsList({ collections, calculatedHeight, projectsData }) {
           transition: transition ? 'opacity 0.6s ease-in' : 'none',
         }}
       >
-        <p className="collection-title">{collection?.title}</p>
+        <p className="collection-title" key={collectionId}>{collection?.title}</p>
       </div>
 
       <div className="wrapper">
@@ -179,7 +211,8 @@ function ProjectsList({ collections, calculatedHeight, projectsData }) {
 
       <Modal
         isOpen={modal}
-        imageUrl={modalImage}
+        images={modalImage ? modalImage : ''}
+        currentIndex={0}
         title={modalTitle}
         subtitle={modalSubtitle}
         calculatedHeight={calculatedHeight}

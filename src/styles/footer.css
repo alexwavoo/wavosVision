@@ -1,0 +1,44 @@
+/* ===========================
+   Footer
+   =========================== */
+.site-footer {
+  padding: 3rem 1.5rem;
+  text-align: center;
+  margin-top: 3rem;
+}
+
+.footer-instagram-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-color);
+  margin-bottom: 1rem;
+  transition: opacity 0.2s ease;
+}
+
+.footer-instagram-link:hover {
+  opacity: 0.7;
+}
+
+.footer-instagram-link svg {
+  width: 16px;
+  height: 16px;
+}
+
+.footer-copyright {
+  font-size: 12px;
+  color: var(--text-color);
+  font-weight: 300;
+  opacity: 0.8;
+}
+
+@media only screen and (max-width: 768px) {
+  .site-footer {
+    padding: 2rem 1rem;
+    margin-top: 2rem;
+  }
+
+  .footer-copyright {
+    font-size: 11px;
+  }
+}
