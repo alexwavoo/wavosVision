@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 class ErrorBoundary extends Component {
   constructor(props) {
@@ -19,6 +20,9 @@ class ErrorBoundary extends Component {
       return (
         <div className="error-state">
           <p>Something went wrong.</p>
+          <Link to="/" onClick={() => this.setState({ hasError: false })}>
+            Go back to Home
+          </Link>
           <button onClick={() => window.location.reload()}>
             Reload page
           </button>
