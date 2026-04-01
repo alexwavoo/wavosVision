@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
+import debounce from '../utils/debounce';
 
 export function useScrollRestoration(ready = true) {
   const location = useLocation();
@@ -20,13 +21,14 @@ export function useScrollRestoration(ready = true) {
   }, [ready, key]);
 
   useEffect(() => {
-    const save = () => {
+    const save = debounce(() => {
       sessionStorage.setItem(key, String(window.scrollY));
-    };
+    }, 150);
 
     window.addEventListener('scroll', save, { passive: true });
     return () => {
       save();
+      save.cancel();
       window.removeEventListener('scroll', save);
     };
   }, [key]);

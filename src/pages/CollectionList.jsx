@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import MasonryFadeItem from '../components/MasonryFadeItem';
 import { useScrollRestoration } from '../hooks/useScrollRestoration';
 import { thumbnailUrl } from '../utils/contentfulImage';
+import { PAGE_COVER_DELAY } from '../utils/constants';
 import '../styles/grid.css';
 import '../styles/masonry.css';
 
@@ -21,7 +22,7 @@ const CollectionList = ({ collections, clientImages, signatureImages, dataFetche
         setReady(true);
       }, 500);
       return () => clearTimeout(readyTimeout);
-    }, 2200);
+    }, PAGE_COVER_DELAY);
 
     return () => clearTimeout(timeout);
   }, []);

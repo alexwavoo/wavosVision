@@ -5,6 +5,7 @@ import FadeUp from '../components/FadeUp';
 import Modal from '../components/Modal';
 import { useScrollRestoration } from '../hooks/useScrollRestoration';
 import { gridUrl } from '../utils/contentfulImage';
+import { PAGE_COVER_DELAY } from '../utils/constants';
 import '../styles/grid.css';
 
 function ProjectsList({ collections, calculatedHeight, projectsData, projectsError, projectQueries }) {
@@ -40,7 +41,7 @@ function ProjectsList({ collections, calculatedHeight, projectsData, projectsErr
         setReady(true);
       }, 500);
       return () => clearTimeout(readyTimeout);
-    }, 2200);
+    }, PAGE_COVER_DELAY);
 
     return () => clearTimeout(timeout);
   }, [collectionId]);
@@ -211,7 +212,7 @@ function ProjectsList({ collections, calculatedHeight, projectsData, projectsErr
 
       <Modal
         isOpen={modal}
-        images={modalImage ? modalImage : ''}
+        images={modalImage || []}
         currentIndex={0}
         title={modalTitle}
         subtitle={modalSubtitle}

@@ -5,6 +5,7 @@ import FadeUp from '../components/FadeUp';
 import Modal from '../components/Modal';
 import { useProject } from '../hooks/useProject';
 import { gridUrl } from '../utils/contentfulImage';
+import { PAGE_COVER_DELAY } from '../utils/constants';
 import '../styles/grid.css';
 import '../styles/detail.css';
 
@@ -62,7 +63,7 @@ function ProjectDetail({ calculatedHeight }) {
         document.body.style.overflow = 'auto';
       }, 600);
       return () => clearTimeout(readyTimeout);
-    }, 2200);
+    }, PAGE_COVER_DELAY);
 
     return () => clearTimeout(timeout);
   }, [project]);
