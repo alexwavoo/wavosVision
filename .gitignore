@@ -2,3 +2,7 @@ node_modules
 build
 .env
 .env.local
+
+# Shopify CLI (theme dev / link)
+store-theme/.shopify
+store-theme/.env.push

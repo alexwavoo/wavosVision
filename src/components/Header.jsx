@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import Hamburger from 'hamburger-react';
 import InstagramIcon from './InstagramIcon';
+import { getStoreUrl } from '../config/externalUrls';
 import '../styles/header.css';
 
 const Header = ({ collections }) => {
@@ -40,6 +41,7 @@ const Header = ({ collections }) => {
   };
 
   const instagramUrl = 'https://www.instagram.com/alexwavo/';
+  const storeUrl = getStoreUrl();
 
   return (
     <header className="site-header">
@@ -91,6 +93,9 @@ const Header = ({ collections }) => {
               {title}
             </NavLink>
           ))}
+          <a href={storeUrl} className="nav-link header-store-link">
+            SHOP
+          </a>
         </nav>
       </div>
 
@@ -115,6 +120,9 @@ const Header = ({ collections }) => {
               {title}
             </NavLink>
           ))}
+          <a href={storeUrl} className="mobile-nav-link header-store-link">
+            SHOP
+          </a>
           <a
             href={instagramUrl}
             className="mobile-nav-link mobile-instagram-link"

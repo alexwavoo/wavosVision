@@ -4,12 +4,13 @@ import { Helmet } from 'react-helmet-async';
 import FadeUp from '../components/FadeUp';
 import Modal from '../components/Modal';
 import { useProject } from '../hooks/useProject';
+import { PROJECT_STORE_LINKS } from '../config/externalUrls';
 import { gridUrl } from '../utils/contentfulImage';
 import '../styles/grid.css';
 import '../styles/detail.css';
 
 function ProjectDetail({ calculatedHeight }) {
-  const { projectId, collectionId } = useParams();
+  const { projectId } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
 
   const { data: project, isLoading, error, refetch } = useProject(projectId);
@@ -35,6 +36,12 @@ function ProjectDetail({ calculatedHeight }) {
     ? extractTextFromJson(project.description.json || project.description)
     : '';
   const images = project?.imagesCollection?.items.map((img) => img.url) || [];
+  const rawStoreLink =
+    projectId && Object.prototype.hasOwnProperty.call(PROJECT_STORE_LINKS, projectId)
+      ? PROJECT_STORE_LINKS[projectId]
+      : '';
+  const projectStoreUrl =
+    typeof rawStoreLink === 'string' && rawStoreLink.trim() ? rawStoreLink.trim() : null;
 
   useEffect(() => {
     if (!project) return;
@@ -140,6 +147,17 @@ function ProjectDetail({ calculatedHeight }) {
         >
           {description}
         </div>
+
+        {projectStoreUrl && (
+          <div
+            className="project-store-cta"
+            style={{
+              transform: transition ? 'translateY(0)' : 'translateY(-500px)',
+            }}
+          >
+            <a href={projectStoreUrl}>Shop this work</a>
+          </div>
+        )}
 
         <div className="flex-container">
           <div className="column-left">

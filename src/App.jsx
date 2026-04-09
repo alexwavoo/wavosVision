@@ -11,6 +11,7 @@ import { useMatchedImages } from './hooks/useMatchedImages';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ErrorBoundary from './components/ErrorBoundary';
+import GoogleAnalyticsCrossDomain from './components/GoogleAnalyticsCrossDomain';
 
 const CollectionList = lazy(() => import('./pages/CollectionList'));
 const ProjectsList = lazy(() => import('./pages/ProjectsList'));
@@ -53,6 +54,7 @@ export default function App() {
   return (
     <>
       <Router>
+        <GoogleAnalyticsCrossDomain />
         <ErrorBoundary>
           <Header collections={collections} />
           <Suspense fallback={<></>}>

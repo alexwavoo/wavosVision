@@ -8,6 +8,7 @@ import '../styles/grid.css';
 import '../styles/masonry.css';
 
 const CollectionList = ({ collections, clientImages, signatureImages, dataFetched, error, onRetry }) => {
+  const [animationDone, setAnimationDone] = useState(false);
   const [transition, setTransition] = useState(false);
   const [ready, setReady] = useState(false);
 
@@ -15,16 +16,17 @@ const CollectionList = ({ collections, clientImages, signatureImages, dataFetche
   useScrollRestoration(dataFetched);
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      setTransition(true);
-      const readyTimeout = setTimeout(() => {
-        setReady(true);
-      }, 500);
-      return () => clearTimeout(readyTimeout);
-    }, 2200);
-
+    const timeout = setTimeout(() => setAnimationDone(true), 2200);
     return () => clearTimeout(timeout);
   }, []);
+
+  useEffect(() => {
+    if (!animationDone || !dataFetched) return;
+
+    setTransition(true);
+    const readyTimeout = setTimeout(() => setReady(true), 500);
+    return () => clearTimeout(readyTimeout);
+  }, [animationDone, dataFetched]);
 
   if (error) {
     return (
