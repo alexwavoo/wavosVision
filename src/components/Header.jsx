@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import Hamburger from 'hamburger-react';
 import InstagramIcon from './InstagramIcon';
-import { getStoreUrl } from '../config/externalUrls';
 import '../styles/header.css';
 
 const Header = ({ collections }) => {
@@ -41,7 +40,6 @@ const Header = ({ collections }) => {
   };
 
   const instagramUrl = 'https://www.instagram.com/alexwavo/';
-  const storeUrl = getStoreUrl();
 
   return (
     <header className="site-header">
@@ -93,9 +91,12 @@ const Header = ({ collections }) => {
               {title}
             </NavLink>
           ))}
-          <a href={storeUrl} className="nav-link header-store-link">
+          <NavLink
+            to="/store"
+            className={({ isActive }) => `nav-link header-store-link ${isActive ? 'active' : ''}`}
+          >
             SHOP
-          </a>
+          </NavLink>
         </nav>
       </div>
 
@@ -120,9 +121,14 @@ const Header = ({ collections }) => {
               {title}
             </NavLink>
           ))}
-          <a href={storeUrl} className="mobile-nav-link header-store-link">
+          <NavLink
+            to="/store"
+            className={({ isActive }) =>
+              `mobile-nav-link header-store-link ${isActive ? 'active' : ''}`
+            }
+          >
             SHOP
-          </a>
+          </NavLink>
           <a
             href={instagramUrl}
             className="mobile-nav-link mobile-instagram-link"

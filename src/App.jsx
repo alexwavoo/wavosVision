@@ -16,6 +16,7 @@ import GoogleAnalyticsCrossDomain from './components/GoogleAnalyticsCrossDomain'
 const CollectionList = lazy(() => import('./pages/CollectionList'));
 const ProjectsList = lazy(() => import('./pages/ProjectsList'));
 const ProjectDetail = lazy(() => import('./pages/ProjectDetail'));
+const StoreGate = lazy(() => import('./pages/StoreGate'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 export default function App() {
@@ -96,6 +97,7 @@ export default function App() {
                   />
                 }
               />
+              <Route path="/store" element={<StoreGate />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>

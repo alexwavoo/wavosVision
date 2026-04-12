@@ -1,12 +1,10 @@
 import React, { useEffect, useRef } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import InstagramIcon from './InstagramIcon';
-import { getStoreUrl } from '../config/externalUrls';
 import '../styles/footer.css';
 
 const Footer = () => {
   const instagramUrl = 'https://www.instagram.com/alexwavo/';
-  const storeUrl = getStoreUrl();
   const footerRef = useRef(null);
   const location = useLocation();
 
@@ -21,9 +19,9 @@ const Footer = () => {
 
   return (
     <footer ref={footerRef} className="site-footer">
-      <a href={storeUrl} className="footer-store-link">
+      <Link to="/store" className="footer-store-link">
         Shop
-      </a>
+      </Link>
       <a
         href={instagramUrl}
         className="footer-instagram-link"
