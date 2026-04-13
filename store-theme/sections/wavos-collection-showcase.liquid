@@ -20,7 +20,7 @@
           <a href="{{ product.url }}" class="wavos-showcase__card wavos-fade" aria-label="{{ product.title | escape }}">
             <div class="wavos-showcase__media">
               {%- if product.featured_image != blank -%}
-                {{ product.featured_image | image_url: width: 900 | image_tag:
+                {{ product.featured_image | image_url: width: 1080 | image_tag:
                   class: 'wavos-showcase__img',
                   loading: 'lazy',
                   alt: product.featured_image.alt | default: product.title

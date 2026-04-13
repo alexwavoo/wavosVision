@@ -255,31 +255,95 @@ main#MainContent {
     padding: 1rem 0 0;
   }
 
-  /* Product page: stack images vertically (like desktop) so both are the same size,
-     then constrain to 80% width for a 20% reduction */
+  /* Product page: equal-size slides, 20% smaller, tighter spacing */
   .product__media-wrapper slider-component:not(.thumbnail-slider--no-slide) {
     margin-left: 0;
     margin-right: 0;
+    padding: 0 10%;
   }
 
-  .product__media-list.slider.slider--mobile {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    overflow: visible;
-    margin-left: auto;
-    margin-right: auto;
-    width: 80%;
-    gap: 1.5rem;
-    scroll-snap-type: none;
+  .product__media-list {
+    margin-left: 0;
+    width: 100%;
+    margin-bottom: 1rem;
   }
 
   .product__media-list .product__media-item {
-    width: 100%;
-    scroll-snap-align: unset;
+    width: calc(100% - 1rem);
   }
 
-  .product__media-list + .slider-buttons {
-    display: none;
+  .product-media-container .media {
+    padding-top: 125% !important;
+  }
+
+  .product-media-container .media img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .product__media-icon {
+    display: none !important;
+  }
+
+  /* Remove border around product images */
+  .product-media-container.global-media-settings {
+    border: none;
+  }
+
+  .product-media-container.global-media-settings::after {
+    content: none;
+  }
+
+  /* Center all product info on mobile */
+  .product__info-container {
+    text-align: center;
+  }
+
+  .product__title {
+    text-align: center;
+  }
+
+  .product .price {
+    justify-content: center;
+  }
+
+  .product__tax,
+  .product__description {
+    text-align: center;
+  }
+
+  .product-form__input {
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .product-form__buttons {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .product-form__quantity {
+    justify-content: center;
+  }
+
+  .product__inventory {
+    justify-content: center;
+  }
+
+  .share-button {
+    justify-content: center;
+  }
+
+  .product__accordion {
+    text-align: left;
+  }
+
+  .slider-buttons {
+    justify-content: center;
   }
 }

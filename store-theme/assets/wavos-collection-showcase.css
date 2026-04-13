@@ -11,7 +11,7 @@
 }
 
 .wavos-showcase__inner {
-  max-width: 1100px;
+  max-width: 1320px;
   margin: 0 auto;
 }
 
@@ -34,7 +34,7 @@
    =========================== */
 .wavos-showcase__grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 280px));
+  grid-template-columns: repeat(3, minmax(0, 336px));
   justify-content: center;
   gap: 7rem;
 }
@@ -175,7 +175,7 @@
    =========================== */
 @media only screen and (max-width: 999px) {
   .wavos-showcase__grid {
-    grid-template-columns: repeat(2, minmax(0, 280px));
+    grid-template-columns: repeat(2, minmax(0, 336px));
     gap: 2.5rem;
   }
 }
@@ -194,7 +194,7 @@
   }
 
   .wavos-showcase__grid {
-    grid-template-columns: minmax(0, 50%);
+    grid-template-columns: minmax(0, 60%);
     justify-content: center;
     gap: 2.5rem;
   }
