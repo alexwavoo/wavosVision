@@ -299,51 +299,62 @@ main#MainContent {
   }
 
   /* Center all product info on mobile */
-  .product__info-container {
-    text-align: center;
+  .product__info-container,
+  .product__info-container > * {
+    text-align: center !important;
   }
 
-  .product__title {
-    text-align: center;
+  .product__info-container .product__title,
+  .product__info-container .product__title h1,
+  .product__info-container .product__title h2 {
+    text-align: center !important;
   }
 
-  .product .price {
-    justify-content: center;
+  .product__info-container .price,
+  .product__info-container .price__container {
+    justify-content: center !important;
   }
 
-  .product__tax,
-  .product__description {
-    text-align: center;
+  .product__info-container .product__tax,
+  .product__info-container .product__description,
+  .product__info-container .subtitle,
+  .product__info-container .caption {
+    text-align: center !important;
   }
 
-  .product-form__input {
-    justify-content: center;
+  .product__info-container .product-form__input,
+  .product__info-container .product-form__quantity {
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .product__info-container .quantity {
     margin-left: auto;
     margin-right: auto;
   }
 
-  .product-form__buttons {
+  .product__info-container .product-form__buttons {
     margin-left: auto;
     margin-right: auto;
   }
 
-  .product-form__quantity {
-    justify-content: center;
+  .product__info-container .share-button {
+    justify-content: center !important;
   }
 
-  .product__inventory {
-    justify-content: center;
+  .product__info-container .product__inventory {
+    justify-content: center !important;
   }
 
-  .share-button {
-    justify-content: center;
+  .product__info-container .installment {
+    text-align: center !important;
   }
 
-  .product__accordion {
-    text-align: left;
+  .product__info-container .product__accordion {
+    text-align: left !important;
   }
 
   .slider-buttons {
-    justify-content: center;
+    justify-content: center !important;
   }
 }
