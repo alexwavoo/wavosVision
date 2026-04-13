@@ -185,7 +185,7 @@
    =========================== */
 @media only screen and (max-width: 599px) {
   .wavos-showcase {
-    padding: 3rem 1rem 2rem;
+    padding: 3rem 2rem 2rem;
   }
 
   .wavos-showcase__heading {
@@ -194,8 +194,9 @@
   }
 
   .wavos-showcase__grid {
-    grid-template-columns: 1fr;
-    gap: 2rem;
+    grid-template-columns: minmax(0, 50%);
+    justify-content: center;
+    gap: 2.5rem;
   }
 
   .wavos-showcase__title {

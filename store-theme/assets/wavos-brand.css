@@ -254,4 +254,32 @@ main#MainContent {
   .product__info-wrapper {
     padding: 1rem 0 0;
   }
+
+  /* Product page: stack images vertically (like desktop) so both are the same size,
+     then constrain to 80% width for a 20% reduction */
+  .product__media-wrapper slider-component:not(.thumbnail-slider--no-slide) {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .product__media-list.slider.slider--mobile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: visible;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+    gap: 1.5rem;
+    scroll-snap-type: none;
+  }
+
+  .product__media-list .product__media-item {
+    width: 100%;
+    scroll-snap-align: unset;
+  }
+
+  .product__media-list + .slider-buttons {
+    display: none;
+  }
 }
