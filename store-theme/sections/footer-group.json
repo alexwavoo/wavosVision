@@ -1,0 +1,15 @@
+{
+  "name": "t:sections.footer.name",
+  "type": "footer",
+  "sections": {
+    "footer": {
+      "type": "wavos-footer-minimal",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "show_shop_name": true,
+        "copyright_text": "All rights reserved"
+      }
+    }
+  },
+  "order": ["footer"]
+}

@@ -1,0 +1,126 @@
+{{ 'wavos-site-header.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign portfolio_href = 'https://wavos.vision'
+  if section.settings.portfolio_url != blank
+    assign portfolio_href = section.settings.portfolio_url
+  endif
+  assign shop_host = shop.url | remove: 'https://' | remove: 'http://' | split: '/' | first
+  if portfolio_href == '/' or portfolio_href == shop.url or portfolio_href == shop.secure_url
+    assign portfolio_href = 'https://wavos.vision'
+  endif
+  if portfolio_href contains shop_host
+    assign portfolio_href = 'https://wavos.vision'
+  endif
+  if portfolio_href contains 'myshopify.com'
+    assign portfolio_href = 'https://wavos.vision'
+  endif
+  assign store_active = false
+  if request.page_type == 'index'
+    assign store_active = true
+  endif
+  assign nav_input_id = 'wavos-nav-' | append: section.id
+-%}
+
+<header class="site-header wavos-store-header color-{{ section.settings.color_scheme }} gradient" {{ section.shopify_attributes }}>
+  <div class="wavos-header__inner">
+    <input type="checkbox" id="{{ nav_input_id }}" class="wavos-nav-input" aria-hidden="true" tabindex="-1">
+
+    <div class="header-top-row">
+      <a href="{{ routes.root_url }}" class="header-logo focus-inset">
+        {%- if settings.logo != blank -%}
+          {{
+            settings.logo
+            | image_url: width: 180
+            | image_tag:
+              class: 'header-logo__img',
+              alt: settings.logo.alt | default: shop.name,
+              loading: 'eager'
+          }}
+        {%- else -%}
+          <img
+            src="{{ 'wavos-stars-logo.png' | asset_url }}"
+            alt="{{ shop.name }}"
+            width="70"
+            height="70"
+            loading="eager"
+          >
+        {%- endif -%}
+      </a>
+
+      <span class="header-instagram header-instagram--spacer desktop-only" aria-hidden="true"></span>
+
+      <label
+        for="{{ nav_input_id }}"
+        class="mobile-menu-button mobile-only"
+        aria-label="{{ 'sections.header.menu' | t }}"
+      >
+        <span class="wavos-hamburger" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+      </label>
+    </div>
+
+    <div class="header-nav-row desktop-only">
+      <nav class="header-nav" aria-label="Primary">
+        <a
+          href="{{ routes.root_url }}"
+          class="nav-link{% if store_active %} active{% endif %}"
+          {% if store_active %}
+            aria-current="page"
+          {% endif %}
+        >
+          STORE
+        </a>
+        <a href="{{ portfolio_href }}" class="nav-link" rel="noopener noreferrer">
+          PORTFOLIO
+        </a>
+      </nav>
+    </div>
+
+    <div class="mobile-dropdown mobile-only">
+      <nav class="mobile-nav" aria-label="Primary">
+        <a
+          href="{{ routes.root_url }}"
+          class="mobile-nav-link{% if store_active %} active{% endif %}"
+          {% if store_active %}
+            aria-current="page"
+          {% endif %}
+          onclick="document.getElementById('{{ nav_input_id }}').checked=false"
+        >
+          STORE
+        </a>
+        <a
+          href="{{ portfolio_href }}"
+          class="mobile-nav-link"
+          rel="noopener noreferrer"
+          onclick="document.getElementById('{{ nav_input_id }}').checked=false"
+        >
+          PORTFOLIO
+        </a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "WAVO site header",
+  "class": "section-header",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "url",
+      "id": "portfolio_url",
+      "label": "Portfolio URL"
+    }
+  ]
+}
+{% endschema %}

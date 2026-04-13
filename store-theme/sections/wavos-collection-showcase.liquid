@@ -1,0 +1,117 @@
+{{ 'wavos-collection-showcase.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign collection = collections[section.settings.collection]
+  assign limit = section.settings.products_to_show
+-%}
+
+<section
+  class="wavos-showcase color-{{ section.settings.color_scheme }} gradient"
+  {{ section.shopify_attributes }}
+>
+  <div class="wavos-showcase__inner">
+    {%- if section.settings.title != blank -%}
+      <h2 class="wavos-showcase__heading">{{ section.settings.title | escape }}</h2>
+    {%- endif -%}
+
+    {%- if collection != blank and collection.products.size > 0 -%}
+      <div class="wavos-showcase__grid">
+        {%- for product in collection.products limit: limit -%}
+          <a href="{{ product.url }}" class="wavos-showcase__card wavos-fade" aria-label="{{ product.title | escape }}">
+            <div class="wavos-showcase__media">
+              {%- if product.featured_image != blank -%}
+                {{ product.featured_image | image_url: width: 900 | image_tag:
+                  class: 'wavos-showcase__img',
+                  loading: 'lazy',
+                  alt: product.featured_image.alt | default: product.title
+                }}
+              {%- else -%}
+                <div class="wavos-showcase__placeholder">
+                  {{ 'product-1' | placeholder_svg_tag: 'wavos-showcase__placeholder-svg' }}
+                </div>
+              {%- endif -%}
+            </div>
+            <div class="wavos-showcase__info">
+              <h3 class="wavos-showcase__title">{{ product.title | escape }}</h3>
+              <p class="wavos-showcase__price">{{ product.price | money }}</p>
+            </div>
+          </a>
+        {%- endfor -%}
+      </div>
+
+      {%- if section.settings.show_view_all and collection.products.size > limit -%}
+        <div class="wavos-showcase__footer">
+          <a href="{{ collection.url }}" class="wavos-showcase__view-all">View all</a>
+        </div>
+      {%- endif -%}
+    {%- else -%}
+      <p class="wavos-showcase__empty">No products to show yet.</p>
+    {%- endif -%}
+  </div>
+</section>
+
+<script>
+  (function () {
+    var cards = document.querySelectorAll('.wavos-showcase .wavos-fade');
+    if (!cards.length || !('IntersectionObserver' in window)) {
+      cards.forEach(function (c) { c.classList.add('is-visible'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { rootMargin: '60px', threshold: 0.05 });
+    cards.forEach(function (c) { io.observe(c); });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "WAVO collection showcase",
+  "tag": "section",
+  "class": "section-wavos-showcase",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Latest"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 1,
+      "max": 12,
+      "step": 1,
+      "default": 3,
+      "label": "Products to show"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "default": true,
+      "label": "Show \"View all\" link"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "presets": [
+    {
+      "name": "WAVO collection showcase"
+    }
+  ]
+}
+{% endschema %}

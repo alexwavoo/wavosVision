@@ -1,0 +1,22 @@
+.wavos-footer {
+  margin-top: auto;
+  padding: 2rem 1.5rem 2.5rem;
+  border-top: 1px solid rgba(87, 86, 86, 0.35);
+}
+
+.wavos-footer__inner {
+  text-align: center;
+}
+
+.wavos-footer__line {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 300;
+  letter-spacing: 0.06em;
+  color: rgb(var(--color-foreground));
+  opacity: 0.65;
+}
+
+.wavos-footer__line + .wavos-footer__line {
+  margin-top: 0.35rem;
+}

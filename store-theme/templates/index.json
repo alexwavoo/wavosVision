@@ -1,0 +1,17 @@
+{
+  "sections": {
+    "wavos_showcase": {
+      "type": "wavos-collection-showcase",
+      "settings": {
+        "title": "Wavo's Vision Volume 1: Classics",
+        "collection": "frontpage",
+        "products_to_show": 3,
+        "show_view_all": true,
+        "color_scheme": "scheme-1"
+      }
+    }
+  },
+  "order": [
+    "wavos_showcase"
+  ]
+}

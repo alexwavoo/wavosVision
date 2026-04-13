@@ -1,0 +1,208 @@
+/**
+ * WAVO collection showcase — gallery-style product grid
+ * Mirrors portfolio: dark canvas, Roboto 300, restrained hover, fade-up on scroll.
+ */
+
+/* ===========================
+   Section shell
+   =========================== */
+.wavos-showcase {
+  padding: 4rem 2rem 3rem;
+}
+
+.wavos-showcase__inner {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* ===========================
+   Heading
+   =========================== */
+.wavos-showcase__heading {
+  text-align: center;
+  font-weight: 300;
+  font-size: 1.6rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin: 0 0 3rem;
+  color: rgb(var(--color-foreground));
+  opacity: 0.9;
+}
+
+/* ===========================
+   Product grid
+   =========================== */
+.wavos-showcase__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 280px));
+  justify-content: center;
+  gap: 7rem;
+}
+
+/* ===========================
+   Product card
+   =========================== */
+.wavos-showcase__card {
+  display: block;
+  text-decoration: none;
+  color: rgb(var(--color-foreground));
+  transition: opacity 0.3s ease;
+}
+
+.wavos-showcase__card:hover {
+  opacity: 0.8;
+}
+
+/* ===========================
+   Image
+   =========================== */
+.wavos-showcase__media {
+  position: relative;
+  overflow: hidden;
+  background: rgba(var(--color-foreground), 0.03);
+}
+
+.wavos-showcase__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.wavos-showcase__card:hover .wavos-showcase__img {
+  transform: scale(1.03);
+}
+
+.wavos-showcase__placeholder {
+  aspect-ratio: 3 / 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(var(--color-foreground), 0.04);
+}
+
+.wavos-showcase__placeholder-svg {
+  width: 50%;
+  opacity: 0.15;
+}
+
+/* ===========================
+   Info (title + price)
+   =========================== */
+.wavos-showcase__info {
+  padding: 0.9rem 0 0;
+  text-align: center;
+}
+
+.wavos-showcase__title {
+  font-weight: 300;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  margin: 0;
+  color: rgb(var(--color-foreground));
+}
+
+.wavos-showcase__price {
+  font-weight: 300;
+  font-size: 0.85rem;
+  margin: 0.3rem 0 0;
+  color: rgb(var(--color-foreground));
+  opacity: 0.6;
+}
+
+/* ===========================
+   View all link
+   =========================== */
+.wavos-showcase__footer {
+  text-align: center;
+  margin-top: 2.5rem;
+}
+
+.wavos-showcase__view-all {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgb(var(--color-foreground));
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+  transition: text-decoration-color 0.25s ease, opacity 0.25s ease;
+}
+
+.wavos-showcase__view-all:hover {
+  text-decoration-color: rgb(var(--color-foreground));
+  opacity: 0.7;
+}
+
+/* ===========================
+   Empty state
+   =========================== */
+.wavos-showcase__empty {
+  text-align: center;
+  font-weight: 300;
+  font-size: 0.95rem;
+  opacity: 0.5;
+}
+
+/* ===========================
+   Fade-up animation
+   =========================== */
+.wavos-fade {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.wavos-fade.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.wavos-fade:nth-child(2) {
+  transition-delay: 0.1s;
+}
+
+.wavos-fade:nth-child(3) {
+  transition-delay: 0.2s;
+}
+
+/* ===========================
+   Responsive — tablet
+   =========================== */
+@media only screen and (max-width: 999px) {
+  .wavos-showcase__grid {
+    grid-template-columns: repeat(2, minmax(0, 280px));
+    gap: 2.5rem;
+  }
+}
+
+/* ===========================
+   Responsive — mobile
+   =========================== */
+@media only screen and (max-width: 599px) {
+  .wavos-showcase {
+    padding: 3rem 1rem 2rem;
+  }
+
+  .wavos-showcase__heading {
+    font-size: 1.3rem;
+    margin-bottom: 2rem;
+  }
+
+  .wavos-showcase__grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .wavos-showcase__title {
+    font-size: 0.9rem;
+  }
+
+  .wavos-showcase__price {
+    font-size: 0.8rem;
+  }
+}

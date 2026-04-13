@@ -1,0 +1,257 @@
+/**
+ * WAVO'S VISION — aligns the Shopify storefront with the portfolio (wavos.vision).
+ * Tokens: background #111111, accent #252525, text #fdf8dc, border #575656.
+ */
+
+/* ===========================
+   Base
+   =========================== */
+body.gradient {
+  color: rgba(var(--color-foreground), 0.92);
+}
+
+/* ===========================
+   Typography
+   =========================== */
+h1, h2, h3, h4, h5, h6,
+.h0, .h1, .h2, .h3, .h4, .h5, .h6,
+.hxl, .hxxl {
+  font-weight: 300;
+  letter-spacing: 0.02em;
+}
+
+/* ===========================
+   Selection
+   =========================== */
+::selection {
+  color: #111111;
+  background: #fdf8dc;
+}
+
+::-moz-selection {
+  color: #111111;
+  background: #fdf8dc;
+}
+
+/* ===========================
+   Scrollbars
+   =========================== */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(128, 128, 128, 0.45);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(128, 128, 128, 0.65);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(128, 128, 128, 0.45) transparent;
+}
+
+/* ===========================
+   Product card resets
+   Strip Dawn's card chrome for a clean gallery look.
+   =========================== */
+.card--standard .card__inner,
+.card--card .card__inner {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+.card--standard .card__content,
+.card--card .card__content {
+  padding: 0.6rem 0 0;
+}
+
+.card__heading {
+  font-weight: 300;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+}
+
+.card-information .price {
+  font-weight: 300;
+  opacity: 0.6;
+}
+
+.card .badge {
+  display: none;
+}
+
+/* Image hover: subtle zoom like portfolio masonry */
+.card__media .media img {
+  transition: transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              opacity 0.3s ease;
+}
+
+.card:hover .card__media .media img {
+  transform: scale(1.03);
+}
+
+.card:hover {
+  opacity: 0.85;
+}
+
+/* Remove Dawn card outline / focus ring chrome */
+.card__inner::after {
+  display: none;
+}
+
+.card--standard:not(.card--horizontal)::after {
+  display: none;
+}
+
+/* ===========================
+   Buttons — thin, elegant, portfolio-style
+   =========================== */
+.button,
+button.button,
+a.button {
+  font-weight: 300;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  border-radius: 0;
+  transition: background-color 0.3s ease, color 0.3s ease, opacity 0.3s ease;
+}
+
+.button--secondary {
+  background: transparent;
+  border: 1px solid rgb(var(--color-foreground));
+  color: rgb(var(--color-foreground));
+}
+
+.button--secondary:hover {
+  background: rgb(var(--color-foreground));
+  color: rgb(var(--color-background));
+}
+
+/* ===========================
+   Links — underline reveal on hover
+   =========================== */
+.full-unstyled-link {
+  transition: opacity 0.2s ease;
+}
+
+.full-unstyled-link:hover {
+  opacity: 0.7;
+}
+
+/* ===========================
+   Section spacing — tighter gallery rhythm
+   =========================== */
+.section-template--*-padding {
+  padding-top: clamp(1.5rem, 3vw, 2.5rem);
+  padding-bottom: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.shopify-section + .shopify-section {
+  margin-top: 0;
+}
+
+/* ===========================
+   Product page refinements
+   =========================== */
+.product__title {
+  font-weight: 300;
+  letter-spacing: 0.02em;
+}
+
+.product .price {
+  font-weight: 300;
+  opacity: 0.7;
+}
+
+.product__description {
+  font-weight: 300;
+  line-height: 1.7;
+  opacity: 0.85;
+}
+
+/* Collapsible tab separators */
+.product__accordion .accordion summary {
+  border-color: rgba(var(--color-foreground), 0.12);
+}
+
+/* Product media — gallery feel */
+.product__media-wrapper .media img {
+  transition: opacity 0.4s ease;
+}
+
+/* ===========================
+   Collection page
+   =========================== */
+.collection-hero__title {
+  font-weight: 300;
+  letter-spacing: 0.03em;
+}
+
+/* ===========================
+   Cart notification — minimal */
+.cart-notification {
+  border-radius: 0;
+}
+
+/* ===========================
+   Footer — strip border, pin near bottom
+   =========================== */
+.footer,
+.section-footer {
+  border-top: none !important;
+}
+
+.footer__content-top,
+.footer__content-bottom {
+  border-top: none !important;
+  padding-top: 0;
+}
+
+.footer__copyright {
+  font-weight: 300;
+  opacity: 0.7;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main#MainContent {
+  flex: 1;
+}
+
+/* ===========================
+   Mobile refinements
+   =========================== */
+@media only screen and (max-width: 749px) {
+  body.gradient {
+    font-size: 14px;
+  }
+
+  .card__heading {
+    font-size: 0.88rem;
+  }
+
+  .section-template--*-padding {
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+  }
+
+  .product__info-wrapper {
+    padding: 1rem 0 0;
+  }
+}

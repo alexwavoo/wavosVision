@@ -1,0 +1,42 @@
+{{ 'wavos-footer-minimal.css' | asset_url | stylesheet_tag }}
+
+<footer class="wavos-footer color-{{ section.settings.color_scheme }} gradient" {{ section.shopify_attributes }}>
+  <div class="wavos-footer__inner page-width">
+    {%- if section.settings.show_shop_name -%}
+      <p class="wavos-footer__line">{{ shop.name }}</p>
+    {%- endif -%}
+    {%- if section.settings.copyright_text != blank -%}
+      <p class="wavos-footer__line">
+        {{ section.settings.copyright_text | escape }} {{ 'now' | date: '%Y' }}
+      </p>
+    {%- endif -%}
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "WAVO minimal footer",
+  "tag": "footer",
+  "class": "section-wavos-footer",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_shop_name",
+      "label": "Show shop name",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright line",
+      "default": "All rights reserved"
+    }
+  ]
+}
+{% endschema %}

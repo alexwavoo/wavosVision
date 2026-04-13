@@ -1,0 +1,226 @@
+/**
+ * WAVO store header — mirrors portfolio src/styles/header.css
+ * Uses .site-header, .header-top-row, .header-nav, .nav-link, .mobile-nav, etc.
+ */
+
+.site-header.wavos-store-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #111111d3;
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+}
+
+/* Portfolio: full-width rows, not Dawn page-width max */
+.site-header.wavos-store-header .wavos-header__inner {
+  max-width: 100%;
+  width: 100%;
+}
+
+.header-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  line-height: 0;
+}
+
+.header-logo img,
+.header-logo .header-logo__img {
+  width: 70px;
+  height: auto;
+  filter: grayscale(0.25);
+  transition: filter 0.3s ease-in-out;
+}
+
+.header-logo:hover img,
+.header-logo:hover .header-logo__img {
+  filter: grayscale(0);
+}
+
+/* Placeholder for desktop layout balance (portfolio has Instagram here) */
+.header-instagram--spacer {
+  display: flex;
+  align-items: center;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.header-nav-row {
+  display: flex !important;
+  flex-direction: row;
+  justify-content: center;
+  padding: 0.5rem 0.5rem 1.5rem;
+}
+
+/* .desktop-only sets display:block on wide screens; row must stay flex */
+@media only screen and (min-width: 769px) {
+  .header-nav-row.desktop-only {
+    display: flex !important;
+  }
+}
+
+.header-nav {
+  display: flex;
+  gap: 2rem;
+  font-size: 14px;
+}
+
+.nav-link {
+  text-decoration: underline;
+  color: rgb(var(--color-foreground));
+  transition: all 0.2s ease;
+  text-decoration-color: transparent;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+}
+
+.nav-link:hover {
+  opacity: 0.7;
+}
+
+.nav-link.active {
+  text-decoration-color: rgb(var(--color-foreground));
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+  opacity: 1;
+}
+
+/* Hidden checkbox for mobile menu (matches portfolio open/close behaviour) */
+.wavos-nav-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.mobile-menu-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  position: relative;
+  z-index: 1001;
+  min-width: 44px;
+  min-height: 44px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: rgb(var(--color-foreground));
+}
+
+.mobile-menu-button .wavos-hamburger {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 24px;
+  height: 18px;
+}
+
+.mobile-menu-button .wavos-hamburger span {
+  display: block;
+  height: 2px;
+  background: currentColor;
+  border-radius: 1px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.wavos-nav-input:checked ~ .header-top-row .mobile-menu-button .wavos-hamburger span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.wavos-nav-input:checked ~ .header-top-row .mobile-menu-button .wavos-hamburger span:nth-child(2) {
+  opacity: 0;
+}
+
+.wavos-nav-input:checked ~ .header-top-row .mobile-menu-button .wavos-hamburger span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.mobile-dropdown {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}
+
+.wavos-nav-input:checked ~ .mobile-dropdown {
+  max-height: 500px;
+}
+
+.mobile-nav {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 1.5rem;
+  gap: 1rem;
+}
+
+.mobile-nav-link {
+  text-decoration: underline;
+  color: rgb(var(--color-foreground));
+  font-size: 14px;
+  transition: opacity 0.2s ease;
+  text-decoration-color: transparent;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+}
+
+.mobile-nav-link:hover {
+  opacity: 0.7;
+}
+
+.mobile-nav-link.active {
+  text-decoration-color: rgb(var(--color-foreground));
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+  opacity: 1;
+}
+
+.desktop-only {
+  display: block;
+}
+
+.mobile-only {
+  display: none;
+}
+
+@media only screen and (max-width: 768px) {
+  .desktop-only {
+    display: none;
+  }
+
+  .mobile-only {
+    display: block;
+  }
+
+  .mobile-menu-button.mobile-only {
+    display: flex;
+  }
+
+  .header-top-row {
+    padding: 0.75rem 1rem;
+  }
+
+  .header-logo img,
+  .header-logo .header-logo__img {
+    width: 60px;
+  }
+
+  .header-nav-row {
+    display: none !important;
+  }
+}
