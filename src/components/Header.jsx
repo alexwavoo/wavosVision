@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import Hamburger from 'hamburger-react';
 import InstagramIcon from './InstagramIcon';
+import { getStoreUrl } from '../config/externalUrls';
 import '../styles/header.css';
 
 const Header = ({ collections }) => {
@@ -91,12 +92,14 @@ const Header = ({ collections }) => {
               {title}
             </NavLink>
           ))}
-          <NavLink
-            to="/store"
-            className={({ isActive }) => `nav-link header-store-link ${isActive ? 'active' : ''}`}
+          <a
+            href={getStoreUrl()}
+            className="nav-link header-store-link"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             SHOP
-          </NavLink>
+          </a>
         </nav>
       </div>
 
@@ -121,14 +124,14 @@ const Header = ({ collections }) => {
               {title}
             </NavLink>
           ))}
-          <NavLink
-            to="/store"
-            className={({ isActive }) =>
-              `mobile-nav-link header-store-link ${isActive ? 'active' : ''}`
-            }
+          <a
+            href={getStoreUrl()}
+            className="mobile-nav-link header-store-link"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             SHOP
-          </NavLink>
+          </a>
           <a
             href={instagramUrl}
             className="mobile-nav-link mobile-instagram-link"

@@ -48,19 +48,30 @@
         {%- endif -%}
       </a>
 
-      <span class="header-instagram header-instagram--spacer desktop-only" aria-hidden="true"></span>
+      <div class="header-actions">
+        <a href="{{ routes.cart_url }}" class="wavos-cart-btn" aria-label="Cart">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 01-8 0"/>
+          </svg>
+          {%- if cart.item_count > 0 -%}
+            <span class="wavos-cart-count">{{ cart.item_count }}</span>
+          {%- endif -%}
+        </a>
 
-      <label
-        for="{{ nav_input_id }}"
-        class="mobile-menu-button mobile-only"
-        aria-label="{{ 'sections.header.menu' | t }}"
-      >
-        <span class="wavos-hamburger" aria-hidden="true">
-          <span></span>
-          <span></span>
-          <span></span>
-        </span>
-      </label>
+        <label
+          for="{{ nav_input_id }}"
+          class="mobile-menu-button mobile-only"
+          aria-label="{{ 'sections.header.menu' | t }}"
+        >
+          <span class="wavos-hamburger" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
+        </label>
+      </div>
     </div>
 
     <div class="header-nav-row desktop-only">

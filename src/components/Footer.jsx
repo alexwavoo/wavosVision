@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import InstagramIcon from './InstagramIcon';
+import { getStoreUrl } from '../config/externalUrls';
 import '../styles/footer.css';
 
 const Footer = () => {
@@ -19,9 +20,9 @@ const Footer = () => {
 
   return (
     <footer ref={footerRef} className="site-footer">
-      <Link to="/store" className="footer-store-link">
+      <a href={getStoreUrl()} className="footer-store-link" target="_blank" rel="noopener noreferrer">
         Shop
-      </Link>
+      </a>
       <a
         href={instagramUrl}
         className="footer-instagram-link"

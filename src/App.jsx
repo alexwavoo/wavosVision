@@ -7,6 +7,7 @@ import { useCollections } from './hooks/useCollections';
 import { useFeaturedImages } from './hooks/useFeaturedImages';
 import { useProjectsForCollections } from './hooks/useProjectsForCollections';
 import { useMatchedImages } from './hooks/useMatchedImages';
+import { getStoreUrl } from './config/externalUrls';
 
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -16,8 +17,12 @@ import GoogleAnalyticsCrossDomain from './components/GoogleAnalyticsCrossDomain'
 const CollectionList = lazy(() => import('./pages/CollectionList'));
 const ProjectsList = lazy(() => import('./pages/ProjectsList'));
 const ProjectDetail = lazy(() => import('./pages/ProjectDetail'));
-const StoreGate = lazy(() => import('./pages/StoreGate'));
 const NotFound = lazy(() => import('./pages/NotFound'));
+
+function StoreRedirect() {
+  useEffect(() => { window.location.replace(getStoreUrl()); }, []);
+  return null;
+}
 
 export default function App() {
   const [calculatedHeight, setCalculatedHeight] = useState(window.innerHeight);
@@ -97,7 +102,7 @@ export default function App() {
                   />
                 }
               />
-              <Route path="/store" element={<StoreGate />} />
+              <Route path="/store" element={<StoreRedirect />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>

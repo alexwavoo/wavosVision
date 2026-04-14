@@ -338,7 +338,8 @@ main#MainContent {
     margin-right: auto;
   }
 
-  .product__info-container .share-button {
+  .product__info-container share-button.share-button {
+    display: flex !important;
     justify-content: center !important;
   }
 

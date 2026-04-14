@@ -20,3 +20,13 @@
 .wavos-footer__line + .wavos-footer__line {
   margin-top: 0.35rem;
 }
+
+@media only screen and (max-width: 599px) {
+  .wavos-footer {
+    padding: 1.2rem 1rem 1.5rem;
+  }
+
+  .wavos-footer__line {
+    font-size: 9px;
+  }
+}
