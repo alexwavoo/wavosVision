@@ -4,10 +4,10 @@ import { useLocation } from 'react-router-dom';
 export function useScrollRestoration(ready = true) {
   const location = useLocation();
   const key = `scroll_${location.pathname}`;
-  const restored = useRef(false);
+  const restoredKey = useRef(null);
 
   useEffect(() => {
-    if (!ready || restored.current) return;
+    if (!ready || restoredKey.current === key) return;
 
     const saved = sessionStorage.getItem(key);
     if (saved) {
@@ -16,7 +16,7 @@ export function useScrollRestoration(ready = true) {
         window.scrollTo(0, pos);
       });
     }
-    restored.current = true;
+    restoredKey.current = key;
   }, [ready, key]);
 
   useEffect(() => {
